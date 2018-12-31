@@ -11,8 +11,8 @@ from django.contrib.auth import authenticate, login, logout
 not_authenticated_error = "ابتدا وارد شوید."
 
 
-def index(request):
-    return render(request, 'shopping/index.html')
+def home(request):
+    return render(request, 'shopping/home.html')
 
 
 def signup(request):
@@ -52,11 +52,20 @@ def signin(request):
             return render(request, 'shopping/signin.html', {'message': message}, status=403)
 
 
+def signout(request):
+    logout(request)
+    return HttpResponseRedirect('home')
+
+
 def dashboard(request):  # , action):
     if not request.user.is_authenticated:
         message = not_authenticated_error
         return render(request, 'base/not_authenticated.html', {'error_m': message,
                                                                    'base_html': 'base/base.html'})
+    if not hasattr(request.user, 'shopping_user'):
+        shopping_user = ShoppingUser(user=request.user)
+        shopping_user.save()
+
     shopping_user = request.user.shopping_user
     on_sale = Product.objects.filter(seller=shopping_user).filter(status='on-sale')
     bought = Product.objects.filter(buyer=shopping_user).filter(status='sold')

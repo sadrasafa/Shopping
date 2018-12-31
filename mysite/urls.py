@@ -16,8 +16,12 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from django.urls import include, path
+# from allauth.account.views import LoginView, SignupView,
+
 
 urlpatterns = [
     path('shopping/', include('shopping.urls')),
     path('admin/', admin.site.urls),
+    path('accounts/', include('allauth.urls')),
+
 ]

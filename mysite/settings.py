@@ -30,16 +30,23 @@ ALLOWED_HOSTS = []
 
 # Application definition
 
+
 INSTALLED_APPS = [
-    'shopping.apps.ShoppingConfig',         # SADRA
+
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.sites',             # SADRA
+    'allauth',                          # SADRA
+    'allauth.account',                  # SADRA
+    'allauth.socialaccount',            # SADRA
+    'allauth.socialaccount.providers.google',  # SADRA
+    
+    'shopping.apps.ShoppingConfig',         # SADRA
 ]
-
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -83,7 +90,7 @@ DATABASES = {
 }
 
 AUTH_USER_MODEL = "shopping.User"     # SADRA
-
+# LOGIN_REDIRECT_URL = "shopping/dashboard"  # SADRA
 # Password validation
 # https://docs.djangoproject.com/en/2.1/ref/settings/#auth-password-validators
 
@@ -121,3 +128,16 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.1/howto/static-files/
 
 STATIC_URL = '/static/'
+
+
+AUTHENTICATION_BACKENDS = (                         # SADRA
+    "django.contrib.auth.backends.ModelBackend",        # SADRA
+    "allauth.account.auth_backends.AuthenticationBackend",  # SADRA
+)                                                           # SADRA
+
+SITE_ID = 1                                     # SADRA
+ACCOUNT_EMAIL_REQUIRED = True                   # SADRA
+ACCOUNT_USERNAME_REQUIRED = False               # SADRA
+
+LOGIN_REDIRECT_URL = 'dashboard'                # SADRA
+LOGOUT_REDIRECT_URL = 'home'                    # SADRA

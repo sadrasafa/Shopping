@@ -16,7 +16,7 @@ class ShoppingUser(models.Model):
     email = models.EmailField()
     phone_number = models.CharField(max_length=20, validators=[
         RegexValidator(regex=r'^((\+|00)\d{11,12})|(09\d{9})$',
-                       message="شماره تلفن نامعتبر است")], ) # null=True and Blank=True if not required
+                       message="شماره تلفن نامعتبر است")], null=True)  # null=True and Blank=True if not required
     province = models.CharField(max_length=40)  # province should be a choice
     city = models.CharField(max_length=40)
 
