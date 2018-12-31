@@ -1,0 +1,22 @@
+<head><title>صفحه خطا</title></head>
+{#{% extends base_html %}#}
+
+
+
+
+{% block content %}
+    {% if error_m %}
+        <div class="col-md-4"></div>
+        <div id="fourerror" class="container col-md-4" align="center">
+            <div><p> {{ error_m }} </p></div>
+            <button type="submit" onclick="goBack()" value="بازگشت" class="btn btn-primary">بازگشت</button>
+            <script>
+                function goBack() {
+                    window.history.back();
+                }
+            </script>
+
+        </div>
+        <div class="col-md-4"></div>
+    {% endif %}
+{% endblock %}

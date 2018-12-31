@@ -60,8 +60,8 @@ def signout(request):
 def dashboard(request):  # , action):
     if not request.user.is_authenticated:
         message = not_authenticated_error
-        return render(request, 'base/not_authenticated.html', {'error_m': message,
-                                                                   'base_html': 'base/base.html'})
+        return render(request, 'shopping/not_authenticated.html', {'error_m': message,
+                                                                   })
     if not hasattr(request.user, 'shopping_user'):
         shopping_user = ShoppingUser(user=request.user)
         shopping_user.save()
