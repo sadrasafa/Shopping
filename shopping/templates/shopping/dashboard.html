@@ -1,0 +1,91 @@
+<head><title>داشبورد کاربر</title></head>
+{#{% extends 'base/stu_base.html' %}#}
+
+
+{% load staticfiles %}
+{% load static %}
+
+{% block content %}
+    <div id="panel-header">
+        <div id="panel-header" align="center">اطلاعات کاربر</div>
+    </div>
+
+    {% if messages %}
+        <ul class="messages">
+            {% for message in messages %}
+                <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+
+    <div class="panel-group col-md-12 col-sm-12 col-lg-12">
+        <div class="panel panel-info col-md-3 col-sm-12">
+            <div class="panel-heading">
+                <div class="text-center">
+{#                    <img src="/{{ user.document }}" width="200" height="250"#}
+{#                         onerror="this.src='{% static "pics/default-user.jpg" %}'">#}
+                </div>
+            </div>
+            <div align="center">:Username</div>
+            <div align="center" class="panel-body">{{ user.user }}</div>
+            <div></div>
+        </div>
+
+        <div class="panel panel-info col-md-9 col-sm-12">
+            <div class="panel-heading">{{ user.first_name }} {{ user.last_name }}</div>
+
+            <div class="row panel-body">
+                <div class="col-xs-6"><input type="text" id="staticField" readonly
+                                             class="form-control-plaintext form-control"
+                                             placeholder="شماره تلفن"
+                                             value="{{ user.phone_number }}"></div>
+                <div class="col-xs-6">شماره تلفن:‌</div>
+            </div>
+
+            <div class="row panel-body">
+                <div class="col-xs-6"><input type="text" id="staticField" readonly
+                                             class="form-control-plaintext form-control"
+                                             placeholder="ایمیل"
+                                             value="{{ user.email }}"></div>
+                <div class="col-xs-6">ایمیل:‌</div>
+            </div>
+            <div class="row panel-body">
+                <div class="col-xs-6"><input type="text" id="staticField" readonly
+                                             class="form-control-plaintext form-control"
+                                             placeholder="استان"
+                                             value="{{ user.province}}"></div>
+                <div class="col-xs-6">استان:‌</div>
+            </div>
+            <div class="row panel-body">
+                <div class="col-xs-6"><input type="text" id="staticField" readonly
+                                             class="form-control-plaintext form-control"
+                                             placeholder="شهر"
+                                             value="{{ user.city}}"></div>
+                <div class="col-xs-6">شهر:‌</div>
+            </div>
+
+        </div>
+    </div>
+    <div>
+        <p>تمامی اجناس
+        </p>
+    {% for product in all_products %}
+    {{ product.name }}
+    {% endfor %}
+    </div>
+    <div>
+        <p>لیست فروش من
+        </p>
+    {% for product in on_sale%}
+    {{ product.name }}
+    {% endfor %}
+    </div>
+    <div>
+        <p>لیست خرید من
+        </p>
+    {% for product in bought%}
+    {{ product.name }}
+    {% endfor %}
+    </div>
+
+{% endblock %}
