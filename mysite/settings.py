@@ -44,6 +44,9 @@ INSTALLED_APPS = [
     'allauth.account',                  # SADRA
     'allauth.socialaccount',            # SADRA
     'allauth.socialaccount.providers.google',  # SADRA
+    'base',
+    'bootstrapform',
+
 
     'shopping.apps.ShoppingConfig',         # SADRA
 ]
