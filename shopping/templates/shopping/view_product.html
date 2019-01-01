@@ -1,6 +1,6 @@
 {% extends 'base/user_base.html' %}
 <head><title>مشاهده محصول</title></head>
-
+{% block content %}
 <div>
 نام
     {{ product.name }}
@@ -23,8 +23,19 @@
     {{ product.status }}
 </div>
 <div>
+توضیح:
 {{ product.description }}
 </div>
+<div>
+عرض جغرافیایی
+{{ product.latitude}}
+</div>
+<div>
+طول جغرافیایی:
+{{ product.longitude }}
+</div>
+
+
 
 <button type="submit" onclick="goBack()" value="بازگشت" class="btn btn-primary">بازگشت</button>
             <script>
@@ -33,3 +44,4 @@
                 }
             </script>
 <a href="/shopping/buy_product/{{ product.id }}">خرید محصول</a>
+{% endblock %}

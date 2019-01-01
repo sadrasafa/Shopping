@@ -5,11 +5,23 @@
 {% load static %}
 
 
-
+{# All kind of errors are handled using this template, depending on their type#}
+{# Error types are specified by 'type_xxx' variables #}
+{# The apropriate error message is in 'error_message' variable #}
+{# This page should show the appropriate page to the user, using the error type and error message#}
 {% block content %}
-    {% if error_404 %}
+    {% if type_404 %}
     <div align="center"><img src="{% static "pics/404image.png" %}"></div>
-        404
+{#        error reason: 404#}
+    {% endif %}
+    {% if type_already_sold %}
+{#        error reason: trying to buy product that is already sold#}
+    {% endif %}
+    {% if type_not_authenticated %}
+{#    error reason: user is not authenticated#}
+    {% endif %}
+    {% if type_product_not_found %}
+{#    error reason: trying to access a product which does not exist#}
     {% endif %}
     <div id="fourerror" class="container" align="center">
         {{ error_message }}

@@ -46,8 +46,7 @@ INSTALLED_APPS = [
     'allauth.socialaccount.providers.google',  # SADRA
     'base',
     'bootstrapform',
-
-
+    'location_field.apps.DefaultConfig',    # SADRA
     'shopping.apps.ShoppingConfig',         # SADRA
 ]
 MIDDLEWARE = [
@@ -144,3 +143,20 @@ ACCOUNT_USERNAME_REQUIRED = False               # SADRA
 
 LOGIN_REDIRECT_URL = 'dashboard'                # SADRA
 LOGOUT_REDIRECT_URL = 'home'                    # SADRA
+
+
+# SADRA:
+from django.conf import settings
+LOCATION_FIELD_PATH = settings.STATIC_URL + 'location_field'
+
+LOCATION_FIELD = {
+    'map.provider': 'openstreetmap',
+    'search.provider': 'yandex',
+    'resources.root_path': LOCATION_FIELD_PATH,
+    'resources.media': {
+        'js': [
+            # LOCATION_FIELD_PATH + '/js/jquery.livequery.js',
+            LOCATION_FIELD_PATH + '/js/form.js',
+        ],
+    },
+}

@@ -1,6 +1,8 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.core.validators import RegexValidator
+from location_field.models.plain import PlainLocationField
+from osm_field.fields import LatitudeField, LongitudeField, OSMField
 
 # Create your models here.
 
@@ -32,6 +34,13 @@ class Product(models.Model):
     buyer = models.ForeignKey(ShoppingUser, on_delete=models.SET_NULL, related_name='seller', null=True)
     status = models.CharField(max_length=30)  # 'for sale' or 'sold'
     picture = models.FileField(upload_to='pics/', null=True)
+    city = models.CharField(max_length=255, null=True)
+    location = PlainLocationField(based_fields=['city'], zoom=7, null=True)
+    latitude = models.FloatField(null=True)
+    longitude = models.FloatField(null=True)
+    # loc = OSMField()
+    # loc_lat = LatitudeField()
+    # loc_lon = LongitudeField()
 
     def __str__(self):
         return self.name + ': ' + self.seller.__str__()

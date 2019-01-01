@@ -9,8 +9,10 @@
     <div id="panel-header">
         <div id="panel-header" align="center">اطلاعات کاربر</div>
     </div>
-
-
+{#    IF LOGGED IN USING USING GOOGLE, THE FOLLOWING CAN BE USED#}
+    {{ user.socialaccount_set.all.0.extra_data.name }}
+    {{ user.socialaccount_set.all.0.get_avatar_url }}
+    {{ user.socialaccount_set.all.0.email_addresses }}
     {% if messages %}
         <ul class="messages">
             {% for message in messages %}
@@ -28,18 +30,18 @@
                 </div>
             </div>
             <div align="center">:Username</div>
-            <div align="center" class="panel-body">{{ user.user }}</div>
+            <div align="center" class="panel-body">{{ shopping_user.user }}</div>
             <div></div>
         </div>
 
         <div class="panel panel-info col-md-9 col-sm-12">
-            <div class="panel-heading">{{ user.first_name }} {{ user.last_name }}</div>
+            <div class="panel-heading">{{ shopping_user.first_name }} {{ shopping_user.last_name }}</div>
 
             <div class="row panel-body">
                 <div class="col-xs-6"><input type="text" id="staticField" readonly
                                              class="form-control-plaintext form-control"
                                              placeholder="شماره تلفن"
-                                             value="{{ user.phone_number }}"></div>
+                                             value="{{ shopping_user.phone_number }}"></div>
                 <div class="col-xs-6">شماره تلفن:‌</div>
             </div>
 
@@ -47,21 +49,21 @@
                 <div class="col-xs-6"><input type="text" id="staticField" readonly
                                              class="form-control-plaintext form-control"
                                              placeholder="ایمیل"
-                                             value="{{ user.email }}"></div>
+                                             value="{{ shopping_user.email }}"></div>
                 <div class="col-xs-6">ایمیل:‌</div>
             </div>
             <div class="row panel-body">
                 <div class="col-xs-6"><input type="text" id="staticField" readonly
                                              class="form-control-plaintext form-control"
                                              placeholder="استان"
-                                             value="{{ user.province }}"></div>
+                                             value="{{ shopping_user.province }}"></div>
                 <div class="col-xs-6">استان:‌</div>
             </div>
             <div class="row panel-body">
                 <div class="col-xs-6"><input type="text" id="staticField" readonly
                                              class="form-control-plaintext form-control"
                                              placeholder="شهر"
-                                             value="{{ user.city }}"></div>
+                                             value="{{ shopping_user.city }}"></div>
                 <div class="col-xs-6">شهر:‌</div>
             </div>
 
