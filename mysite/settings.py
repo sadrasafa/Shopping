@@ -30,7 +30,6 @@ ALLOWED_HOSTS = []
 
 # Application definition
 
-
 INSTALLED_APPS = [
 
     'django.contrib.admin',
@@ -46,9 +45,10 @@ INSTALLED_APPS = [
     'allauth.socialaccount.providers.google',  # SADRA
     'base',
     'bootstrapform',
+    'shopping.apps.ShoppingConfig',  # SADRA
     'location_field.apps.DefaultConfig',    # SADRA
-    'shopping.apps.ShoppingConfig',         # SADRA
 ]
+
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
