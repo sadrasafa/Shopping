@@ -1,0 +1,35 @@
+<head><title>مشاهده محصول</title></head>
+{#{% extends 'base/stu_base.html' %}#}
+
+<div>
+نام
+    {{ product.name }}
+</div>
+<div>
+قیمت
+    {{ product.price }}
+
+</div>
+<div>
+یوزرنیم فروشنده
+    {{ product.seller.user.username }}
+</div>
+<div>
+یوزرنیم خریدار
+    {{ product.buyer.user.username }}
+</div>
+<div>
+وضعیت محصول
+    {{ product.status }}
+</div>
+<div>
+{{ product.description }}
+</div>
+
+<button type="submit" onclick="goBack()" value="بازگشت" class="btn btn-primary">بازگشت</button>
+            <script>
+                function goBack() {
+                    window.history.back();
+                }
+            </script>
+<a href="/shopping/buy_product/{{ product.id }}">خرید محصول</a>

@@ -1,5 +1,5 @@
 from django import forms
-from .models import ShoppingUser
+from .models import ShoppingUser, Product
 from django.utils.translation import ugettext_lazy as _
 
 
@@ -40,7 +40,7 @@ class UserSignupForm(forms.ModelForm):
 
     class Meta:
         model = ShoppingUser
-        fields = ['first_name', 'last_name', 'email', 'phone_number', 'province', 'city']
+        fields = ['first_name', 'last_name', 'email', ]
         widgets = {
             'first_name': forms.TextInput(attrs={'class': 'form-control',
                                                  'placeholder': 'نام',
@@ -53,25 +53,25 @@ class UserSignupForm(forms.ModelForm):
             'email': forms.TextInput(attrs={'class': 'form-control',
                                             'placeholder': 'ایمیل',
                                             'style': 'text-align:left'}),
-            'phone_number': forms.TextInput(attrs={'class': 'form-control',
-                                                   'placeholder': 'شماره تماس',
-                                                   'style': 'text-align:left'}),
-            'province': forms.TextInput(attrs={'class': 'form-control',
-                                               'placeholder': 'استان',
-                                               'style': 'text-align:right',
-                                               'direction': 'rtl'}),
-            'city': forms.TextInput(attrs={'class': 'form-control',
-                                           'placeholder': 'شهر',
-                                           'style': 'text-align:right',
-                                           'direction': 'rtl'}),
+            # 'phone_number': forms.TextInput(attrs={'class': 'form-control',
+            #                                        'placeholder': 'شماره تماس',
+            #                                        'style': 'text-align:left'}),
+            # 'province': forms.TextInput(attrs={'class': 'form-control',
+            #                                    'placeholder': 'استان',
+            #                                    'style': 'text-align:right',
+            #                                    'direction': 'rtl'}),
+            # 'city': forms.TextInput(attrs={'class': 'form-control',
+            #                                'placeholder': 'شهر',
+            #                                'style': 'text-align:right',
+            #                                'direction': 'rtl'}),
         }
         labels = {
             'first_name': _('نام'),
             'last_name': _('نام خانوادگی'),
             'email': _('ایمیل'),
-            'phone_number': _('شماره تلفن'),
-            'province': _('استان'),
-            'city': _('شهر'),
+            # 'phone_number': _('شماره تلفن'),
+            # 'province': _('استان'),
+            # 'city': _('شهر'),
         }
         error_messages = {
             'first_name': {
@@ -84,16 +84,16 @@ class UserSignupForm(forms.ModelForm):
                 'required': _('لطفا ایمیل خود را وارد کنید'),
                 'invalid': _('ایمیل اشتباه است')
             },
-            'phone_number': {
-                'required': _('لطفا شماره تلفن خود را وارد کنید'),
-                'invalid': _('شماره تلفن اشتباه است')
-            },
-            'province': {
-                'required': _('لطفا استان خود را وارد کنید')
-            },
-            'city': {
-                'required': _('لطفا شهر خود را وارد کنید')
-            }
+            # 'phone_number': {
+            #     'required': _('لطفا شماره تلفن خود را وارد کنید'),
+            #     'invalid': _('شماره تلفن اشتباه است')
+            # },
+            # 'province': {
+            #     'required': _('لطفا استان خود را وارد کنید')
+            # },
+            # 'city': {
+            #     'required': _('لطفا شهر خود را وارد کنید')
+            # }
         }
 
     def clean(self):
@@ -103,3 +103,44 @@ class UserSignupForm(forms.ModelForm):
         if password1 != password2:
             raise forms.ValidationError('رمزعبور یکسان نیست')
         return cleaned_data
+
+
+class AddProductForm(forms.ModelForm):
+    class Meta:
+        model = Product
+        fields = ['name', 'price', 'description', 'picture']
+        widgets = {
+            'name': forms.TextInput(attrs={'class': 'form-control',
+                                                 'placeholder': 'عنوان محصول',
+                                                 'style': 'text-align:right',
+                                                 'direction': 'rtl'}),
+            'price': forms.TextInput(attrs={'class': 'form-control',
+                                                'placeholder': 'قیمت',
+                                                'style': 'text-align:right',
+                                                'direction': 'rtl'}),
+            'description': forms.TextInput(attrs={'class': 'form-control',
+                                            'placeholder': 'توضیحات',
+                                            'style': 'text-align:left'}),
+            'picture': forms.ClearableFileInput(attrs={'class': 'form-control', 'placeholder': 'تصویر',
+                                                        'style': 'text-align:right'})
+        }
+        labels = {
+            'name': _('عنوان محصول'),
+            'price': _('قیمت'),
+            'description': _('توضیحات'),
+            'picture': _('تصویر محصول'),
+        }
+        error_messages = {
+            'name': {
+                'required': _('لطفا عنوان محصول را وارد کنید')
+            },
+            'price': {
+                'required': _('لطفا قیمت محصول را وارد کنید')
+            },
+            'description': {
+                'required': _('لطفا توضیحات محصول را وارد کنید'),
+            },
+            'picture': {
+                'required': _('لطفا تصویر محصول را بارگذاری کنید')
+            }
+        }

@@ -16,15 +16,22 @@ class ShoppingUser(models.Model):
     email = models.EmailField()
     phone_number = models.CharField(max_length=20, validators=[
         RegexValidator(regex=r'^((\+|00)\d{11,12})|(09\d{9})$',
-                       message="شماره تلفن نامعتبر است")], null=True)  # null=True and Blank=True if not required
-    province = models.CharField(max_length=40)  # province should be a choice
-    city = models.CharField(max_length=40)
+                       message="شماره تلفن نامعتبر است")], null=True, blank=True)  # null=True and Blank=True if not required
+    province = models.CharField(max_length=40, null=True, blank=True)  # province should be a choice
+    city = models.CharField(max_length=40, null=True, blank=True)
+
+    def __str__(self):
+        return self.user.username + ' ' + self.first_name + ' ' + self.last_name
 
 
 class Product(models.Model):
-    statuses = [('on-sale', 'on-sale'),
-                ('sold', 'sold')]
     name = models.CharField(max_length=140)
+    price = models.IntegerField(null=True)
+    description = models.CharField(max_length=500, null=True)
     seller = models.ForeignKey(ShoppingUser, on_delete=models.SET_NULL, related_name='buyer', null=True)
     buyer = models.ForeignKey(ShoppingUser, on_delete=models.SET_NULL, related_name='seller', null=True)
-    status = models.CharField(max_length=30, choices=statuses, )
+    status = models.CharField(max_length=30)  # 'for sale' or 'sold'
+    picture = models.FileField(upload_to='pics/', null=True)
+
+    def __str__(self):
+        return self.name + ': ' + self.seller.__str__()

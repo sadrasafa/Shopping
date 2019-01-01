@@ -1,0 +1,68 @@
+<head><title> فروش محصول</title></head>
+{#{% extends 'base/op_base.html' %}#}
+
+
+{% block content %}
+
+    <div class="container">
+
+        <div class="col-md-4"></div>
+
+        <div id="fill_out_form" class="col-md-4">
+            <section class="login-form">
+                <form class="form-horizontal" novalidate method="post" enctype="multipart/form-data">{% csrf_token %}
+                    <fieldset>
+                        <legend>{{ title }}</legend>
+                        {% for field in add_product_form %}
+                            {% if field.errors %}
+                                <div class="control-group error">
+                                    <div align="center" class="form-actions">
+                                        <label class="control-label">{{ field.label }}</label>
+                                    </div>
+                                    <div class="controls">{{ field }}
+                                        <span class="help-inline">
+                            {% for error in  field.errors %}
+                                <div align="center">
+                                <div id="error">
+                                    {{ error }}
+                                </div>
+                                </div> {% endfor %}
+                        </span>
+                                    </div>
+                                </div>
+                            {% else %}
+                                <div class="control-group">
+                                    <div align="center">
+                                        <label class="control-label">{{ field.label }}</label>
+                                    </div>
+                                    <div class="controls">{{ field }}
+                                        {% if field.help_text %}
+                                            <p class="help-inline">
+                                                <small>
+                                                    {{ field.help_text }}
+                                                </small>
+                                            </p>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            {% endif %}
+                        {% endfor %}
+                    </fieldset>
+                    <div align="center">
+                        <div id="button_submit" class="form-actions">
+                            <div id="error">
+                                <button type="submit" value="فروش محصول" class="btn btn-primary">فروش محصول</button>
+                            </div>
+                            <ul style="list-style-type:none">
+                                <div align="center" id="error">{% for error in add_product_form.non_field_errors %} </div>
+                                    {# passwords dont match #}
+                                    <li>{{ error }}</li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    </div>
+                </form>
+            </section>
+        </div>
+    </div>
+{% endblock %}

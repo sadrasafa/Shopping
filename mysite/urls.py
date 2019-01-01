@@ -15,14 +15,17 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from django.urls import include, path
+from django.urls import include, path, re_path
 # from allauth.account.views import LoginView, SignupView,
 from shopping.views import home
+from shopping.views import error404
 
 urlpatterns = [
     path('shopping/', include('shopping.urls')),
     path('admin/', admin.site.urls),
     path('accounts/', include('allauth.urls')),
     path('', home),
+    re_path('.*', error404, name='error404')
+
 
 ]

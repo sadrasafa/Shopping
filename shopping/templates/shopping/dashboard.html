@@ -74,13 +74,15 @@
         </p>
     {% for product in all_products %}
     {{ product.name }}
+        <a href="/shopping/view_product/{{product.id  }}">مشاهده </a>
     {% endfor %}
     </div>
     <div>
         <p>لیست فروش من
         </p>
-    {% for product in on_sale%}
+    {% for product in for_sale%}
     {{ product.name }}
+        <a href="/shopping/view_product/{{product.id  }}">مشاهده </a>
     {% endfor %}
     </div>
     <div>
@@ -88,7 +90,8 @@
         </p>
     {% for product in bought%}
     {{ product.name }}
+        <a href="/shopping/view_product/{{product.id  }}">مشاهده </a>
     {% endfor %}
     </div>
-
+    <a href="/shopping/add_product">فروش محصول</a>
 {% endblock %}

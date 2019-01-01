@@ -1,0 +1,17 @@
+<head><title>صفحه خطا</title></head>
+{#{% extends 'base/base.html' %}#}
+
+{% load staticfiles %}
+{% load static %}
+
+
+
+{% block content %}
+    <div id="fourerror" class="container" align="center">
+        محصول قبلا فروخته شده است
+        <form id="button_submit" novalidate method="get" action="/"> {# todo where to go from here? #}
+            <button type="submit" value="بازگشت" class="btn btn-primary">بازگشت</button>
+        </form>
+
+    </div>
+{% endblock %}

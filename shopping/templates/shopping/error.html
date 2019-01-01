@@ -1,0 +1,24 @@
+<head><title>صفحه خطا</title></head>
+{#{% extends 'base/base.html' %}#}
+
+{% load staticfiles %}
+{% load static %}
+
+
+
+{% block content %}
+    {% if error_404 %}
+    <div align="center"><img src="{% static "pics/404image.png" %}"></div>
+        404
+    {% endif %}
+    <div id="fourerror" class="container" align="center">
+        {{ error_message }}
+        <button type="submit" onclick="goBack()" value="بازگشت" class="btn btn-primary">بازگشت</button>
+            <script>
+                function goBack() {
+                    window.history.back();
+                }
+            </script>
+
+    </div>
+{% endblock %}
