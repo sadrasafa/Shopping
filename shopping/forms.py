@@ -131,7 +131,7 @@ class AddProductForm(forms.ModelForm):
             'city': forms.TextInput(attrs={'class': 'form-control',
                                             'placeholder': 'شهر',
                                             'style': 'text-align:right',
-                                           'direction': 'rtl'})
+                                           'direction': 'rtl'}),
         }
         labels = {
             'name': _('عنوان محصول'),
@@ -139,6 +139,7 @@ class AddProductForm(forms.ModelForm):
             'description': _('توضیحات'),
             'picture': _('تصویر محصول'),
             'city': _('شهر'),
+            'location': _('مکان')
         }
         error_messages = {
             'name': {
@@ -153,6 +154,65 @@ class AddProductForm(forms.ModelForm):
             },
             'picture': {
                 'required': _('لطفا تصویر محصول را بارگذاری کنید')
+            },
+            'city': {
+                'required': _('لطفا شهر خود را وارد کنید')
+            }
+        }
+
+
+class SearchProductForm(forms.ModelForm):
+    distance = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control',
+                                                                  'required': 'True',
+                                                                  'max_length': 30,
+                                                                  'render_value': 'False',
+                                                                  'placeholder': 'حداکثر',
+                                                                  'style': 'text-align:right',
+                                                                  'direction': 'rtl'}
+                                                           ),
+                                label=_("حداکثر فاصله"),
+                                error_messages={
+                                    'required': _('لطفا حداکثر فاصله را وارد کنید')
+                                })
+
+    class Meta:
+        model = Product
+        fields = ['name', 'price', 'description', 'city', 'location']
+        widgets = {
+            'name': forms.TextInput(attrs={'class': 'form-control',
+                                                 'placeholder': 'عنوان محصول',
+                                                 'style': 'text-align:right',
+                                                 'direction': 'rtl'}),
+            'price': forms.TextInput(attrs={'class': 'form-control',
+                                                'placeholder': 'قیمت به ریال',
+                                                'style': 'text-align:right',
+                                                'direction': 'rtl'}),
+            'description': forms.TextInput(attrs={'class': 'form-control',
+                                            'placeholder': 'توضیحات',
+                                            'style': 'text-align:right',
+                                                  'direction': 'rtl'}),
+            'city': forms.TextInput(attrs={'class': 'form-control',
+                                            'placeholder': 'شهر',
+                                            'style': 'text-align:right',
+                                           'direction': 'rtl'}),
+        }
+        labels = {
+            'name': _('عنوان محصول'),
+            'price': _('قیمت'),
+            'description': _('توضیحات'),
+            'city': _('شهر'),
+            'location': _('مکان')
+        }
+        error_messages = {
+            'name': {
+                'required': _('لطفا عنوان محصول را وارد کنید')
+            },
+            'price': {
+                'required': _('لطفا سقف قیمت محصول را وارد کنید'),
+                'invalid': _('لطف عدد وارد کنید')
+            },
+            'description': {
+                'required': _('لطفا توضیحات محصول را وارد کنید'),
             },
             'city': {
                 'required': _('لطفا شهر خود را وارد کنید')

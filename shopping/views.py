@@ -1,12 +1,12 @@
 from django.shortcuts import render
-from .forms import UserSignupForm, AddProductForm
+from .forms import UserSignupForm, AddProductForm, SearchProductForm
 from .models import ShoppingUser, User, Product
 from django.http import HttpResponse
 from django.http.response import HttpResponseRedirect
 from django.contrib.auth import authenticate, login, logout
 from django.core.exceptions import ObjectDoesNotExist
-
-
+from elasticsearch import Elasticsearch
+import sys
 # Create your views here.
 
 error_not_authenticated = "ابتدا وارد شوید."
@@ -14,6 +14,7 @@ error_404_message = "چنین صفحه ای وجود ندارد"
 error_already_sold = "محصول قبلا فروخته شده است"
 error_product_not_found = "چنین محصولی وجود ندارد"
 
+shopping_index = 'shopping_index'
 
 def home(request):
     return render(request, 'shopping/home.html')
@@ -99,8 +100,14 @@ def add_product(request):
             product = Product(name=form.cleaned_data['name'], price=form.cleaned_data['price'],
                               description=form.cleaned_data['description'], seller=shopping_user,
                               status='for sale', picture=form.cleaned_data['picture'],
-                              location=loc, latitude=lat, longitude=lon)
+                              location=loc, latitude=lat, longitude=lon, city=form.cleaned_data['city'])
             product.save()
+            es = Elasticsearch()
+            es.create(index=shopping_index, doc_type='product', id=product.id,
+                      body={'product': {'name': product.name, 'price': product.price,
+                                        'description': product.description, 'location': {'lat': lat,
+                                        'lon': lon}}})
+
             return HttpResponseRedirect('dashboard')
         else:
 
@@ -138,6 +145,49 @@ def buy_product(request, id):
     product.save()
     return render(request, 'shopping/view_product.html',
                   {'product': product})
+
+
+def search_product(request):
+    if request.method == 'POST':
+        form = SearchProductForm(request.POST, request.FILES)
+        if form.is_valid():
+            loc = form.cleaned_data['location']
+            lat = float(loc.split(',')[0])
+            lon = float(loc.split(',')[1])
+            w_name = 2
+            w_desc = 1
+            w_price = 1
+            es = Elasticsearch()
+            results = es.search(index='shopping_index', doc_type='product',
+                      body={'query':
+                                {'bool':
+                                     {'should':
+                                          [{'match':
+                                                {'product.name': {'query': form.cleaned_data['name'], 'boost': w_name}}},
+                                           {'match':
+                                                {'product.description': {'query': form.cleaned_data['description'], 'boost': w_desc}}},
+                                           {'range':
+                                                {'product.price': {'lte': form.cleaned_data['price'],
+                                                                   'boost': w_price}}},
+                                           ],
+                                      'filter': {'geo_distance': {'distance': form.cleaned_data['distance'],
+                                                                  'product.location': {
+                                                                      'lat': lat,
+                                                                      'lon': lon
+                                                                  }}}}
+                                 }})
+            res = []
+            for r in results['hits']['hits']:
+                to_add = r['_source']['product']
+                to_add['id'] = r['_id']
+                res.append(to_add)
+            return render(request, 'shopping/search_results.html', {'results': res})
+        else:
+
+            return render(request, 'shopping/search_product.html', {'search_product_form': form})
+    else:
+        return render(request, 'shopping/search_product.html', {'search_product_form': SearchProductForm(label_suffix='')},)
+
 
 
 #TODO search products
