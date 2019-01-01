@@ -115,7 +115,7 @@ class AddProductForm(forms.ModelForm):
                                                  'style': 'text-align:right',
                                                  'direction': 'rtl'}),
             'price': forms.TextInput(attrs={'class': 'form-control',
-                                                'placeholder': 'قیمت',
+                                                'placeholder': 'قیمت به ریال',
                                                 'style': 'text-align:right',
                                                 'direction': 'rtl'}),
             'description': forms.TextInput(attrs={'class': 'form-control',
