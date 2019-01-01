@@ -1,18 +1,49 @@
+
+@font-face {
+    font-family: BTitrBold;
+    src: url("../fonts/BTitrBold.ttf") format("truetype");
+}
+
+@font-face {
+    font-family: BKoodak;
+    src: url("../fonts/BKoodak.ttf") format("truetype");
+}
+
+@font-face {
+    font-family: BNazanin;
+    src: url("../fonts/BNazanin.ttf") format("truetype");
+}
+
+@font-face {
+    font-family: BNazaninBold;
+    src: url("../fonts/BNazaninBold.ttf") format("truetype");
+}
+
 * {
-    /*color: #555200;*/
-    font-family:'XB Niloofar', 'Arial';
+    font-family: BKoodak, Arial;
+    font-size: 20px;
+    direction: rtl;
 }
 
 p {
-    color:#1AAA;
+    color: #1AAA;
 }
 
-#university-brand {
-    color:seagreen;
+#normal-text {
+    color: #36a67f;
+}
+
+#system-name {
+    color: #1c258b;
+}
+
+#div-form {
+    color: #f5f1ef;
 }
 
 body {
-    background-image: url("/base/static/pics/bg.png")
+    background-image: url(../pics/bg.jpg)
+    /*background-image: url("https://www.freepik.com/free-vector/purple-and-pink-halftone-background-vector_3601910.htm")*/
 }
 
 #table-header {
