@@ -1,9 +1,24 @@
 <head><title>ورود</title></head>
 {% extends 'base/very_base.html' %}
+
+{% block navbar-buttons %}
+    <ul class="nav navbar-nav">
+        <li class="nav-item active">
+            <a class="nav-link" href="/shopping/signup">ثبت نام<span class="sr-only">(current)</span></a>
+        </li>
+        <li class="nav-item active">
+            <a class="nav-link" href="/accounts/google/login/?process=login">ورود با گوگل<span
+                    class="sr-only">(current)</span></a>
+        </li>
+    </ul>
+
+{% endblock %}
+
 {% block content %}
 
     {% if error_message %}
-        <pre class="alert alert-danger fade in alert-dismissable" style="width: 400px;font:10pt yekan; ">{{ error_message }}</pre>
+        <pre class="alert alert-danger fade in alert-dismissable"
+             style="width: 400px;font:10pt yekan; ">{{ error_message }}</pre>
     {% endif %}
     <div class="container" align="center">
         <div class="col-md-3"></div>
@@ -17,7 +32,8 @@
                     {{ message }} {# invalid username or password error #}
                     <div class="form-group">
                         <label for="username"> نام کاربری </label>
-                        <input style="text-align: left" type="text" dir="ltr" class="form-control" name="username" id="username"
+                        <input style="text-align: left" type="text" dir="ltr" class="form-control" name="username"
+                               id="username"
                                aria-describedby="usernameHelp" placeholder="نام کاربری را وارد کنید">
                     </div>
                     <div class="form-group">

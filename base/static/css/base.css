@@ -1,4 +1,3 @@
-
 @font-face {
     font-family: BTitrBold;
     src: url("../fonts/BTitrBold.ttf") format("truetype");
@@ -34,7 +33,7 @@ p {
 }
 
 #system-name {
-    color: #1c258b;
+    color: #0cae1c;
 }
 
 #div-form {
@@ -49,4 +48,9 @@ body {
 #table-header {
     font-family: "XB Zar";
     color: green;
+}
+
+h1 {
+    font-family: BTitrBold, Arial;
+    color: #1c258b;
 }
