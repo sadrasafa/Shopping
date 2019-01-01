@@ -9,9 +9,7 @@
     <div id="panel-header">
         <div id="panel-header" align="center">اطلاعات کاربر</div>
     </div>
-    <div>
-    <a href="/shopping/signout">خروج</a>
-    </div>
+
 
     {% if messages %}
         <ul class="messages">
@@ -25,8 +23,8 @@
         <div class="panel panel-info col-md-3 col-sm-12">
             <div class="panel-heading">
                 <div class="text-center">
-{#                    <img src="/{{ user.document }}" width="200" height="250"#}
-{#                         onerror="this.src='{% static "pics/default-user.jpg" %}'">#}
+                    {#                    <img src="/{{ user.document }}" width="200" height="250"#}
+                    {#                         onerror="this.src='{% static "pics/default-user.jpg" %}'">#}
                 </div>
             </div>
             <div align="center">:Username</div>
@@ -56,14 +54,14 @@
                 <div class="col-xs-6"><input type="text" id="staticField" readonly
                                              class="form-control-plaintext form-control"
                                              placeholder="استان"
-                                             value="{{ user.province}}"></div>
+                                             value="{{ user.province }}"></div>
                 <div class="col-xs-6">استان:‌</div>
             </div>
             <div class="row panel-body">
                 <div class="col-xs-6"><input type="text" id="staticField" readonly
                                              class="form-control-plaintext form-control"
                                              placeholder="شهر"
-                                             value="{{ user.city}}"></div>
+                                             value="{{ user.city }}"></div>
                 <div class="col-xs-6">شهر:‌</div>
             </div>
 
@@ -72,26 +70,26 @@
     <div>
         <p>تمامی اجناس
         </p>
-    {% for product in all_products %}
-    {{ product.name }}
-        <a href="/shopping/view_product/{{product.id  }}">مشاهده </a>
-    {% endfor %}
+        {% for product in all_products %}
+            {{ product.name }}
+            <a href="/shopping/view_product/{{ product.id }}">مشاهده </a>
+        {% endfor %}
     </div>
     <div>
         <p>لیست فروش من
         </p>
-    {% for product in for_sale%}
-    {{ product.name }}
-        <a href="/shopping/view_product/{{product.id  }}">مشاهده </a>
-    {% endfor %}
+        {% for product in for_sale %}
+            {{ product.name }}
+            <a href="/shopping/view_product/{{ product.id }}">مشاهده </a>
+        {% endfor %}
     </div>
     <div>
         <p>لیست خرید من
         </p>
-    {% for product in bought%}
-    {{ product.name }}
-        <a href="/shopping/view_product/{{product.id  }}">مشاهده </a>
-    {% endfor %}
+        {% for product in bought %}
+            {{ product.name }}
+            <a href="/shopping/view_product/{{ product.id }}">مشاهده </a>
+        {% endfor %}
     </div>
     <a href="/shopping/add_product">فروش محصول</a>
 {% endblock %}

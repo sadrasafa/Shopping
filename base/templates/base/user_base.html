@@ -2,34 +2,38 @@
 {% extends 'base/very_base.html' %}
 
 
-{% block content %}
-    <nav class="navbar navbar-inverse">
-        <div class="container-fluid">
-            <div class="col-sm-4" align="center">
-                <ul class="nav navbar-nav">
-                    <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">گزینه‌ها<span
-                            class="caret"></span></a>
-                        <ul class="dropdown-menu">
-                            <li><a href="#">Page 1-1</a></li>
-                            <li><a href="#">تماس با ما</a></li>
-                            <li><a href="/student/logout">خروج</a></li>
-                        </ul>
-                    </li>
-                </ul>
-            </div>
-            <div class="col-sm-4" align="center"><img alt="Brand"
-                                                      src={% static "pics/shariffff.png" %} {% comment %}style="height:6%;display:inline-block;"{% endcomment %}/>
-            </div>
-            <div class="col-sm-4" align="center">
-                <div class="navbar-header navbar-right">
-                    <div class="row1">
-
-                        <h3 id="university-brand" class="pull-right">سامانه‌ی خرید دست‌دوم</h3></div>
-                </div>
-            </div>
-            <a href="#" class="navbar-right"></a>
-
-        </div>
-    </nav>
-
+{#{% block content %}#}
+{#    <nav class="navbar navbar-inverse">#}
+{#        <div class="container-fluid">#}
+{#            <div class="col-sm-4" align="center">#}
+{% block navbar-buttons %}
+    <ul class="nav navbar-nav">
+        <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">گزینه‌ها<span
+                class="caret"></span></a>
+            <ul class="dropdown-menu">
+                <li><a href="#">Page 1-1</a></li>
+                <li><a href="#">تماس با ما</a></li>
+                <li><a href="/shopping/signout">خروج</a></li>
+            </ul>
+        </li>
+    </ul>
 {% endblock %}
+
+{% block content %}
+{% endblock %}
+{##}
+{#            </div>#}
+{#            <div class="col-sm-4" align="center"><img alt="Brand"#}
+{#                                                      src={% static "pics/shariffff.png" %} {% comment %}style="height:6%;display:inline-block;"{% endcomment %}/>#}
+{#            </div>#}
+{#            <div class="col-sm-4" align="center">#}
+{#                <div class="navbar-header navbar-right">#}
+{#                    <div class="row1">#}
+{##}
+{#                        <h3 id="university-brand" class="pull-right">سامانه‌ی خرید دست‌دوم</h3></div>#}
+{#                </div>#}
+{#            </div>#}
+{#            <a href="#" class="navbar-right"></a>#}
+{##}
+{#        </div>#}
+{#    </nav>#}

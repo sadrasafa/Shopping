@@ -32,6 +32,8 @@
             {#                    </ul>#}
             {#                </li>#}
             {#            </ul>#}
+            {% block navbar-buttons %}
+            {% endblock %}
         </div>
         <div class="col-sm-4" align="center"><img alt="Brand"
                                                   src={% static "pics/shariffff.png" %}  {% comment todo find logo!! %}style="height:6%;display:inline-block;"{% endcomment %}/>
@@ -51,47 +53,49 @@
 
 {% block content %}
 {% endblock %}
-
 <div>
     <footer id="footer">
-        <div class="footer container-fluid text-right">
-            <div style="position: relative; bottom: 0" class="row">
+        <footer class="page-footer font-small blue pt-4">
+            <div class="container-fluid text-center">
+                <div style="position: relative; bottom: 0" class="row">
 
-                <!--Second column-->
-                <div class="col-md-6"></div>
-                <div id='head-and-foot' class="col-md-6">
-                    <h5 class="title">تماس با ما </h5>
-                    <div><a id='head-and-foot' href="mailto:graduation@example.com"><span
-                            class="oi oi-envelope-closed" title="envelope closed" aria-hidden="true"
-                            style="margin-left:1%;"></span>
-                        به ما ایمیل بزنید </a>
+                    <!--Second column-->
+                    <div class="col-md-4"></div>
+                    <div id='head-and-foot' class="col-md-4">
+                        <h5 class="title">تماس با ما </h5>
+                        <div><a id='head-and-foot' href="mailto:graduation@example.com"><span
+                                class="oi oi-envelope-closed" title="envelope closed" aria-hidden="true"
+                                style="margin-left:1%;"></span>
+                            به ما ایمیل بزنید </a>
+                        </div>
+                        <div><a id='head-and-foot' href="#!"><span id='head-and-foot' class="oi oi-comment-square"
+                                                                   aria-hidden="true"
+                                                                   style="margin-left:1%;"></span>سوالات رایج را ببینید</a>
+                        </div>
+                        <div><span id='head-and-foot' class="oi oi-envelope-open" title="star"
+                                   aria-hidden="true"></span>
+                            <p id="head-and-foot"> صندوق پستی: ۱۱۱۵۵-۱۱۳۶۵</p>
+                        </div>
+                        <div><a id='head-and-foot' href="#!"></a><span id='head-and-foot' class="oi oi-map-marker"
+                                                                       title="social twitter" aria-hidden="true"
+                                                                       style="margin-left:1%;"></span>
+                            <p id="head-and-foot">تهران،خیابان آزادی،دانشگاه صنعتی شریف.</p>
+                        </div>
+
                     </div>
-                    <div><a id='head-and-foot' href="#!"><span id='head-and-foot' class="oi oi-comment-square"
-                                                               aria-hidden="true"
-                                                               style="margin-left:1%;"></span>سوالات رایج را ببینید</a>
-                    </div>
-                    <div><span id='head-and-foot' class="oi oi-envelope-open" title="star" aria-hidden="true"></span>
-                        <p id="head-and-foot"> صندوق پستی: ۱۱۱۵۵-۱۱۳۶۵</p>
-                    </div>
-                    <div><a id='head-and-foot' href="#!"></a><span id='head-and-foot' class="oi oi-map-marker"
-                                                                   title="social twitter" aria-hidden="true"
-                                                                   style="margin-left:1%;"></span>
-                        <p id="head-and-foot">تهران،خیابان آزادی،دانشگاه صنعتی شریف.</p>
-                    </div>
+                    <!--/.Second column-->
+                </div>
+            </div>
+            <!--/.Footer Links-->
+
+            <!--Copyright-->
+            <div class="footer-copyright">
+                <div class="container-fluid text-right text-center">
+                    © کلیه حقوق مربوط به <a id='head-and-foot' href="https://www.p.com"> گروه پاص </a> است.
 
                 </div>
-                <!--/.Second column-->
             </div>
-        </div>
-        <!--/.Footer Links-->
-
-        <!--Copyright-->
-        <div class="footer-copyright">
-            <div class="container-fluid text-right text-center">
-                © کلیه حقوق مربوط به <a id='head-and-foot' href="https://www.p.com"> گروه پاص </a> است.
-
-            </div>
-        </div>
+        </footer>
     </footer>
 </div>
 
