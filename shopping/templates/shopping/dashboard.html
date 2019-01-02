@@ -6,15 +6,17 @@
 {% load static %}
 
 {% block content %}
-    <div id="panel-header">
-        <div id="panel-header" align="center">اطلاعات کاربر</div>
-    </div>
-{#    IF LOGGED IN USING USING GOOGLE, THE FOLLOWING CAN BE USED#}
-    {{ user.socialaccount_set.all.0.extra_data.name }}
-    {{ user.socialaccount_set.all.0.get_avatar_url }}
-    {{ user.socialaccount_set.all.0.email_addresses }}
+
+    {% block user_header %}
+        <div id="panel-header" align="center"><h2>اطلاعات کاربر</h2></div>
+    {% endblock %}
+    {#    <div id="panel-header">#}
+    {#        <div id="panel-header" align="center"><h2>اطلاعات کاربر</h2></div>#}
+    {#    </div>#}
+    {#    IF LOGGED IN USING USING GOOGLE, THE FOLLOWING CAN BE USED#}
+
     {% if messages %}
-        <ul class="messages">
+        <ul class="alert messages">
             {% for message in messages %}
                 <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
             {% endfor %}
@@ -25,17 +27,20 @@
         <div class="panel panel-info col-md-3 col-sm-12">
             <div class="panel-heading">
                 <div class="text-center">
-                    {#                    <img src="/{{ user.document }}" width="200" height="250"#}
-                    {#                         onerror="this.src='{% static "pics/default-user.jpg" %}'">#}
+                    <img src="{{ user.socialaccount_set.all.0.get_avatar_url }}" width="250" height="250"
+                         onerror="this.src='{% static "pics/default-user.jpg" %}'">
                 </div>
             </div>
+            {#            <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4" align="center"><img#}
+            {#                    src={{ user.socialaccount_set.all.0.get_avatar_url }}>#}
+            {#            </div>#}
             <div align="center">:Username</div>
             <div align="center" class="panel-body">{{ shopping_user.user }}</div>
             <div></div>
         </div>
 
-        <div class="panel panel-info col-md-9 col-sm-12">
-            <div class="panel-heading">{{ shopping_user.first_name }} {{ shopping_user.last_name }}</div>
+        <div id="dashboard_panel" class="panel panel-info col-md-9 col-sm-12">
+            <div class="panel-heading">{{ user.socialaccount_set.all.0.extra_data.name }} {{ shopping_user.first_name }} {{ shopping_user.last_name }}</div>
 
             <div class="row panel-body">
                 <div class="col-xs-6"><input type="text" id="staticField" readonly
@@ -49,7 +54,8 @@
                 <div class="col-xs-6"><input type="text" id="staticField" readonly
                                              class="form-control-plaintext form-control"
                                              placeholder="ایمیل"
-                                             value="{{ shopping_user.email }}"></div>
+                                             value="{{ user.socialaccount_set.all.0.extra_data.email }} {{ shopping_user.email }}">
+                </div>
                 <div class="col-xs-6">ایمیل:‌</div>
             </div>
             <div class="row panel-body">
@@ -68,38 +74,157 @@
             </div>
 
         </div>
-    </div>
-    <div>
-        <p>تمامی اجناس
-        </p>
-        {% for product in all_products %}
-            {{ product.name }}
-            <a href="/shopping/view_product/{{ product.id }}">مشاهده </a>
-        {% endfor %}
-    </div>
-    <div>
-        <p>لیست فروش من
-        </p>
-        {% for product in for_sale %}
-            {{ product.name }}
-            <a href="/shopping/view_product/{{ product.id }}">مشاهده </a>
-        {% endfor %}
-    </div>
-    <div>
-        <p>لیست خرید من
-        </p>
-        {% for product in bought %}
-            {{ product.name }}
-            <a href="/shopping/view_product/{{ product.id }}">مشاهده </a>
-        {% endfor %}
+        <div class="btn-group">
+            {#        <div>#}
+            <button class="btn btn-primary" id="all_products_btn">تمامی اجناس</button>
+            {#        </div>#}
+
+            {#        <div>#}
+            <button class="btn btn-primary" id="all_products_btn">لیست فروش من</button>
+            {#        </div>#}
+
+            {#        <div>#}
+            <button class="btn btn-primary" id="all_products_btn">لسیت خرید من</button>
+            {#        </div>#}
+        </div>
     </div>
 
-    <div>
-        <a href="/shopping/add_product">فروش محصول</a>
-    </div>
-    <div>
-        <a href="/shopping/search_product">جست و جوی محصولات</a>
+
+
+
+
+
+
+    <div id="all_products_modal" class="modal">
+
+        <div class="modal-content">
+            <div class="modal-header">
+                <span class="close">&times;</span>
+                <h2 align="center">تمامی اجناس</h2>
+            </div>
+            <div class="modal-body">
+
+                {% for product in all_products %}
+                    <div class="row">
+
+                        <div class="col-md-4">
+                            <a href="/shopping/view_product/{{ product.id }}">مشاهده</a>
+                        </div>
+                        <div class="col-md-4">
+                            {{ product.name }}
+                        </div>
+                        <div class="col-md-4">
+                            <img src="{{ product.picture }}" width="50" height="50">
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+            {#            <div class="modal-footer">#}
+            {#                <h3>Modal Footer</h3>#}
+            {#            </div>#}
+        </div>
 
     </div>
+
+    <div id="my_bought_products_modal" class="modal">
+
+        <div class="modal-content">
+            <div class="modal-header">
+                <span class="close">&times;</span>
+                <h2 align="center">لیست فروش من</h2>
+            </div>
+            <div class="modal-body">
+                {% for product in for_sale %}
+                    <div class="row">
+
+                        <div class="col-md-4">
+                            <a href="/shopping/view_product/{{ product.id }}">مشاهده</a>
+                        </div>
+                        <div class="col-md-4">
+                            {{ product.name }}
+                        </div>
+                        <div class="col-md-4">
+                            <img src="{{ product.picture }}" width="50" height="50">
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+            <div class="modal-footer">
+                <h3>Modal Footer</h3>
+            </div>
+        </div>
+
+    </div>
+
+    <div id="my_sold_products_modal" class="modal">
+
+        <div class="modal-content">
+            <div class="modal-header">
+                <span class="close">&times;</span>
+                <h2 align="center">لیست خرید من</h2>
+            </div>
+            <div class="modal-body">
+
+                {% for product in bought %}
+                    <div class="row">
+
+                        <div class="col-md-4">
+                            <a href="/shopping/view_product/{{ product.id }}">مشاهده</a>
+                        </div>
+                        <div class="col-md-4">
+                            {{ product.name }}
+                        </div>
+                        <div class="col-md-4">
+                            <img src="{{ product.picture }}" width="50" height="50">
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+            <div class="modal-footer">
+                <h3>Modal Footer</h3>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        // Get the modal
+        let all_products_modal = document.getElementById('all_products_modal');
+        let my_bought_products_modal = document.getElementById('my_bought_products_modal');
+        let my_sold_products_modal = document.getElementById('my_sold_products_modal');
+
+        // Get the button that opens the modal
+        let all_btn = document.getElementById("all_products_btn");
+        let bought_btn = document.getElementById("bought_products_btn");
+        let sold_btn = document.getElementById("sold_products_btn");
+
+        // Get the <span> element that closes the modal
+        let span_all_products = document.getElementsByClassName("close")[0];
+
+        // When the user clicks the button, open the modal
+        all_btn.onclick = function () {
+            all_products_modal.style.display = "block";
+        }
+
+        {#bought_btn.onclick = function () {#}
+        {#my_bought_products_modal.style.display = "block";#}
+        {#}#}
+            {##}
+            {#sold_btn.onclick = function () {#}
+            {#    my_sold_products_modal.style.display = "block";#}
+            {#}#}
+                {##}
+                {#// When the user clicks on <span> (x), close the modal#}
+                span_all_products.onclick = function () {
+                    all_products_modal.style.display = "none";
+                }
+
+                // When the user clicks anywhere outside of the modal, close it
+                window.onclick = function (event) {
+                    if (event.target == all_products_modal) {
+                        all_products_modal.style.display = "none";
+                    }
+                }
+    </script>
 
 {% endblock %}

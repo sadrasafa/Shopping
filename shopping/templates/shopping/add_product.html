@@ -5,28 +5,35 @@
 <head><title> فروش محصول</title></head>
 {% load staticfiles %}
 {% block content %}
-<script src="//ajax.googleapis.com/ajax/libs/jquery/1.8/jquery.min.js"></script>
-<script src="/static/location_field/js/jquery.livequery.js"></script>
-<script src="/static/location_field/js/form.js"></script>
-<script src="//maps.google.com/maps/api/js?key=......"></script>
-{#    {{ add_product_form.media }}#}
+
+    {% block user_header %}
+        <div id="panel-header" align="center"><h2>فروش محصول</h2></div>
+    {% endblock %}
+
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8/jquery.min.js"></script>
+    <script src="/static/location_field/js/jquery.livequery.js"></script>
+    <script src="/static/location_field/js/form.js"></script>
+    <script src="//maps.google.com/maps/api/js?key=......"></script>
+    {#    {{ add_product_form.media }}#}
     <div class="container">
 
-        <div class="col-md-4"></div>
+        {#        <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4"></div>#}
+        <div id="search_panel" class="panel panel-info">
 
-        <div id="fill_out_form" class="col-md-4">
-            <section class="login-form">
-                <form class="form-horizontal" novalidate method="post" enctype="multipart/form-data">{% csrf_token %}
-                    <fieldset>
-                        <legend>{{ title }}</legend>
-                        {% for field in add_product_form %}
-                            {% if field.errors %}
-                                <div class="control-group error">
-                                    <div align="center" class="form-actions">
-                                        <label class="control-label">{{ field.label }}</label>
-                                    </div>
-                                    <div class="controls">{{ field }}
-                                        <span class="help-inline">
+            <div id="fill_out_form">
+                <section class="login-form">
+                    <form class="form-horizontal" novalidate method="post"
+                          enctype="multipart/form-data">{% csrf_token %}
+                        <fieldset>
+                            <legend>{{ title }}</legend>
+                            {% for field in add_product_form %}
+                                {% if field.errors %}
+                                    <div class="control-group error">
+                                        <div align="center" class="form-actions">
+                                            <label class="control-label">{{ field.label }}</label>
+                                        </div>
+                                        <div class="controls">{{ field }}
+                                            <span class="help-inline">
                             {% for error in  field.errors %}
                                 <div align="center">
                                 <div id="error">
@@ -34,41 +41,43 @@
                                 </div>
                                 </div> {% endfor %}
                         </span>
+                                        </div>
                                     </div>
+                                {% else %}
+                                    <div class="control-group">
+                                        <div align="center">
+                                            <label class="control-label">{{ field.label }}</label>
+                                        </div>
+                                        <div class="controls">{{ field }}
+                                            {% if field.help_text %}
+                                                <p class="help-inline">
+                                                    <small>
+                                                        {{ field.help_text }}
+                                                    </small>
+                                                </p>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                {% endif %}
+                            {% endfor %}
+                        </fieldset>
+                        <div align="center">
+                            <div id="button_submit" class="form-actions">
+                                <div id="error">
+                                    <button type="submit" value="فروش محصول" class="btn btn-primary">فروش محصول</button>
                                 </div>
-                            {% else %}
-                                <div class="control-group">
-                                    <div align="center">
-                                        <label class="control-label">{{ field.label }}</label>
-                                    </div>
-                                    <div class="controls">{{ field }}
-                                        {% if field.help_text %}
-                                            <p class="help-inline">
-                                                <small>
-                                                    {{ field.help_text }}
-                                                </small>
-                                            </p>
-                                        {% endif %}
-                                    </div>
-                                </div>
-                            {% endif %}
-                        {% endfor %}
-                    </fieldset>
-                    <div align="center">
-                        <div id="button_submit" class="form-actions">
-                            <div id="error">
-                                <button type="submit" value="فروش محصول" class="btn btn-primary">فروش محصول</button>
+                                <ul style="list-style-type:none">
+                                    <div align="center" id="error">{% for error in add_product_form.non_field_errors %}
+                                        </div>
+                                        {# passwords dont match #}
+                                        <li>{{ error }}</li>
+                                    {% endfor %}
+                                </ul>
                             </div>
-                            <ul style="list-style-type:none">
-                                <div align="center" id="error">{% for error in add_product_form.non_field_errors %} </div>
-                                    {# passwords dont match #}
-                                    <li>{{ error }}</li>
-                                {% endfor %}
-                            </ul>
                         </div>
-                    </div>
-                </form>
-            </section>
+                    </form>
+                </section>
+            </div>
         </div>
     </div>
 {% endblock %}

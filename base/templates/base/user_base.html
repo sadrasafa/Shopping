@@ -12,8 +12,10 @@
                 class="caret"></span></a>
             <ul class="dropdown-menu">
                 <li><a href="/shopping/dashboard">داشبورد</a></li>
-                <li><a href="#">لیست فروش من</a></li>
-                <li><a href="#">لیست خرید من</a></li>
+                {#                <li><a href="#">لیست فروش من</a></li>#}
+                {#                <li><a href="#">لیست خرید من</a></li>#}
+                <li><a href="/shopping/add_product">فروش محصول</a></li>
+                <li><a href="/shopping/search_product">جست و جوی محصولات</a></li>
                 <li><a href="shopping/add_product">فروش محصول</a></li>
                 <li><a href="#">تماس با ما</a></li>
                 <li><a href="/shopping/signout">خروج</a></li>
@@ -22,7 +24,15 @@
     </ul>
 {% endblock %}
 
+
+
 {% block content %}
+    <div id="panel-header">
+        {% block user_header %}
+
+        {% endblock %}
+{#        <div id="panel-header" align="center"><h2>اطلاعات کاربر</h2></div>#}
+    </div>
 {% endblock %}
 {##}
 {#            </div>#}

@@ -21,7 +21,18 @@
 
 <nav class="navbar navbar-inverse">
     <div class="container-fluid">
-        <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4" align="center">
+
+        <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3" align="left"><img alt="Brand"
+                                                                             src={% static "pics/shariffff.png" %}  {% comment todo find logo!! %}style="height:6%;display:inline-block;"{% endcomment %}/>
+        </div>
+        <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6" align="center">
+{#            <div class="navbar-header navbar-right">#}
+{#                <div class="row1" align="center">#}
+                    <a href="/shopping/home"><h1 id="system-name" >سامانه‌ی خرید دست‌دوم</h1></a>
+{#                </div>#}
+{#            </div>#}
+        </div>
+        <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3" align="right">
             {#            <ul class="nav navbar-nav">#}
             {#                <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">Page 1 <span#}
             {#                        class="caret"></span></a>#}
@@ -35,18 +46,8 @@
             {% block navbar-buttons %}
             {% endblock %}
         </div>
-        <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4" align="center"><img alt="Brand"
-                                                  src={% static "pics/shariffff.png" %}  {% comment todo find logo!! %}style="height:6%;display:inline-block;"{% endcomment %}/>
-        </div>
-        <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4" align="center">
-            <div class="navbar-header navbar-right">
-                <div class="row1">
 
-                    <a href="/shopping/home"><h3 id="system-name" class="pull-right">سامانه‌ی خرید دست‌دوم</h3></a>
-                </div>
-            </div>
-        </div>
-        <a href="#" class="navbar-right"></a>
+        {#        <a href="#" class="navbar-right"></a>#}
 
     </div>
 </nav>
@@ -105,7 +106,7 @@
         <div style="position: relative; bottom: 0" class="row">
 
             <!--Second column-->
-{#            <div class="col-md-8"></div>#}
+            {#            <div class="col-md-8"></div>#}
             <div id='head-and-foot' class="col-md-12">
                 <h5 class="title">تماس با ما </h5>
                 <div><a id='head-and-foot' href="mailto:graduation@example.com"><span

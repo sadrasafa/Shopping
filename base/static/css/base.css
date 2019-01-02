@@ -40,8 +40,17 @@ p {
     color: #f5f1ef;
 }
 
+#error {
+    color: #ff0b0b;
+}
+
 body {
-    background-image: url(../pics/bg.jpg)
+    /*background-image: url(../pics/bg.jpg)*/
+    background: url(../pics/bg.jpg);
+    background-repeat: no-repeat;
+    background-size: auto;
+    /*background-repeat: no-repeat;*/
+    /*background-size: 500px 400px;*/
     /*background-image: url("https://www.freepik.com/free-vector/purple-and-pink-halftone-background-vector_3601910.htm")*/
 }
 
@@ -64,5 +73,66 @@ h1 {
     color: white;
     text-align: center;
     opacity: 0.25;
+    z-index: -1;
+
+}
+
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    align-content: center;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgb(0, 0, 0);
+    background-color: rgba(0, 0, 0, 0.4);
+}
+
+.modal-content {
+    background-color: #fefefe;
+    margin: 15% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 50%;
+}
+
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.button {
+    padding: 60px 60px;
+}
+
+#dashboard_panel {
+    /*margin: 15% auto;*/
+    /*padding: 20px;*/
+    /*border: 1px solid #888;*/
+    /*width: 50%;*/
+    height: 50%;
+    overflow: auto; /* Enable scroll if needed */
+
+}
+
+#search_panel {
+    margin: 5% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 50%;
+    height: 50%;
+    overflow: auto; /* Enable scroll if needed */
 
 }
