@@ -11,26 +11,29 @@
 {# This page should show the appropriate page to the user, using the error type and error message#}
 {% block content %}
     {% if type_404 %}
-    <div align="center"><img src="{% static "pics/404image.png" %}"></div>
-{#        error reason: 404#}
+        <div align="center"><img src="{% static "pics/404image.png" %}" width="800"></div>
+        {#        error reason: 404#}
     {% endif %}
     {% if type_already_sold %}
-{#        error reason: trying to buy product that is already sold#}
+        {#        error reason: trying to buy product that is already sold#}
     {% endif %}
     {% if type_not_authenticated %}
-{#    error reason: user is not authenticated#}
+        {#    error reason: user is not authenticated#}
     {% endif %}
     {% if type_product_not_found %}
-{#    error reason: trying to access a product which does not exist#}
+        {#    error reason: trying to access a product which does not exist#}
     {% endif %}
     <div id="fourerror" class="container" align="center">
-        {{ error_message }}
-        <button type="submit" onclick="goBack()" value="بازگشت" class="btn btn-primary">بازگشت</button>
+        <div>
+            <h2>{{ error_message }}</h2>
+        </div>
+        <div>
+            <button type="submit" onclick="goBack()" value="بازگشت" class="btn btn-primary">بازگشت</button>
             <script>
                 function goBack() {
                     window.history.back();
                 }
             </script>
-
+        </div>
     </div>
 {% endblock %}
