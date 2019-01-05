@@ -166,10 +166,14 @@ div.scrollmenu a:hover {
     display: inline-block;
 }
 
-.lala {
-    overflow: auto;
+#product_panel {
+    margin: 5% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 500px;
+    height: 160px;
+    overflow: auto; /* Enable scroll if needed */
 }
-
 /*.item-class {*/
     /*float*/
 /*}*/
