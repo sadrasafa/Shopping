@@ -86,7 +86,7 @@
                         <div class="col-md-2 col-xs-2" style="float: right;">
                             <div style="margin-top: 30px" class="row">
                             <div>
-                                <img src="{{ product.picture }}" width="50" height="50">
+                                <img src="/{{ product.picture.url|slice:"5:" }}" width="50" height="50">
                             </div>
                             <div>
 
@@ -108,7 +108,7 @@
                     {% for product in for_sale %}
                         <div style="margin-top: 30px" class="row">
                             <div>
-                                <img src="{{ product.picture }}" width="45" height="45">
+                                <img src="/{{ product.picture.url|slice:"5:" }}" width="45" height="45">
                             </div>
                             <div>
                                 <a href="/shopping/view_product/{{ product.id }}">{{ product.name }}</a>
@@ -140,7 +140,7 @@
                             {{ product.name }}
                         </div>
                         <div class="col-md-4">
-                            <img src="{{ product.picture }}" width="50" height="50">
+                            <img src="/{{ product.picture.url|slice:"5:" }}" width="50" height="50">
                         </div>
                     </div>
                 {% endfor %}
