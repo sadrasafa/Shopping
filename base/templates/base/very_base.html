@@ -23,7 +23,7 @@
     <div class="container-fluid">
 
         <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3" align="left"><img alt="Brand"
-                                                                             src={% static "pics/shariffff.png" %}  {% comment todo find logo!! %}style="height:6%;display:inline-block;"{% endcomment %}/>
+                                                                             src="../../static/pics/logo.png"; width="50"; height="50" />
         </div>
         <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6" align="center">
 {#            <div class="navbar-header navbar-right">#}
@@ -101,24 +101,24 @@
 {#    </footer>#}
 {#</div>#}
 
-<div class="special-footer">
+<div class="special-footer" style="max-height: 100px">
     <div class="container-fluid text-center">
-        <div style="position: relative; bottom: 0" class="row">
+        <div style="position: relative; top:10px; bottom: 0" class="row">
 
             <!--Second column-->
             {#            <div class="col-md-8"></div>#}
-            <div id='head-and-foot' class="col-md-12">
-                <h5 class="title">تماس با ما </h5>
-                <div><a id='head-and-foot' href="mailto:graduation@example.com"><span
+{#            <div id='head-and-foot' class="col-md-12">#}
+                <h5 class="title col-md-2" style="float: right;">تماس با ما </h5>
+                <div class="col-md-2" style="float: right;"><a id='head-and-foot' href="mailto:graduation@example.com"><span
                         class="oi oi-envelope-closed" title="envelope closed" aria-hidden="true"
                         style="margin-left:1%;"></span>
                     به ما ایمیل بزنید </a>
                 </div>
-                <div><a id='head-and-foot' href="#!"><span id='head-and-foot' class="oi oi-comment-square"
+                <div class="col-md-2" style="float: right;"><a id='head-and-foot' href="#!"><span id='head-and-foot' class="oi oi-comment-square"
                                                            aria-hidden="true"
                                                            style="margin-left:1%;"></span>سوالات رایج را ببینید</a>
                 </div>
-                <div><span id='head-and-foot' class="oi oi-envelope-open" title="star"
+                <div class="col-md-2" style="float: right"><span id='head-and-foot' class="oi oi-envelope-open" title="star"
                            aria-hidden="true"></span>
                     <p id="head-and-foot"> صندوق پستی: ۱۱۱۵۵-۱۱۳۶۵</p>
                 </div>
@@ -128,7 +128,7 @@
                     <p id="head-and-foot">تهران،خیابان آزادی،دانشگاه صنعتی شریف.</p>
                 </div>
 
-            </div>
+{#            </div>#}
             <!--/.Second column-->
         </div>
     </div>
