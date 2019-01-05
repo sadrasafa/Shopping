@@ -180,6 +180,7 @@ def search_product(request):
             for r in results['hits']['hits']:
                 to_add = r['_source']['product']
                 to_add['id'] = r['_id']
+                to_add['picture'] = Product.objects.get(id=to_add['id']).picture
                 res.append(to_add)
             return render(request, 'shopping/search_results.html', {'results': res})
         else:

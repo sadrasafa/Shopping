@@ -166,7 +166,7 @@ class SearchProductForm(forms.ModelForm):
                                                                   'required': 'True',
                                                                   'max_length': 30,
                                                                   'render_value': 'False',
-                                                                  'placeholder': 'حداکثر',
+                                                                  'placeholder': 'حداکثر فاصله',
                                                                   'style': 'text-align:right',
                                                                   'direction': 'rtl'}
                                                            ),
@@ -184,7 +184,7 @@ class SearchProductForm(forms.ModelForm):
                                                  'style': 'text-align:right',
                                                  'direction': 'rtl'}),
             'price': forms.TextInput(attrs={'class': 'form-control',
-                                                'placeholder': 'قیمت به ریال',
+                                                'placeholder': 'سقف قیمت به ریال',
                                                 'style': 'text-align:right',
                                                 'direction': 'rtl'}),
             'description': forms.TextInput(attrs={'class': 'form-control',
@@ -198,7 +198,7 @@ class SearchProductForm(forms.ModelForm):
         }
         labels = {
             'name': _('عنوان محصول'),
-            'price': _('قیمت'),
+            'price': _('سقف قیمت'),
             'description': _('توضیحات'),
             'city': _('شهر'),
             'location': _('مکان')
