@@ -10,10 +10,6 @@
     {% block user_header %}
         <div id="panel-header" align="center"><h2>اطلاعات کاربر</h2></div>
     {% endblock %}
-    {#    <div id="panel-header">#}
-    {#        <div id="panel-header" align="center"><h2>اطلاعات کاربر</h2></div>#}
-    {#    </div>#}
-    {#    IF LOGGED IN USING USING GOOGLE, THE FOLLOWING CAN BE USED#}
 
     {% if messages %}
         <ul class="alert messages alert-success alert-dismissible fade show" role="alert">
@@ -77,132 +73,53 @@
             </div>
 
         </div>
-        {#        <div class="col-md-1">#}
-        {#            <p>لیست فروش من</p>#}
-        {#        </div>#}
-        {#        {% for product in bought %}#}
-        {#            <div class="col-md-1">#}
-        {#                <div>#}
-        {#                    <a href="/shopping/view_product/{{ product.id }}">مشاهده</a>#}
-        {#                </div>#}
-        {#                <div>#}
-        {#                    {{ product.name }}#}
-        {#                </div>#}
-        {#                <div>#}
-        {#                    <img src="{{ product.picture }}" width="50" height="50">#}
-        {#                </div>#}
-        {#            </div>#}
-        {#        {% endfor %}#}
-        {#        <div class="col-md-1">#}
-        {#            <p>لیست فروش من</p>#}
-        {#        </div>#}
-        {#        {% for product in bought %}#}
-        {#            <div class="col-md-1">#}
-        {#                <div>#}
-        {#                    <a href="/shopping/view_product/{{ product.id }}">مشاهده</a>#}
-        {#                </div>#}
-        {#                <div>#}
-        {#                    {{ product.name }}#}
-        {#                </div>#}
-        {#                <div>#}
-        {#                    <img src="{{ product.picture }}" width="50" height="50">#}
-        {#                </div>#}
-        {#            </div>#}
-        {#        {% endfor %}#}
-        {#        <div class="row">#}
-        {#        <div>#}
-        {#        </div>#}
-        {#        <div>#}
-        {#            <div class="row main">#}
-        {#                <div class="col-md-1">#}
-        {#                    <p>لیست فروش من</p>#}
-        {#                </div>#}
-        {#                {% for product in bought %}#}
-        {#                    <div class="col-md-1">#}
-        {#                        <div>#}
-        {#                            <a href="/shopping/view_product/{{ product.id }}">مشاهده</a>#}
-        {#                        </div>#}
-        {#                        <div>#}
-        {#                            {{ product.name }}#}
-        {#                        </div>#}
-        {#                        <div>#}
-        {#                            <img src="{{ product.picture }}" width="50" height="50">#}
-        {#                        </div>#}
-        {#                    </div>#}
-        {#                {% endfor %}#}
-        {#            </div>#}
-        {#    </div>#}
-        {#        </div>#}
-        {##}
-        {#        <div>#}
-        {#            <div class="row" align="center">#}
-        {#                <div class="col-md-1">#}
-        {#                    <p>لسیت خرید من</p>#}
-        {#                </div>#}
-        {#                {% for product in bought %}#}
-        {#                    <div class="col-md-1">#}
-        {#                        <div>#}
-        {#                            <a href="/shopping/view_product/{{ product.id }}">مشاهده</a>#}
-        {#                        </div>#}
-        {#                        <div>#}
-        {#                            {{ product.name }}#}
-        {#                        </div>#}
-        {#                        <div>#}
-        {#                            <img src="{{ product.picture }}" width="50" height="50">#}
-        {#                        </div>#}
-        {#                    </div>#}
-        {#                {% endfor %}#}
-        {#            </div>#}
-        {#        </div>#}
-        {#        </div>#}
     </div>
-    <div class="row" style="position:absolute; margin-top: 290px">
-        <div align="left" class="row" style="float: right">
-            <div class="col-md-4 col-xs-3" style="float: right">
-                <p>لیست خرید من</p>
-            </div>
-            {% for product in bought %}
-                <div class="col-md-2 col-xs-2" style="float: right;">
-                    <div style="margin-right: 40px; margin-left: 50px">
-                        <img src="{{ product.picture }}" width="50" height="50">
-                    </div>
 
-                    <div style="font-size: smaller; align-content: center; justify-content: center; margin-left: auto; margin-left: auto">
-                        {{ product.name }}
-                    </div>
-                    <div>
-                        <a href="/shopping/view_product/{{ product.id }}">مشاهده</a>
-                    </div>
+    <div style="position:absolute; margin-top: 320px; margin-right: 30px;">
 
-                </div>
-            {% endfor %}
-        </div>
-
-        <div align="center" class="col-md-6">
-            <div>
-                <p>لیست فروش من</p>
-            </div>
+        <div class="row">
             <div class="panel-group col-md-12 col-sm-12 col-lg-12">
+                <div id="product_panel" class="panel panel-info col-md-9 col-sm-12">
+                    <div class="panel-heading" style="width: 100%; position: absolute; top: 0px;">لیست خرید من</div>
 
-                {% for product in for_sale %}
-                    <div class="row">
-                        <div>
-                            <a href="/shopping/view_product/{{ product.id }}">مشاهده</a>
+                    {% for product in bought %}
+                        <div class="col-md-2 col-xs-2" style="float: right;">
+                            <div style="margin-top: 30px" class="row">
+                            <div>
+                                <img src="{{ product.picture }}" width="50" height="50">
+                            </div>
+                            <div>
+
+                                <a href="/shopping/view_product/{{ product.id }}">{{ product.name }}</a>
+                            </div>
+
                         </div>
-                        <div>
-                            {{ product.name }}
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+
+        <div style="margin-top: 80px" class="row">
+
+            <div class="panel-group col-md-12 col-sm-12 col-lg-12">
+                <div id="product_panel" class="panel panel-info col-md-9 col-sm-12">
+                    <div class="panel-heading" style="width: 100%; position: absolute; top: 0px;">لیست فروش من</div>
+
+                    {% for product in for_sale %}
+                        <div style="margin-top: 30px" class="row">
+                            <div>
+                                <img src="{{ product.picture }}" width="45" height="45">
+                            </div>
+                            <div>
+                                <a href="/shopping/view_product/{{ product.id }}">{{ product.name }}</a>
+                            </div>
+
                         </div>
-                        <div>
-                            <img src="{{ product.picture }}" width="50" height="50">
-                        </div>
-                    </div>
-                {% endfor %}
+                    {% endfor %}
+                </div>
             </div>
         </div>
     </div>
-
-
-
 
 
     <div id="all_products_modal" class="modal">
@@ -267,7 +184,6 @@
 
 
     {#    <div class="scrollmenu">#}
-
 
 
     {#    <div id="my_sold_products_modal" class="modal">#}
