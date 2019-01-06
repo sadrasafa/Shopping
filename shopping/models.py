@@ -33,7 +33,7 @@ class Product(models.Model):
     seller = models.ForeignKey(ShoppingUser, on_delete=models.SET_NULL, related_name='buyer', null=True)
     buyer = models.ForeignKey(ShoppingUser, on_delete=models.SET_NULL, related_name='seller', null=True)
     status = models.CharField(max_length=30)  # 'for sale' or 'sold'
-    picture = models.FileField(upload_to='pics/', null=True)
+    picture = models.FileField(upload_to='base/static', null=True)
     city = models.CharField(max_length=255, null=True)
     location = PlainLocationField(based_fields=['city'], zoom=7, null=True)
     latitude = models.FloatField(null=True)

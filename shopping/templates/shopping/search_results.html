@@ -14,10 +14,10 @@
 
     {% for result in results %}
         <div>
-            <a href="/shopping/view_product/{{ result.id }}">{{ result.name }}</a>
+            <a href="/shopping/view_product/{{ result.id }} ">{{ result.name }}</a>
         </div>
         <div>
-            <img src=/{{ product.picture.url|slice:"5:" }}>
+            <img src="/{{ result.picture.url|slice:"5:" }}" width="50" height="50">
 {#            <img src="/static/products/k_G9f4MvE.png" style="width: 50px; height: 50px;">#}
         </div>
         <div>
