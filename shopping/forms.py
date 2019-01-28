@@ -115,22 +115,22 @@ class AddProductForm(forms.ModelForm):
         fields = ['name', 'price', 'description', 'picture', 'city', 'location']
         widgets = {
             'name': forms.TextInput(attrs={'class': 'form-control',
-                                                 'placeholder': 'عنوان محصول',
-                                                 'style': 'text-align:right',
-                                                 'direction': 'rtl'}),
+                                           'placeholder': 'عنوان محصول',
+                                           'style': 'text-align:right',
+                                           'direction': 'rtl'}),
             'price': forms.TextInput(attrs={'class': 'form-control',
-                                                'placeholder': 'قیمت به ریال',
-                                                'style': 'text-align:right',
-                                                'direction': 'rtl'}),
-            'description': forms.TextInput(attrs={'class': 'form-control',
-                                            'placeholder': 'توضیحات',
+                                            'placeholder': 'قیمت به ریال',
                                             'style': 'text-align:right',
+                                            'direction': 'rtl'}),
+            'description': forms.Textarea(attrs={'class': 'form-control',
+                                                  'placeholder': 'توضیحات',
+                                                  'style': 'text-align:right; height:90px',
                                                   'direction': 'rtl'}),
             'picture': forms.ClearableFileInput(attrs={'class': 'form-control', 'placeholder': 'تصویر',
-                                                        'style': 'text-align:right'}),
+                                                       'style': 'text-align:right'}),
             'city': forms.TextInput(attrs={'class': 'form-control',
-                                            'placeholder': 'شهر',
-                                            'style': 'text-align:right',
+                                           'placeholder': 'شهر',
+                                           'style': 'text-align:right',
                                            'direction': 'rtl'}),
         }
         labels = {
@@ -163,37 +163,37 @@ class AddProductForm(forms.ModelForm):
 
 class SearchProductForm(forms.ModelForm):
     distance = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control',
-                                                                  'required': 'True',
-                                                                  'max_length': 30,
-                                                                  'render_value': 'False',
-                                                                  'placeholder': 'حداکثر فاصله',
-                                                                  'style': 'text-align:right',
-                                                                  'direction': 'rtl'}
-                                                           ),
-                                label=_("حداکثر فاصله"),
-                                error_messages={
-                                    'required': _('لطفا حداکثر فاصله را وارد کنید')
-                                })
+                                                             'required': 'True',
+                                                             'max_length': 30,
+                                                             'render_value': 'False',
+                                                             'placeholder': 'حداکثر فاصله',
+                                                             'style': 'text-align:right',
+                                                             'direction': 'rtl'}
+                                                      ),
+                               label=_("حداکثر فاصله"),
+                               error_messages={
+                                   'required': _('لطفا حداکثر فاصله را وارد کنید')
+                               })
 
     class Meta:
         model = Product
         fields = ['name', 'price', 'description', 'city', 'location']
         widgets = {
             'name': forms.TextInput(attrs={'class': 'form-control',
-                                                 'placeholder': 'عنوان محصول',
-                                                 'style': 'text-align:right',
-                                                 'direction': 'rtl'}),
+                                           'placeholder': 'عنوان محصول',
+                                           'style': 'text-align:right',
+                                           'direction': 'rtl'}),
             'price': forms.TextInput(attrs={'class': 'form-control',
-                                                'placeholder': 'سقف قیمت به ریال',
-                                                'style': 'text-align:right',
-                                                'direction': 'rtl'}),
-            'description': forms.TextInput(attrs={'class': 'form-control',
-                                            'placeholder': 'توضیحات',
+                                            'placeholder': 'سقف قیمت به ریال',
                                             'style': 'text-align:right',
+                                            'direction': 'rtl'}),
+            'description': forms.Textarea(attrs={'class': 'form-control',
+                                                  'placeholder': 'توضیحات',
+                                                  'style': 'text-align:right; height: 90px',
                                                   'direction': 'rtl'}),
             'city': forms.TextInput(attrs={'class': 'form-control',
-                                            'placeholder': 'شهر',
-                                            'style': 'text-align:right',
+                                           'placeholder': 'شهر',
+                                           'style': 'text-align:right',
                                            'direction': 'rtl'}),
         }
         labels = {
