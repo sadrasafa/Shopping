@@ -29,19 +29,20 @@
                         {% for field in add_product_form %}
                             {% if field.errors %}
                                 <div class="control-group error">
-                                    <div align="center" class="form-actions">
-                                        <label class="control-label">{{ field.label }}</label>
-                                    </div>
-                                    <div class="controls">{{ field }}
+                                    <div class="controls col-md-10">{{ field }}
                                         <span class="help-inline">
-                            {% for error in  field.errors %}
-                                <div align="center">
-                                <div id="error">
-                                    {{ error }}
-                                </div>
-                                </div> {% endfor %}
-                        </span>
+                                            {% for error in  field.errors %}
+                                                <div align="center">
+                                            <div id="error">
+                                                {{ error }}
+                                            </div>
+                                            </div> {% endfor %}
+                                        </span>
                                     </div>
+                                    <div align="center" class="form-actions">
+                                        <label class="control-label  col-md-2">{{ field.label }}</label>
+                                    </div>
+
                                 </div>
                             {% else %}
                                 <div class="control-group row" style="margin-bottom: 20px">

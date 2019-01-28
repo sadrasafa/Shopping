@@ -112,10 +112,22 @@ class UserSignupForm(forms.ModelForm):
 
 class AddProductForm(forms.ModelForm):
     CHOICES = (('Option ۲', 'Option ۱۰'), ('Option ۵', 'Option 2'),)
-    pox = forms.ChoiceField(widget=forms.Select, choices=CHOICES, label='آدرس')
+    CITIES = (('تبریز', 'تبریز'),
+              ('ارومیه', 'ارومیه'),
+              ('تهران', 'تهران'),
+              ('شیراز', 'شیراز'),
+              ('اصفهان', 'اصفهان'),
+              ('مشهد', 'مشهد'),
+              ('یزد', 'یزد'),
+              ('البرز', 'البرز'),
+              ('کرمان', 'کرمان'),
+              ('لاهیجان', 'لاهیجان'))
+    address = forms.ChoiceField(widget=forms.Select, choices=CHOICES, label='آدرس')
+    city = forms.ChoiceField(widget=forms.Select, choices=CITIES, label='شهر')
+
     class Meta:
         model = Product
-        fields = ['name', 'price', 'description', 'picture', 'city', 'location', 'pox']
+        fields = ['name', 'price', 'description', 'picture', 'city', 'location', 'address']
         widgets = {
             'name': forms.TextInput(attrs={'class': 'form-control',
                                            'placeholder': 'عنوان محصول',
@@ -132,10 +144,10 @@ class AddProductForm(forms.ModelForm):
             'picture': forms.ClearableFileInput(attrs={'class': 'form-control', 'placeholder': 'تصویر',
                                                        'style': 'text-align:right'}),
 
-            'city': forms.Select(attrs={'class': 'form-control',
-                                        'placeholder': 'شهر',
-                                        'style': 'text-align:right',
-                                        'direction': 'rtl',}),
+            # 'city': forms.Select(attrs={'class': 'form-control',
+            #                             'placeholder': 'dfadlflkdfjalk',
+            #                             'style': 'text-align:right',
+            #                             'direction': 'rtl'}),
 
             # 'city': forms.ChoiceField(widget=forms.Select, choices=CHOICES)
 
