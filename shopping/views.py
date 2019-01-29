@@ -1,12 +1,12 @@
-from django.shortcuts import render
-from .forms import UserSignupForm, AddProductForm, SearchProductForm
-from .models import ShoppingUser, User, Product
-from django.http import HttpResponse
-from django.http.response import HttpResponseRedirect
 from django.contrib.auth import authenticate, login, logout
 from django.core.exceptions import ObjectDoesNotExist
+from django.http.response import HttpResponseRedirect
+from django.shortcuts import render
 from elasticsearch import Elasticsearch
-import sys
+
+from .forms import UserSignupForm, AddProductForm, SearchProductForm
+from .models import ShoppingUser, User, Product
+
 # Create your views here.
 
 error_not_authenticated = "ابتدا وارد شوید."
@@ -16,8 +16,12 @@ error_product_not_found = "چنین محصولی وجود ندارد"
 
 shopping_index = 'shopping_index'
 
+
 def home(request):
-    return render(request, 'shopping/home.html')
+    for_sale = Product.objects.filter(status='for sale')
+
+    return render(request, 'shopping/home.html',
+                  {'for_sale': for_sale})
 
 
 def error404(request):
@@ -31,8 +35,9 @@ def signup(request):
             django_user = User.objects.create_user(username=form.cleaned_data['username'],
                                                    password=form.cleaned_data['password1'], )
             django_user.save()
-            shopping_user = ShoppingUser(first_name=form.cleaned_data['first_name'], last_name=form.cleaned_data['last_name'],
-                                         email=form.cleaned_data['email'],)
+            shopping_user = ShoppingUser(first_name=form.cleaned_data['first_name'],
+                                         last_name=form.cleaned_data['last_name'],
+                                         email=form.cleaned_data['email'], )
 
             shopping_user.user = django_user
             shopping_user.save()
@@ -106,14 +111,14 @@ def add_product(request):
             es.create(index=shopping_index, doc_type='product', id=product.id,
                       body={'product': {'name': product.name, 'price': product.price,
                                         'description': product.description, 'location': {'lat': lat,
-                                        'lon': lon}}})
+                                                                                         'lon': lon}}})
 
             return HttpResponseRedirect('dashboard')
         else:
 
             return render(request, 'shopping/add_product.html', {'add_product_form': form})
     else:
-        return render(request, 'shopping/add_product.html', {'add_product_form': AddProductForm(label_suffix='')},)
+        return render(request, 'shopping/add_product.html', {'add_product_form': AddProductForm(label_suffix='')}, )
 
 
 def view_product(request, id):
@@ -159,23 +164,26 @@ def search_product(request):
             w_price = 1
             es = Elasticsearch()
             results = es.search(index='shopping_index', doc_type='product',
-                      body={'query':
-                                {'bool':
-                                     {'should':
-                                          [{'match':
-                                                {'product.name': {'query': form.cleaned_data['name'], 'boost': w_name}}},
-                                           {'match':
-                                                {'product.description': {'query': form.cleaned_data['description'], 'boost': w_desc}}},
-                                           {'range':
-                                                {'product.price': {'lte': form.cleaned_data['price'],
-                                                                   'boost': w_price}}},
-                                           ],
-                                      'filter': {'geo_distance': {'distance': form.cleaned_data['distance'],
-                                                                  'product.location': {
-                                                                      'lat': lat,
-                                                                      'lon': lon
-                                                                  }}}}
-                                 }})
+                                body={'query':
+                                          {'bool':
+                                               {'should':
+                                                    [{'match':
+                                                          {'product.name': {'query': form.cleaned_data['name'],
+                                                                            'boost': w_name}}},
+                                                     {'match':
+                                                         {'product.description': {
+                                                             'query': form.cleaned_data['description'],
+                                                             'boost': w_desc}}},
+                                                     {'range':
+                                                          {'product.price': {'lte': form.cleaned_data['price'],
+                                                                             'boost': w_price}}},
+                                                     ],
+                                                'filter': {'geo_distance': {'distance': form.cleaned_data['distance'],
+                                                                            'product.location': {
+                                                                                'lat': lat,
+                                                                                'lon': lon
+                                                                            }}}}
+                                           }})
             res = []
             for r in results['hits']['hits']:
                 to_add = r['_source']['product']
@@ -187,8 +195,7 @@ def search_product(request):
 
             return render(request, 'shopping/search_product.html', {'search_product_form': form})
     else:
-        return render(request, 'shopping/search_product.html', {'search_product_form': SearchProductForm(label_suffix='')},)
+        return render(request, 'shopping/search_product.html',
+                      {'search_product_form': SearchProductForm(label_suffix='')}, )
 
-
-
-#TODO search products
+# TODO search products

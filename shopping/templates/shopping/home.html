@@ -26,10 +26,41 @@
 {#        </div>#}
 {#    </div>#}
 {% block content %}
-    <h1>خوش آمدید!</h1>
-    <p>
-        آیا می‌خواهید وسایل خود را بفروشید؟؟ یا آیا می‌خواهید جیزی بخرید ولی زیادی گرونه؟‌ در سامانه‌ی تاناکورا ثبت نام
-        کنید و به زودی بفروشید یا بخرید!
-    </p>
+    <div style="margin-left: 30px">
+
+        <h1>خوش آمدید!</h1>
+        <p>
+            آیا می‌خواهید وسایل خود را بفروشید؟؟ یا آیا می‌خواهید جیزی بخرید ولی زیادی گرونه؟‌ در سامانه‌ی تاناکورا ثبت
+            نام
+            کنید و به زودی بفروشید یا بخرید!
+        </p>
+        <div style="margin-top: 80px" class="row">
+
+            {#        <div class="panel-group col-md-12 col-sm-12 col-lg-12">#}
+
+            {% for product in for_sale %}
+                <div id="product_panel" style="height: 300px; width: 300px; margin-left: 90px" class="panel panel-info col-md-9 col-sm-12">
+                    <div class="panel-heading"
+                         style="width: 100%; position: absolute; left: 0px; top: 0px;" align="center"><a
+                            href="/shopping/view_product/{{ product.id }}">{{ product.name }}</a></div>
+                    <div style="margin-top: 30px">
+                        <div align="center">
+                            <img src="/{{ product.picture.url|slice:"5:" }}" width="90" height="90">
+                        </div>
+                        <div align="center">
+                            <p>مکان: {{ product.city }}</p>
+                            <a href="/shopping/view_product/{{ product.id }}">{{ product.name }}</a>
+                        </div>
+
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+        {#        </div>#}
+    </div>
 
 {% endblock %}
+
+
+{#curl -X PUT "localhost:9200/paper_index/_settings" -H 'Content-Type: application/json' -d' {"index.blocks.read_only_allow_delete": null}'#}
+{#curl -X PUT "localhost:9200/_cluster/settings" -H 'Content-Type: application/json' -d'{"persistent" : {"cluster.routing.allocation.disk.watermark.flood_stage": "99%"}}'#}
