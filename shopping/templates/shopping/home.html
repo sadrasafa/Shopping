@@ -1,21 +1,7 @@
-{% extends 'base/very_base.html' %}
+{% extends template %}
+
 <head><title>خانه</title></head>
 
-
-{% block navbar-buttons %}
-    <ul class="nav navbar-nav">
-        <li class="nav-item active">
-            <a class="nav-link" href="/shopping/signin">ورود<span class="sr-only">(current)</span></a>
-        </li>
-        <li class="nav-item active">
-            <a class="nav-link" href="/shopping/signup">ثبت نام<span class="sr-only">(current)</span></a>
-        </li>
-        <li class="nav-item active">
-            <a class="nav-link" href="/accounts/google/login/?process=login">ورود با گوگل<span
-                    class="sr-only">(current)</span></a>
-        </li>
-    </ul>
-{% endblock %}
 {#    <div class="container" align="center">#}
 {#        <div class="panel-body">#}
 {#            Hello Friend#}
@@ -39,17 +25,20 @@
             {#        <div class="panel-group col-md-12 col-sm-12 col-lg-12">#}
 
             {% for product in for_sale %}
-                <div id="product_panel" style="height: 300px; width: 300px; margin-left: 90px" class="panel panel-info col-md-9 col-sm-12">
+                <div id="product_panel" style="height: 450px; width: 300px; margin-left: 90px"
+                     class="panel panel-success col-md-9 col-sm-12">
                     <div class="panel-heading"
                          style="width: 100%; position: absolute; left: 0px; top: 0px;" align="center"><a
                             href="/shopping/view_product/{{ product.id }}">{{ product.name }}</a></div>
                     <div style="margin-top: 30px">
                         <div align="center">
-                            <img src="/{{ product.picture.url|slice:"5:" }}" width="90" height="90">
+                            <img src="/{{ product.picture.url|slice:"5:" }}" width="200" height="200">
                         </div>
                         <div align="center">
-                            <p>مکان: {{ product.city }}</p>
-                            <a href="/shopping/view_product/{{ product.id }}">{{ product.name }}</a>
+                            <p style="color: #126b15; margin-top: 10px;">مکان: {{ product.city }}</p>
+                            <p style="color: #126b15;">قیمت: {{ product.price }} ریال</p>
+                            <p style="color: #126b15;">توضیحات: {{ product.description }}</p>
+                            {#                            <a href="/shopping/view_product/{{ product.id }}">{{ product.name }}</a>#}
                         </div>
 
                     </div>

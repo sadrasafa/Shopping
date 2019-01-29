@@ -20,8 +20,15 @@ shopping_index = 'shopping_index'
 def home(request):
     for_sale = Product.objects.filter(status='for sale')
 
+    template = ''
+    if not request.user.is_authenticated:
+        template = 'base/not_user_base.html'
+    else:
+        template = 'base/user_base.html'
+
     return render(request, 'shopping/home.html',
-                  {'for_sale': for_sale})
+                  {'for_sale': for_sale,
+                   'template': template})
 
 
 def error404(request):
