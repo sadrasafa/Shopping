@@ -1,7 +1,7 @@
 from django import forms
 from django.utils.translation import ugettext_lazy as _
 
-from .models import ShoppingUser, Product
+from .models import ShoppingUser, Product, MyLocation
 
 
 class UserSignupForm(forms.ModelForm):
@@ -110,8 +110,7 @@ class UserSignupForm(forms.ModelForm):
         return cleaned_data
 
 
-class AddProductForm(forms.ModelForm):
-    CHOICES = (('Option ۲', 'Option ۱۰'), ('Option ۵', 'Option 2'),)
+class AddLocationForm(forms.ModelForm):
     CITIES = (('تبریز', 'تبریز'),
               ('ارومیه', 'ارومیه'),
               ('تهران', 'تهران'),
@@ -122,28 +121,16 @@ class AddProductForm(forms.ModelForm):
               ('البرز', 'البرز'),
               ('کرمان', 'کرمان'),
               ('لاهیجان', 'لاهیجان'))
-    address = forms.ChoiceField(widget=forms.Select, choices=CHOICES, label='آدرس')
     city = forms.ChoiceField(widget=forms.Select, choices=CITIES, label='شهر')
 
     class Meta:
-        model = Product
-        fields = ['name', 'price', 'description', 'picture', 'city', 'location', 'address']
+        model = MyLocation
+        fields = ['name', 'city', 'location']
         widgets = {
             'name': forms.TextInput(attrs={'class': 'form-control',
-                                           'placeholder': 'عنوان محصول',
+                                           'placeholder': 'عنوان آدرس',
                                            'style': 'text-align:right',
                                            'direction': 'rtl'}),
-            'price': forms.TextInput(attrs={'class': 'form-control',
-                                            'placeholder': 'قیمت به ریال',
-                                            'style': 'text-align:right',
-                                            'direction': 'rtl'}),
-            'description': forms.Textarea(attrs={'class': 'form-control',
-                                                 'placeholder': 'توضیحات',
-                                                 'style': 'text-align:right; height:90px',
-                                                 'direction': 'rtl'}),
-            'picture': forms.ClearableFileInput(attrs={'class': 'form-control', 'placeholder': 'تصویر',
-                                                       'style': 'text-align:right'}),
-
             # 'city': forms.Select(attrs={'class': 'form-control',
             #                             'placeholder': 'dfadlflkdfjalk',
             #                             'style': 'text-align:right',
@@ -177,6 +164,76 @@ class AddProductForm(forms.ModelForm):
             'city': {
                 'required': _('لطفا شهر خود را وارد کنید')
             }
+        }
+
+
+class AddProductForm(forms.ModelForm):
+    # CHOICES = (('Option ۲', 'Option ۱۰'), ('Option ۵', 'Option 2'),)
+    # CITIES = (('تبریز', 'تبریز'),
+    #           ('ارومیه', 'ارومیه'),
+    #           ('تهران', 'تهران'),
+    #           ('شیراز', 'شیراز'),
+    #           ('اصفهان', 'اصفهان'),
+    #           ('مشهد', 'مشهد'),
+    #           ('یزد', 'یزد'),
+    #           ('البرز', 'البرز'),
+    #           ('کرمان', 'کرمان'),
+    #           ('لاهیجان', 'لاهیجان'))
+    # address = forms.ChoiceField(widget=forms.Select, choices=CHOICES, label='آدرس')
+    # city = forms.ChoiceField(widget=forms.Select, choices=CITIES, label='شهر')
+
+    class Meta:
+        model = Product
+        fields = ['name', 'price', 'description', 'picture']
+        widgets = {
+            'name': forms.TextInput(attrs={'class': 'form-control',
+                                           'placeholder': 'عنوان محصول',
+                                           'style': 'text-align:right',
+                                           'direction': 'rtl'}),
+            'price': forms.TextInput(attrs={'class': 'form-control',
+                                            'placeholder': 'قیمت به ریال',
+                                            'style': 'text-align:right',
+                                            'direction': 'rtl'}),
+            'description': forms.Textarea(attrs={'class': 'form-control',
+                                                 'placeholder': 'توضیحات',
+                                                 'style': 'text-align:right; height:90px',
+                                                 'direction': 'rtl'}),
+            'picture': forms.ClearableFileInput(attrs={'class': 'form-control', 'placeholder': 'تصویر',
+                                                       'style': 'text-align:right'}),
+
+            # 'city': forms.Select(attrs={'class': 'form-control',
+            #                             'placeholder': 'dfadlflkdfjalk',
+            #                             'style': 'text-align:right',
+            #                             'direction': 'rtl'}),
+
+            # 'city': forms.ChoiceField(widget=forms.Select, choices=CHOICES)
+
+        }
+        labels = {
+            'name': _('عنوان محصول'),
+            'price': _('قیمت'),
+            'description': _('توضیحات'),
+            'picture': _('تصویر محصول'),
+            # 'city': _('شهر'),
+            # 'location': _('مکان')
+        }
+        error_messages = {
+            'name': {
+                'required': _('لطفا عنوان محصول را وارد کنید')
+            },
+            'price': {
+                'required': _('لطفا قیمت محصول را وارد کنید'),
+                'invalid': _('لطف عدد وارد کنید')
+            },
+            'description': {
+                'required': _('لطفا توضیحات محصول را وارد کنید'),
+            },
+            'picture': {
+                'required': _('لطفا تصویر محصول را بارگذاری کنید')
+            },
+            # 'city': {
+            #     'required': _('لطفا شهر خود را وارد کنید')
+            # }
         }
 
 

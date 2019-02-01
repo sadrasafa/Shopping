@@ -4,8 +4,8 @@ from django.http.response import HttpResponseRedirect
 from django.shortcuts import render
 from elasticsearch import Elasticsearch
 
-from .forms import UserSignupForm, AddProductForm, SearchProductForm
-from .models import ShoppingUser, User, Product
+from .forms import *
+from .models import *
 
 # Create your views here.
 
@@ -96,23 +96,50 @@ def dashboard(request):  # , action):
                    'all_products': all_products})
 
 
-def add_product(request):
+def add_location(request):
     if not request.user.is_authenticated:
         return render(request, 'shopping/error.html', {'error_message': error_not_authenticated,
                                                        'type_not_authenticated': True})
-
+    locations = MyLocation.objects.filter(user=request.user.shopping_user)
     if request.method == 'POST':
-        form = AddProductForm(request.POST, request.FILES)
+        form = AddLocationForm(request.POST)
         if form.is_valid():
             django_user = request.user
             shopping_user = django_user.shopping_user
             loc = form.cleaned_data['location']
             lat = float(loc.split(',')[0])
             lon = float(loc.split(',')[1])
+            mylocation = MyLocation(name=form.cleaned_data['name'],
+                                    city=form.cleaned_data['city'],
+                                    location=loc, latitude=lat, longitude=lon)
+            mylocation.user = shopping_user
+            mylocation.save()
+            return HttpResponseRedirect('dashboard')
+        else:
+
+            return render(request, 'shopping/add_location.html', {'locations': locations, 'add_location_form': form})
+    else:
+        return render(request, 'shopping/add_location.html', {'locations': locations, 'add_location_form': AddLocationForm(label_suffix='')}, )
+
+
+def add_product(request):
+    if not request.user.is_authenticated:
+        return render(request, 'shopping/error.html', {'error_message': error_not_authenticated,
+                                                       'type_not_authenticated': True})
+    locations = MyLocation.objects.filter(user=request.user.shopping_user)
+    if request.method == 'POST':
+        form = AddProductForm(request.POST, request.FILES)
+        if form.is_valid():
+            django_user = request.user
+            shopping_user = django_user.shopping_user
+            loc = request.POST.get('addresses')
+            # loc = form.cleaned_data['location']
+            lat = float(loc.split(',')[0])
+            lon = float(loc.split(',')[1])
             product = Product(name=form.cleaned_data['name'], price=form.cleaned_data['price'],
                               description=form.cleaned_data['description'], seller=shopping_user,
                               status='for sale', picture=form.cleaned_data['picture'],
-                              location=loc, latitude=lat, longitude=lon, city=form.cleaned_data['city'])
+                              location=loc, latitude=lat, longitude=lon,)
             product.save()
             es = Elasticsearch()
             es.create(index=shopping_index, doc_type='product', id=product.id,
@@ -123,9 +150,9 @@ def add_product(request):
             return HttpResponseRedirect('dashboard')
         else:
 
-            return render(request, 'shopping/add_product.html', {'add_product_form': form})
+            return render(request, 'shopping/add_product.html', {'locations' : locations, 'add_product_form': form})
     else:
-        return render(request, 'shopping/add_product.html', {'add_product_form': AddProductForm(label_suffix='')}, )
+        return render(request, 'shopping/add_product.html', {'locations' : locations, 'add_product_form': AddProductForm(label_suffix='')}, )
 
 
 def view_product(request, id):
@@ -205,4 +232,3 @@ def search_product(request):
         return render(request, 'shopping/search_product.html',
                       {'search_product_form': SearchProductForm(label_suffix='')}, )
 
-# TODO search products

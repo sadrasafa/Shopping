@@ -26,6 +26,15 @@ class ShoppingUser(models.Model):
         return self.user.username + ' ' + self.first_name + ' ' + self.last_name
 
 
+class MyLocation(models.Model):
+    name = models.CharField(max_length=140)
+    user = models.ForeignKey(ShoppingUser, on_delete=models.SET_NULL, null=True)
+    city = models.CharField(max_length=255, null=True)
+    location = PlainLocationField(based_fields=['city'], zoom=7, null=True)
+    latitude = models.FloatField(null=True)
+    longitude = models.FloatField(null=True)
+
+
 class Product(models.Model):
     name = models.CharField(max_length=140)
     price = models.IntegerField(null=True)
@@ -38,9 +47,7 @@ class Product(models.Model):
     location = PlainLocationField(based_fields=['city'], zoom=7, null=True)
     latitude = models.FloatField(null=True)
     longitude = models.FloatField(null=True)
-    # loc = OSMField()
-    # loc_lat = LatitudeField()
-    # loc_lon = LongitudeField()
 
     def __str__(self):
         return self.name + ': ' + self.seller.__str__()
+
