@@ -294,3 +294,23 @@ class SearchProductForm(forms.ModelForm):
                 'required': _('لطفا شهر خود را وارد کنید')
             }
         }
+
+
+class IncreaseCreditForm(forms.Form):
+    amount = forms.IntegerField(widget=forms.TextInput(attrs={'class': 'form-control',
+                                                             'required': 'True',
+                                                             'max_length': 30,
+                                                             'render_value': 'False',
+                                                             'placeholder': 'مبلغ',
+                                                             'style': 'text-align:right',
+                                                             'direction': 'rtl'}
+                                                      ),
+                               label=_("مبلغ"),
+                               error_messages={
+                                   'required': _('لطفا مبلغ را وارد کنید')
+                               })
+
+
+class UseCreditForm(forms.Form):
+    use_credit = forms.BooleanField(required=False)
+    # dummy = forms.CharField(initial='dummy', widget=forms.widgets.HiddenInput())

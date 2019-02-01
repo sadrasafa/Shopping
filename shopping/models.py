@@ -21,6 +21,7 @@ class ShoppingUser(models.Model):
                        message="شماره تلفن نامعتبر است")], null=True, blank=True)  # null=True and Blank=True if not required
     province = models.CharField(max_length=40, null=True, blank=True)  # province should be a choice
     city = models.CharField(max_length=40, null=True, blank=True)
+    credit = models.IntegerField(null=True)
 
     def __str__(self):
         return self.user.username + ' ' + self.first_name + ' ' + self.last_name
@@ -33,6 +34,9 @@ class MyLocation(models.Model):
     location = PlainLocationField(based_fields=['city'], zoom=7, null=True)
     latitude = models.FloatField(null=True)
     longitude = models.FloatField(null=True)
+
+    def __str__(self):
+        return self.user.__str__() + ": " + self.name
 
 
 class Product(models.Model):
@@ -47,6 +51,7 @@ class Product(models.Model):
     location = PlainLocationField(based_fields=['city'], zoom=7, null=True)
     latitude = models.FloatField(null=True)
     longitude = models.FloatField(null=True)
+    category = models.CharField(max_length=140, null=True)
 
     def __str__(self):
         return self.name + ': ' + self.seller.__str__()

@@ -13,7 +13,7 @@ error_not_authenticated = "ابتدا وارد شوید."
 error_404_message = "چنین صفحه ای وجود ندارد"
 error_already_sold = "محصول قبلا فروخته شده است"
 error_product_not_found = "چنین محصولی وجود ندارد"
-
+error_low_credit = "اعتبار شما کم است"
 shopping_index = 'shopping_index'
 
 
@@ -44,7 +44,7 @@ def signup(request):
             django_user.save()
             shopping_user = ShoppingUser(first_name=form.cleaned_data['first_name'],
                                          last_name=form.cleaned_data['last_name'],
-                                         email=form.cleaned_data['email'], )
+                                         email=form.cleaned_data['email'], credit=0)
 
             shopping_user.user = django_user
             shopping_user.save()
@@ -174,16 +174,31 @@ def buy_product(request, id):
     except ObjectDoesNotExist:
         return render(request, 'shopping/error.html', {'error_message': error_product_not_found,
                                                        'type_product_not_found': True})
-
     if product.status == 'sold':
         return render(request, 'shopping/error.html', {'error_message': error_already_sold,
                                                        'type_already_sold': True})
-    shopping_user = request.user.shopping_user
-    product.buyer = shopping_user
-    product.status = 'sold'
-    product.save()
-    return render(request, 'shopping/view_product.html',
-                  {'product': product})
+
+    if request.method == 'POST':
+        form = UseCreditForm(request.POST)
+        if form.is_valid():
+            price = product.price
+            credit = request.user.shopping_user.credit
+            if form.cleaned_data['use_credit']:
+                if credit < price:
+                    amount = price - credit
+                    request.user.shopping_user.credit = 0
+                    request.user.shopping_user.save()
+                else:
+                    amount = 0
+                    request.user.shopping_user.credit = credit - price
+            else:
+                amount = price
+            return render(request, 'shopping/pay.html', {'amount': amount})
+        else:
+            return render(request, 'shopping/buy_product.html',
+                      {'product': product, 'use_credit_form' : UseCreditForm})
+    else:
+        return render(request, 'shopping/buy_product.html', {'product': product, 'use_credit_form':UseCreditForm(label_suffix='')})
 
 
 def search_product(request):
@@ -231,4 +246,23 @@ def search_product(request):
     else:
         return render(request, 'shopping/search_product.html',
                       {'search_product_form': SearchProductForm(label_suffix='')}, )
+
+
+def increase_credit(request):
+    if not request.user.is_authenticated:
+        return render(request, 'shopping/error.html', {'error_message': error_not_authenticated,
+                                                       'type_not_authenticated': True})
+    if request.method == 'POST':
+        form = IncreaseCreditForm(request.POST)
+        if form.is_valid():
+            django_user = request.user
+            shopping_user = django_user.shopping_user
+            shopping_user.credit += form.cleaned_data['amount']
+            shopping_user.save()
+            return HttpResponseRedirect('dashboard')
+        else:
+
+            return render(request, 'shopping/increase_credit.html', {'increase_credit_form': form})
+    else:
+        return render(request, 'shopping/increase_credit.html', {'increase_credit_form': IncreaseCreditForm(label_suffix='')}, )
 
