@@ -140,7 +140,7 @@ class AddLocationForm(forms.ModelForm):
 
         }
         labels = {
-            'name': _('عنوان محصول'),
+            'name': _('عنوان آدرس'),
             'price': _('قیمت'),
             'description': _('توضیحات'),
             'picture': _('تصویر محصول'),
@@ -149,7 +149,7 @@ class AddLocationForm(forms.ModelForm):
         }
         error_messages = {
             'name': {
-                'required': _('لطفا عنوان محصول را وارد کنید')
+                'required': _('لطفا عنوان آدرس را وارد کنید')
             },
             'price': {
                 'required': _('لطفا قیمت محصول را وارد کنید'),
@@ -180,11 +180,11 @@ class AddProductForm(forms.ModelForm):
     #           ('کرمان', 'کرمان'),
     #           ('لاهیجان', 'لاهیجان'))
     # address = forms.ChoiceField(widget=forms.Select, choices=CHOICES, label='آدرس')
-    # city = forms.ChoiceField(widget=forms.Select, choices=CITIES, label='شهر')
+    # city = forms.Choice   Field(widget=forms.Select, choices=CITIES, label='شهر')
 
     class Meta:
         model = Product
-        fields = ['name', 'price', 'description', 'picture']
+        fields = ['name', 'price', 'description', 'picture', 'category']
         widgets = {
             'name': forms.TextInput(attrs={'class': 'form-control',
                                            'placeholder': 'عنوان محصول',
@@ -200,6 +200,8 @@ class AddProductForm(forms.ModelForm):
                                                  'direction': 'rtl'}),
             'picture': forms.ClearableFileInput(attrs={'class': 'form-control', 'placeholder': 'تصویر',
                                                        'style': 'text-align:right'}),
+            'category': forms.Select(choices=Product.categories, attrs={'class': 'form-control',
+                                                                           'placeholder': 'دسته بنده'})
 
             # 'city': forms.Select(attrs={'class': 'form-control',
             #                             'placeholder': 'dfadlflkdfjalk',
@@ -214,6 +216,7 @@ class AddProductForm(forms.ModelForm):
             'price': _('قیمت'),
             'description': _('توضیحات'),
             'picture': _('تصویر محصول'),
+            'category': _('دسته بندی'),
             # 'city': _('شهر'),
             # 'location': _('مکان')
         }
@@ -231,9 +234,9 @@ class AddProductForm(forms.ModelForm):
             'picture': {
                 'required': _('لطفا تصویر محصول را بارگذاری کنید')
             },
-            # 'city': {
-            #     'required': _('لطفا شهر خود را وارد کنید')
-            # }
+            'category': {
+                'required': _('لطفا دسته بندی محصول را انتخاب کنید')
+            }
         }
 
 
@@ -253,7 +256,7 @@ class SearchProductForm(forms.ModelForm):
 
     class Meta:
         model = Product
-        fields = ['name', 'price', 'description', 'city', 'location']
+        fields = ['name', 'price', 'description', 'city', 'location', 'category']
         widgets = {
             'name': forms.TextInput(attrs={'class': 'form-control',
                                            'placeholder': 'عنوان محصول',
@@ -271,13 +274,15 @@ class SearchProductForm(forms.ModelForm):
                                            'placeholder': 'شهر',
                                            'style': 'text-align:right',
                                            'direction': 'rtl'}),
+            'category': forms.Select(choices=Product.categories, attrs={'class': 'form-control'})
         }
         labels = {
             'name': _('عنوان محصول'),
             'price': _('سقف قیمت'),
             'description': _('توضیحات'),
             'city': _('شهر'),
-            'location': _('مکان')
+            'location': _('مکان'),
+            'category': _('دسته بندی')
         }
         error_messages = {
             'name': {
@@ -292,6 +297,9 @@ class SearchProductForm(forms.ModelForm):
             },
             'city': {
                 'required': _('لطفا شهر خود را وارد کنید')
+            },
+            'category': {
+                'required': _('لطفا دسته بندی را انتخاب کنید')
             }
         }
 

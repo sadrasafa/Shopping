@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.core.validators import RegexValidator
 from location_field.models.plain import PlainLocationField
+from django.utils.translation import ugettext_lazy as _
 # from osm_field.fields import LatitudeField, LongitudeField, OSMField
 
 # Create your models here.
@@ -51,7 +52,11 @@ class Product(models.Model):
     location = PlainLocationField(based_fields=['city'], zoom=7, null=True)
     latitude = models.FloatField(null=True)
     longitude = models.FloatField(null=True)
-    category = models.CharField(max_length=140, null=True)
+    categories = (('لپ تاپ', 'لپ تاپ'),
+                  ('گوشی', 'گوشی'),
+                  ('دوربین', 'دوربین'),
+                  ('میز', 'میز'),)
+    category = models.CharField(max_length=140, null=True, choices=categories)
 
     def __str__(self):
         return self.name + ': ' + self.seller.__str__()

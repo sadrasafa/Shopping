@@ -139,11 +139,11 @@ def add_product(request):
             product = Product(name=form.cleaned_data['name'], price=form.cleaned_data['price'],
                               description=form.cleaned_data['description'], seller=shopping_user,
                               status='for sale', picture=form.cleaned_data['picture'],
-                              location=loc, latitude=lat, longitude=lon,)
+                              location=loc, latitude=lat, longitude=lon, category=form.cleaned_data['category'])
             product.save()
             es = Elasticsearch()
             es.create(index=shopping_index, doc_type='product', id=product.id,
-                      body={'product': {'name': product.name, 'price': product.price,
+                      body={'product': {'name': product.name, 'price': product.price, 'category':product.category,
                                         'description': product.description, 'location': {'lat': lat,
                                                                                          'lon': lon}}})
 
@@ -230,11 +230,12 @@ def search_product(request):
                                                           {'product.price': {'lte': form.cleaned_data['price'],
                                                                              'boost': w_price}}},
                                                      ],
-                                                'filter': {'geo_distance': {'distance': form.cleaned_data['distance'],
+                                                'filter': [{'geo_distance': {'distance': form.cleaned_data['distance'],
                                                                             'product.location': {
                                                                                 'lat': lat,
                                                                                 'lon': lon
-                                                                            }}}}
+                                                                            }}},
+                                                           {'match': {'product.category': form.cleaned_data['category']}}]}
                                            }})
             res = []
             for r in results['hits']['hits']:
