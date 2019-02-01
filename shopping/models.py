@@ -21,7 +21,7 @@ class ShoppingUser(models.Model):
                        message="شماره تلفن نامعتبر است")], null=True, blank=True)  # null=True and Blank=True if not required
     province = models.CharField(max_length=40, null=True, blank=True)  # province should be a choice
     city = models.CharField(max_length=40, null=True, blank=True)
-    credit = models.IntegerField(null=True)
+    credit = models.IntegerField(null=True, default=0)
 
     def __str__(self):
         return self.user.username + ' ' + self.first_name + ' ' + self.last_name
