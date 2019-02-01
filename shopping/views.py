@@ -13,7 +13,7 @@ error_not_authenticated = "ابتدا وارد شوید."
 error_404_message = "چنین صفحه ای وجود ندارد"
 error_already_sold = "محصول قبلا فروخته شده است"
 error_product_not_found = "چنین محصولی وجود ندارد"
-error_low_credit = "اعتبار شما کم است"
+error_user_not_found = "چنین کاربری وجود ندارد"
 shopping_index = 'shopping_index'
 
 
@@ -193,6 +193,9 @@ def buy_product(request, id):
                     request.user.shopping_user.credit = credit - price
             else:
                 amount = price
+            product.buyer = request.user.shopping_user
+            product.status = 'sold'
+            product.save()
             return render(request, 'shopping/pay.html', {'amount': amount})
         else:
             return render(request, 'shopping/buy_product.html',
@@ -266,3 +269,14 @@ def increase_credit(request):
     else:
         return render(request, 'shopping/increase_credit.html', {'increase_credit_form': IncreaseCreditForm(label_suffix='')}, )
 
+
+def view_user(request, id):
+    if not request.user.is_authenticated:
+        return render(request, 'shopping/error.html', {'error_message': error_not_authenticated,
+                                                       'type_not_authenticated': True})
+    try:
+        viewed_user = ShoppingUser.objects.get(id=id)
+    except ObjectDoesNotExist:
+        return render(request, 'shopping/error.html', {'error_message': error_user_not_found,
+                                                       'type_user_not_found': True})
+    return render(request, 'shopping/view_user.html', {'viewed_user': viewed_user})

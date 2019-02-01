@@ -23,6 +23,9 @@
     {% if type_product_not_found %}
         {#    error reason: trying to access a product which does not exist#}
     {% endif %}
+    {% if type_user_not_found %}
+        {# error reason: trying to access a user which does not exist #}
+    {% endif %}
     <div id="fourerror" class="container" align="center">
         <div>
             <h2>{{ error_message }}</h2>
