@@ -144,8 +144,10 @@
         {% endifnotequal %}
     {% endifequal %}
     <a href="/shopping/add_comment/{{ product.id }}">افزودن نظر</a>
+    <br> {# I added this <br>. delete it :)) #}
+
     {% for comment in product.comment_set.all  %}
-        {{ comment.user}}
+        <a href="/shopping/view_user/{{ comment.user.id}}"> {{ comment.user }}</a>
         {{ comment.text }}
         {{ comment.stars }}
     {% endfor %}

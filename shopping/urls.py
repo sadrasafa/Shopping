@@ -1,4 +1,4 @@
-from django.urls import path
+from django.urls import path, re_path
 
 from . import views
 
@@ -17,4 +17,5 @@ urlpatterns = [
     path('edit_profile', views.edit_profile, name='edit_profile'),
     path('view_user/<int:id>', views.view_user, name='view_user'),
     path('add_comment/<int:id>', views.add_comment, name='add_comment'),
+    re_path('confirm/(?P<eid>[a-fA-F0-9]*)/(?P<code>[a-zA-Z0-9]*)', views.confirm, name='confirm'),
 ]
