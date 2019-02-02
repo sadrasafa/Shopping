@@ -18,6 +18,7 @@ error_already_sold = "محصول قبلا فروخته شده است"
 error_product_not_found = "چنین محصولی وجود ندارد"
 error_user_not_found = "چنین کاربری وجود ندارد"
 error_wrong_confirmation_code = "کد فعالسازی اشتباه است"
+error_wrong_reset_password = "این لینک معتبر نیست"
 shopping_index = 'shopping_index'
 
 hash_salt = 'NeginAarashSadra'
@@ -367,3 +368,56 @@ def confirm(request, eid, code):
     else:
         return render(request, 'shopping/error.html', {'error_message': error_wrong_confirmation_code,
                                                        'type_wrong_confirmation': True})
+
+
+def forgot_password(request):
+    if request.method == 'POST':
+        form = ForgotPasswordForm(request.POST)
+        if form.is_valid():
+            email_address = form.cleaned_data['email']
+            try:
+                shopping_user = ShoppingUser.objects.filter(email=email_address)[0]
+            except IndexError:
+                return render(request, 'shopping/forgot_password.html', {'forgot_password_form': form,
+                                                                         'Done': True})
+
+            shopping_user.random_code = ''.join(random.choice(string.ascii_uppercase + string.digits) for _ in range(10))
+            shopping_user.save()
+            eid = hashlib.sha1((hash_salt + hash_salt + email_address).encode()).hexdigest()
+            link = 'http://127.0.0.1:8000/shopping/reset_password/' + eid + '/' + shopping_user.random_code
+            email = EmailMessage('Password Reset', 'To Change Your Password Go To The Following Link: ' + link,
+                                 to=[email_address, ])
+            email.send()
+            return render(request, 'shopping/forgot_password.html', {'forgot_password_form': form,
+                                                                     'Done': True})
+        else:
+
+            return render(request, 'shopping/forgot_password.html', {'forgot_password_form': form})
+    else:
+        return render(request, 'shopping/forgot_password.html',
+                      {'forgot_password_form': ForgotPasswordForm(label_suffix='')}, )
+
+
+def reset_password(request, eid, code):
+    try:
+        shopping_user = ShoppingUser.objects.filter(random_code=code)[0]
+    except IndexError:
+        return render(request, 'shopping/error.html', {'error_message': error_wrong_reset_password,
+                                                       'type_wrong_reset_password': True})
+
+    hashed = hashlib.sha1((hash_salt + hash_salt + shopping_user.email).encode()).hexdigest()
+    if hashed == eid:
+        if request.method == 'POST':
+            form = ResetPasswordForm(request.POST)
+            if form.is_valid():
+                shopping_user.user.set_password(form.cleaned_data['password1'])
+                shopping_user.user.save()
+                return HttpResponseRedirect('/shopping/signin')
+            else:
+                return render(request, 'shopping/reset_password.html', {'reset_password_form': form})
+        else:
+            return render(request, 'shopping/reset_password.html',
+                          {'reset_password_form': ResetPasswordForm(label_suffix='')}, )
+    else:
+        return render(request, 'shopping/error.html', {'error_message': error_wrong_reset_password,
+                                                       'type_wrong_reset_password': True})

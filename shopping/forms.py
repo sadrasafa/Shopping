@@ -404,3 +404,53 @@ class AddCommentForm(forms.ModelForm):
                 'required': _('لطفا امتیاز  را وارد کنید')
             }
         }
+
+
+class ForgotPasswordForm(forms.Form):
+    email = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control',
+                                                             'required': 'True',
+                                                             'max_length': 30,
+                                                             'render_value': 'False',
+                                                             'placeholder': 'ایمیل',
+                                                             'style': 'text-align:right',
+                                                             'direction': 'rtl'}
+                                                      ),
+                               label=_("آدرس ایمیل"),
+                               error_messages={
+                                   'required': _('لطفا آدرس ایمیل خود را وارد کنید')
+                               })
+
+
+class ResetPasswordForm(forms.Form):
+    password1 = forms.CharField(widget=forms.PasswordInput(attrs={'class': 'form-control',
+                                                                  'required': 'True',
+                                                                  'max_length': 30,
+                                                                  'render_value': 'False',
+                                                                  'placeholder': 'رمز عبور',
+                                                                  'style': 'text-align:right',
+                                                                  'direction': 'rtl'}
+                                                           ),
+                                label=_("رمز عبور"),
+                                error_messages={
+                                    'required': _('لطفا رمزعبور را وارد کنید')
+                                })
+    password2 = forms.CharField(widget=forms.PasswordInput(attrs={'class': 'form-control',
+                                                                  'required': 'True',
+                                                                  'max_length': 30,
+                                                                  'render_value': 'False',
+                                                                  'placeholder': 'تکرار رمز عبور',
+                                                                  'style': 'text-align:right',
+                                                                  'direction': 'rtl'}
+                                                           ),
+                                label=_("تکرار رمز عبور"),
+                                error_messages={
+                                    'required': _('لطفا رمزعبور را تکرار کنید')
+                                })
+
+    def clean(self):
+        cleaned_data = super(ResetPasswordForm, self).clean()
+        password1 = cleaned_data.get('password1')
+        password2 = cleaned_data.get('password2')
+        if password1 != password2:
+            raise forms.ValidationError('رمزعبور یکسان نیست')
+        return cleaned_data
