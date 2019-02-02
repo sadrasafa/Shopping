@@ -201,7 +201,7 @@ class AddProductForm(forms.ModelForm):
             'picture': forms.ClearableFileInput(attrs={'class': 'form-control', 'placeholder': 'تصویر',
                                                        'style': 'text-align:right'}),
             'category': forms.Select(choices=Product.categories, attrs={'class': 'form-control',
-                                                                           'placeholder': 'دسته بنده'})
+                                                                        'placeholder': 'دسته بنده'})
 
             # 'city': forms.Select(attrs={'class': 'form-control',
             #                             'placeholder': 'dfadlflkdfjalk',
@@ -306,17 +306,71 @@ class SearchProductForm(forms.ModelForm):
 
 class IncreaseCreditForm(forms.Form):
     amount = forms.IntegerField(widget=forms.TextInput(attrs={'class': 'form-control',
-                                                             'required': 'True',
-                                                             'max_length': 30,
-                                                             'render_value': 'False',
-                                                             'placeholder': 'مبلغ',
-                                                             'style': 'text-align:right',
-                                                             'direction': 'rtl'}
-                                                      ),
-                               label=_("مبلغ"),
-                               error_messages={
-                                   'required': _('لطفا مبلغ را وارد کنید')
-                               })
+                                                              'required': 'True',
+                                                              'max_length': 30,
+                                                              'render_value': 'False',
+                                                              'placeholder': 'مبلغ',
+                                                              'style': 'text-align:right',
+                                                              'direction': 'rtl'}
+                                                       ),
+                                label=_("مبلغ"),
+                                error_messages={
+                                    'required': _('لطفا مبلغ را وارد کنید')
+                                })
+
+
+class EditProfileForm(forms.ModelForm):
+    class Meta:
+        model = ShoppingUser
+        fields = ['first_name', 'last_name', 'phone_number', 'city']
+        widgets = {
+            'first_name': forms.TextInput(attrs={'class': 'form-control',
+                                                 'placeholder': 'نام',
+                                                 'style': 'text-align:right',
+                                                 'direction': 'rtl',
+                                                 'value': model.first_name}),
+            'last_name': forms.TextInput(attrs={'class': 'form-control',
+                                                  'placeholder': 'نام خانوادگی',
+                                                  'style': 'text-align:right',
+                                                  'direction': 'rtl',
+                                                  'value': '{{ shopping_user.family_name}}'}),
+            'phone_number': forms.TextInput(attrs={'class': 'form-control',
+                                                   'placeholder': 'شماره تماس',
+                                                   'style': 'text-align:right',
+                                                   'direction': 'rtl',
+                                                   'value': '{{ shopping_user.phone_number}}'}),
+            # 'picture': forms.ClearableFileInput(attrs={'class': 'form-control', 'placeholder': 'تصویر',
+            #                                            'style': 'text-align:right',
+            #                                            'value': '{{ shopping_user.picture}}'}),
+            'city': forms.TextInput(attrs={'class': 'form-control',
+                                           'placeholder': 'شهر',
+                                           'style': 'text-align:right',
+                                           'direction': 'rtl',
+                                           'value': '{{ shopping_user.city}}'})
+
+        }
+        labels = {
+            'first_name': _('نام'),
+            'last_name': _('نام خانوادگی'),
+            'phone_number': _('شماره تماس'),
+            'city': _('شهر'),
+
+        }
+        error_messages = {
+            'first_name': {
+                'required': _('لطفا نام خود را وارد کنید')
+            },
+            'last_name': {
+                'required': _('لطفا قیمت محصول را وارد کنید'),
+                'invalid': _('لطف عدد وارد کنید')
+            },
+            'phone_number': {
+                'required': _('لطفا توضیحات محصول را وارد کنید'),
+            },
+            'city': {
+                'required': _('لطفا دسته بندی محصول را انتخاب کنید')
+            }
+        }
 
 
 class UseCreditForm(forms.Form):

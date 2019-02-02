@@ -119,7 +119,8 @@ def add_location(request):
 
             return render(request, 'shopping/add_location.html', {'locations': locations, 'add_location_form': form})
     else:
-        return render(request, 'shopping/add_location.html', {'locations': locations, 'add_location_form': AddLocationForm(label_suffix='')}, )
+        return render(request, 'shopping/add_location.html',
+                      {'locations': locations, 'add_location_form': AddLocationForm(label_suffix='')}, )
 
 
 def add_product(request):
@@ -143,16 +144,17 @@ def add_product(request):
             product.save()
             es = Elasticsearch()
             es.create(index=shopping_index, doc_type='product', id=product.id,
-                      body={'product': {'name': product.name, 'price': product.price, 'category':product.category,
+                      body={'product': {'name': product.name, 'price': product.price, 'category': product.category,
                                         'description': product.description, 'location': {'lat': lat,
                                                                                          'lon': lon}}})
 
             return HttpResponseRedirect('dashboard')
         else:
 
-            return render(request, 'shopping/add_product.html', {'locations' : locations, 'add_product_form': form})
+            return render(request, 'shopping/add_product.html', {'locations': locations, 'add_product_form': form})
     else:
-        return render(request, 'shopping/add_product.html', {'locations' : locations, 'add_product_form': AddProductForm(label_suffix='')}, )
+        return render(request, 'shopping/add_product.html',
+                      {'locations': locations, 'add_product_form': AddProductForm(label_suffix='')}, )
 
 
 def view_product(request, id):
@@ -199,9 +201,10 @@ def buy_product(request, id):
             return render(request, 'shopping/pay.html', {'amount': amount})
         else:
             return render(request, 'shopping/buy_product.html',
-                      {'product': product, 'use_credit_form' : UseCreditForm})
+                          {'product': product, 'use_credit_form': UseCreditForm})
     else:
-        return render(request, 'shopping/buy_product.html', {'product': product, 'use_credit_form':UseCreditForm(label_suffix='')})
+        return render(request, 'shopping/buy_product.html',
+                      {'product': product, 'use_credit_form': UseCreditForm(label_suffix='')})
 
 
 def search_product(request):
@@ -231,11 +234,12 @@ def search_product(request):
                                                                              'boost': w_price}}},
                                                      ],
                                                 'filter': [{'geo_distance': {'distance': form.cleaned_data['distance'],
-                                                                            'product.location': {
-                                                                                'lat': lat,
-                                                                                'lon': lon
-                                                                            }}},
-                                                           {'match': {'product.category': form.cleaned_data['category']}}]}
+                                                                             'product.location': {
+                                                                                 'lat': lat,
+                                                                                 'lon': lon
+                                                                             }}},
+                                                           {'match': {
+                                                               'product.category': form.cleaned_data['category']}}]}
                                            }})
             res = []
             for r in results['hits']['hits']:
@@ -268,7 +272,37 @@ def increase_credit(request):
 
             return render(request, 'shopping/increase_credit.html', {'increase_credit_form': form})
     else:
-        return render(request, 'shopping/increase_credit.html', {'increase_credit_form': IncreaseCreditForm(label_suffix='')}, )
+        return render(request, 'shopping/increase_credit.html',
+                      {'increase_credit_form': IncreaseCreditForm(label_suffix='')}, )
+
+
+def edit_profile(request):
+    if not request.user.is_authenticated:
+        return render(request, 'shopping/error.html', {'error_message': error_not_authenticated,
+                                                       'type_not_authenticated': True})
+    # locations = MyLocation.objects.filter(user=request.user.shopping_user)
+    if request.method == 'POST':
+        form = EditProfileForm(request.POST, request.FILES)
+        if form.is_valid():
+            django_user = request.user
+            shopping_user = django_user.shopping_user
+
+            ShoppingUser.objects.filter(email=shopping_user.email).update(first_name=form.cleaned_data['first_name'],
+                                                                          last_name=form.cleaned_data['last_name'],
+                                                                          phone_number=form.cleaned_data[
+                                                                              'phone_number'],
+                                                                          picture=form.cleaned_data['picture'],
+                                                                          city=form.cleaned_data['city'])
+            django_user.save()
+            shopping_user.save()
+
+            return HttpResponseRedirect('dashboard')
+        else:
+            return render(request, 'shopping/edit_profile.html', {'edit_profile_form': form})
+
+    else:
+        return render(request, 'shopping/edit_profile.html',
+                      {'edit_profile_form': EditProfileForm(label_suffix='')}, )
 
 
 def view_user(request, id):

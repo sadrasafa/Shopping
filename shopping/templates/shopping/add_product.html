@@ -63,13 +63,29 @@
                             {% endif %}
                         {% endfor %}
                     </fieldset>
-                <div>
-                <select name="addresses">
-                    {% for address in locations %}
-                        <option value="{{ address.location }}">{{ address.name }}</option>
-                    {% endfor %}
-                </select>
-                </div>
+                    <div class="control-group row" style="margin-bottom: 20px">
+
+                        <div class="controls col-md-10">
+                            <div>
+                                <select name="addresses">
+                                    {% for address in locations %}
+                                        <option value="{{ address.location }}">{{ address.name }}</option>
+                                    {% endfor %}
+                                    {% if not locations %}
+                                        <option value="Empty">خالی</option>
+                                    {% endif %}
+                                </select>
+                            </div>
+                            <div >
+                                <a href="/shopping/add_location">آدرس جدید</a>
+                            </div>
+                        </div>
+
+                        <div align="center" class="form-actions">
+                            <label class="control-label col-md-2">آدرس</label>
+                        </div>
+
+                    </div>
                     <div align="center">
                         <div id="button_submit" class="form-actions">
                             <div id="error">
