@@ -312,7 +312,10 @@ class IncreaseCreditForm(forms.Form):
                                                               'render_value': 'False',
                                                               'placeholder': 'مبلغ',
                                                               'style': 'text-align:right',
-                                                              'direction': 'rtl'}
+                                                              'direction': 'rtl',
+                                                              'id': 'paymentsform-amount',
+                                                              'readonly': 'readonly',
+                                                              }
                                                        ),
                                 label=_("مبلغ"),
                                 error_messages={
