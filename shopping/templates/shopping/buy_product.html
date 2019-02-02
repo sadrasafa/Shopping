@@ -18,9 +18,11 @@
 
     <div class="container">
 
-        {{ product.price }}
-        {{ request.user.shopping_user.credit }}
-        {#        <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4"></div>#}
+        <div>
+            <div>قیمت کالا:‌{{ product.price }}</div>
+        <div> موجودی شما:{{ request.user.shopping_user.credit }}</div>
+        </div>
+            {#        <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4"></div>#}
         {#        <div id="search_panel" class="panel panel-info">#}
 
         <div id="fill_out_form">

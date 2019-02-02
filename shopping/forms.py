@@ -1,8 +1,8 @@
 from django import forms
 from django.utils.translation import ugettext_lazy as _
+from django_starfield import Stars
 
 from .models import *
-from django_starfield import Stars
 
 
 class UserSignupForm(forms.ModelForm):
@@ -112,7 +112,8 @@ class UserSignupForm(forms.ModelForm):
 
 
 class AddLocationForm(forms.ModelForm):
-    CITIES = (('تبریز', 'تبریز'),
+    CITIES = (('', 'انتخاب شهر...'),
+        ('تبریز', 'تبریز'),
               ('ارومیه', 'ارومیه'),
               ('تهران', 'تهران'),
               ('شیراز', 'شیراز'),
@@ -324,7 +325,6 @@ class IncreaseCreditForm(forms.Form):
 
 
 class EditProfileForm(forms.ModelForm):
-
     class Meta:
         model = ShoppingUser
         fields = ['first_name', 'last_name', 'phone_number', 'city']
@@ -335,9 +335,9 @@ class EditProfileForm(forms.ModelForm):
                                                  'style': 'text-align:right',
                                                  'direction': 'rtl'}),
             'last_name': forms.TextInput(attrs={'class': 'form-control',
-                                                  'placeholder': 'نام خانوادگی',
-                                                  'style': 'text-align:right',
-                                                  'direction': 'rtl'}),
+                                                'placeholder': 'نام خانوادگی',
+                                                'style': 'text-align:right',
+                                                'direction': 'rtl'}),
             'phone_number': forms.TextInput(attrs={'class': 'form-control',
                                                    'placeholder': 'شماره تماس',
                                                    'style': 'text-align:right',

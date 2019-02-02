@@ -6,7 +6,7 @@
 
     {% block user_header %}
         <div id="panel-header" align="center"><h2>مشاهده‌ی محصول</h2></div>
-       {% endblock %}
+    {% endblock %}
 
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8/jquery.min.js"></script>
     <script src="/static/location_field/js/jquery.livequery.js"></script>
@@ -38,21 +38,21 @@
         </div>
         <div class="row panel-body">
             {% ifequal  product.status  "sold" %}
-            <div>
-                <div class="col-xs-6"><input type="text" id="staticField" readonly
-                                             class="form-control-plaintext form-control"
-                                             placeholder="وضعیت"
-                                             value="فروخته شده"></div>
-                <div class="col-xs-6">وضعیت</div>
-            </div>
+                <div>
+                    <div class="col-xs-6"><input type="text" id="staticField" readonly
+                                                 class="form-control-plaintext form-control"
+                                                 placeholder="وضعیت"
+                                                 value="فروخته شده"></div>
+                    <div class="col-xs-6">وضعیت</div>
+                </div>
             {% else %}
-            <div>
-                <div class="col-xs-6"><input type="text" id="staticField" readonly
-                                             class="form-control-plaintext form-control"
-                                             placeholder="وضعیت"
-                                             value="قابل خرید"></div>
-                <div class="col-xs-6">وضعیت</div>
-            </div>
+                <div>
+                    <div class="col-xs-6"><input type="text" id="staticField" readonly
+                                                 class="form-control-plaintext form-control"
+                                                 placeholder="وضعیت"
+                                                 value="قابل خرید"></div>
+                    <div class="col-xs-6">وضعیت</div>
+                </div>
             {% endifequal %}
         </div>
         <div class="row panel-body">
@@ -66,10 +66,13 @@
         </div>
         <div class="row panel-body">
             <div>
-                <div class="col-xs-6"><a href="/shopping/view_user/{{ product.seller.id }}"><input type="text" id="staticField" readonly
-                                             class="form-control-plaintext form-control"
-                                             placeholder="یوزرنیم فروشنده"
-                                             value="{{ product.seller.user.username }}"></a></div>
+                <div class="col-xs-6"><a href="/shopping/view_user/{{ product.seller.id }}"><input type="text"
+                                                                                                   id="staticField"
+                                                                                                   readonly
+                                                                                                   class="form-control-plaintext form-control"
+                                                                                                   placeholder="یوزرنیم فروشنده"
+                                                                                                   value="{{ product.seller.user.username }}"></a>
+                </div>
                 <div class="col-xs-6">یوزرنیم فروشنده</div>
             </div>
         </div>
@@ -140,15 +143,23 @@
     </script>
     {% ifequal product.status "for sale" %}
         {% ifnotequal product.seller request.user.shopping_user %}
-            <a href="/shopping/buy_product/{{ product.id }}">خرید محصول</a>
+            <a style="margin-right: 20px" href="/shopping/buy_product/{{ product.id }}">خرید محصول</a>
         {% endifnotequal %}
     {% endifequal %}
-    <a href="/shopping/add_comment/{{ product.id }}">افزودن نظر</a>
-    <br> {# I added this <br>. delete it :)) #}
+    <a style="margin-right: 20px" href="/shopping/add_comment/{{ product.id }}">افزودن نظر</a>
 
-    {% for comment in product.comment_set.all  %}
-        <a href="/shopping/view_user/{{ comment.user.id}}"> {{ comment.user }}</a>
-        {{ comment.text }}
-        {{ comment.stars }}
+
+    {% for comment in product.comment_set.all %}
+        <div id="product_panel" style="margin-top: 20px; height: 250px; width: 98%; margin-right: 1%; margin-left: 1%;"
+             class="panel panel-success col-md-9 col-sm-12">
+            <div class="panel-heading"
+                 style="width: 100%; position: absolute; left: 0px; top: 0px;" align="right"> <a href="/shopping/view_user/{{ comment.user.id }}"> {{ comment.user }}</a></div>
+            <div style="margin-top: 40px">
+
+                <p>امتیاز:</p><div>5 / {{ comment.stars }}</div>
+                <p>نظر:</p></div>{{ comment.text }}</div>
+            </div>
+        </div>
+
     {% endfor %}
 {% endblock %}
