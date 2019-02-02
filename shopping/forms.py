@@ -1,7 +1,8 @@
 from django import forms
 from django.utils.translation import ugettext_lazy as _
 
-from .models import ShoppingUser, Product, MyLocation
+from .models import *
+from django_starfield import Stars
 
 
 class UserSignupForm(forms.ModelForm):
@@ -374,3 +375,29 @@ class EditProfileForm(forms.ModelForm):
 class UseCreditForm(forms.Form):
     use_credit = forms.BooleanField(required=False)
     # dummy = forms.CharField(initial='dummy', widget=forms.widgets.HiddenInput())
+
+
+class AddCommentForm(forms.ModelForm):
+    class Meta:
+        model = Comment
+        fields = ['text', 'stars']
+        widgets = {
+            'text': forms.TextInput(attrs={'class': 'form-control',
+                                           'placeholder': 'نظر',
+                                           'style': 'text-align:right',
+                                           'direction': 'rtl'}),
+            'stars': Stars()
+        }
+        labels = {
+            'text': _('نظر'),
+            'stars': _('امتیاز')
+
+        }
+        error_messages = {
+            'text': {
+                'required': _('لطفا نظر  را وارد کنید')
+            },
+            'stars': {
+                'required': _('لطفا امتیاز  را وارد کنید')
+            }
+        }

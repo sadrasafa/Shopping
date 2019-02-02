@@ -47,6 +47,8 @@ INSTALLED_APPS = [
     'bootstrapform',
     'shopping.apps.ShoppingConfig',  # SADRA
     'location_field.apps.DefaultConfig',    # SADRA
+    'django_starfield',                     # SADRA
+
 ]
 
 MIDDLEWARE = [

@@ -44,8 +44,8 @@ class Product(models.Model):
     name = models.CharField(max_length=140)
     price = models.IntegerField(null=True)
     description = models.CharField(max_length=500, null=True)
-    seller = models.ForeignKey(ShoppingUser, on_delete=models.SET_NULL, related_name='buyer', null=True)
-    buyer = models.ForeignKey(ShoppingUser, on_delete=models.SET_NULL, related_name='seller', null=True)
+    seller = models.ForeignKey(ShoppingUser, on_delete=models.SET_NULL, related_name='seller', null=True)
+    buyer = models.ForeignKey(ShoppingUser, on_delete=models.SET_NULL, related_name='buyer', null=True)
     status = models.CharField(max_length=30)  # 'for sale' or 'sold'
     picture = models.FileField(upload_to='base/static', null=True)
     city = models.CharField(max_length=255, null=True)
@@ -60,4 +60,13 @@ class Product(models.Model):
 
     def __str__(self):
         return self.name + ': ' + self.seller.__str__()
+
+
+class Comment(models.Model):
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, null=True)
+    user = models.ForeignKey(ShoppingUser, on_delete=models.CASCADE, null=True)
+    text = models.TextField(null=True)
+    stars = models.IntegerField(null=True)
+
+
 

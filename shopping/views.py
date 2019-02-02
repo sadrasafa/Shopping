@@ -314,3 +314,26 @@ def view_user(request, id):
         return render(request, 'shopping/error.html', {'error_message': error_user_not_found,
                                                        'type_user_not_found': True})
     return render(request, 'shopping/view_user.html', {'viewed_user': viewed_user})
+
+
+def add_comment(request, id):
+    if not request.user.is_authenticated:
+        return render(request, 'shopping/error.html', {'error_message': error_not_authenticated,
+                                                       'type_not_authenticated': True})
+    try:
+        product = Product.objects.get(id=id)
+    except ObjectDoesNotExist:
+        return render(request, 'shopping/error.html', {'error_message': error_product_not_found,
+                                                       'type_product_not_found': True})
+    if request.method == 'POST':
+        form = AddCommentForm(request.POST)
+        if form.is_valid():
+            comment = Comment(product=product, user=request.user.shopping_user,
+                              text=form.cleaned_data['text'], stars=form.cleaned_data['stars'])
+            comment.save()
+            return HttpResponseRedirect('/shopping/view_product/'+str(id))
+        else:
+            return render(request, 'shopping/add_comment.html', {'add_comment_form': form})
+    else:
+        return render(request, 'shopping/add_comment.html',
+                      {'add_comment_form': AddCommentForm(label_suffix='')}, )

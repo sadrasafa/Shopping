@@ -143,4 +143,10 @@
             <a href="/shopping/buy_product/{{ product.id }}">خرید محصول</a>
         {% endifnotequal %}
     {% endifequal %}
+    <a href="/shopping/add_comment/{{ product.id }}">افزودن نظر</a>
+    {% for comment in product.comment_set.all  %}
+        {{ comment.user}}
+        {{ comment.text }}
+        {{ comment.stars }}
+    {% endfor %}
 {% endblock %}
