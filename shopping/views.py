@@ -6,7 +6,10 @@ from elasticsearch import Elasticsearch
 
 from .forms import *
 from .models import *
-
+from django.core.mail import EmailMessage
+import string
+import random
+import hashlib
 # Create your views here.
 
 error_not_authenticated = "ابتدا وارد شوید."
@@ -14,7 +17,10 @@ error_404_message = "چنین صفحه ای وجود ندارد"
 error_already_sold = "محصول قبلا فروخته شده است"
 error_product_not_found = "چنین محصولی وجود ندارد"
 error_user_not_found = "چنین کاربری وجود ندارد"
+error_wrong_confirmation_code = "کد فعالسازی اشتباه است"
 shopping_index = 'shopping_index'
+
+hash_salt = 'NeginAarashSadra'
 
 
 def home(request):
@@ -41,13 +47,20 @@ def signup(request):
         if form.is_valid():
             django_user = User.objects.create_user(username=form.cleaned_data['username'],
                                                    password=form.cleaned_data['password1'], )
+            django_user.is_active = False
             django_user.save()
             shopping_user = ShoppingUser(first_name=form.cleaned_data['first_name'],
                                          last_name=form.cleaned_data['last_name'],
                                          email=form.cleaned_data['email'], credit=0)
 
             shopping_user.user = django_user
+            shopping_user.random_code = ''.join(random.choice(string.ascii_uppercase + string.digits) for _ in range(10))
             shopping_user.save()
+            eid = hashlib.sha1((hash_salt+shopping_user.email).encode()).hexdigest()
+            link = 'http://127.0.0.1:8000/shopping/confirm/' + eid + '/' + shopping_user.random_code
+            email = EmailMessage('Confirmation Email', 'Please confirm your email via this link: ' + link,
+                                 to=[form.cleaned_data['email'], ])
+            email.send()
 
             return HttpResponseRedirect('signin')
         else:
@@ -68,7 +81,7 @@ def signin(request):
             login(request, user)
             return HttpResponseRedirect('/shopping/dashboard')
         else:
-            message = 'نام کاربری یا رمز عبور اشتباه است'
+            message = 'نام کاربری یا رمز عبور اشتباه است و یا ایمیل تایید نشده است.'
             return render(request, 'shopping/signin.html', {'message': message}, status=403)
 
 
@@ -337,3 +350,20 @@ def add_comment(request, id):
     else:
         return render(request, 'shopping/add_comment.html',
                       {'add_comment_form': AddCommentForm(label_suffix='')}, )
+
+
+def confirm(request, eid, code):
+    try:
+        shopping_user = ShoppingUser.objects.filter(random_code=code)[0]
+    except IndexError:
+        return render(request, 'shopping/error.html', {'error_message': error_wrong_confirmation_code,
+                                                       'type_wrong_confirmation': True})
+
+    hashed = hashlib.sha1((hash_salt+shopping_user.email).encode()).hexdigest()
+    if hashed == eid:
+        shopping_user.user.is_active = True
+        shopping_user.user.save()
+        return HttpResponseRedirect('/shopping/signin')
+    else:
+        return render(request, 'shopping/error.html', {'error_message': error_wrong_confirmation_code,
+                                                       'type_wrong_confirmation': True})

@@ -26,6 +26,9 @@
     {% if type_user_not_found %}
         {# error reason: trying to access a user which does not exist #}
     {% endif %}
+    {% if type_wrong_confirmation %}
+        {# error reason: wrong email confirmation link code #}
+    {% endif %}
     <div id="fourerror" class="container" align="center">
         <div>
             <h2>{{ error_message }}</h2>
