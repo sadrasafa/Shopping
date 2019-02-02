@@ -37,6 +37,25 @@
             </div>
         </div>
         <div class="row panel-body">
+            {% ifequal  product.status  "sold" %}
+            <div>
+                <div class="col-xs-6"><input type="text" id="staticField" readonly
+                                             class="form-control-plaintext form-control"
+                                             placeholder="وضعیت"
+                                             value="فروخته شده"></div>
+                <div class="col-xs-6">وضعیت</div>
+            </div>
+            {% else %}
+            <div>
+                <div class="col-xs-6"><input type="text" id="staticField" readonly
+                                             class="form-control-plaintext form-control"
+                                             placeholder="وضعیت"
+                                             value="قابل خرید"></div>
+                <div class="col-xs-6">وضعیت</div>
+            </div>
+            {% endifequal %}
+        </div>
+        <div class="row panel-body">
             <div>
                 <div class="col-xs-6"><input type="text" id="staticField" readonly
                                              class="form-control-plaintext form-control"
@@ -119,5 +138,9 @@
             window.history.back();
         }
     </script>
-    <a href="/shopping/buy_product/{{ product.id }}">خرید محصول</a>
+    {% ifequal product.status "for sale" %}
+        {% ifnotequal product.seller request.user.shopping_user %}
+            <a href="/shopping/buy_product/{{ product.id }}">خرید محصول</a>
+        {% endifnotequal %}
+    {% endifequal %}
 {% endblock %}

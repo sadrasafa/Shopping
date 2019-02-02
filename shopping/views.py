@@ -198,7 +198,7 @@ def buy_product(request, id):
             product.buyer = request.user.shopping_user
             product.status = 'sold'
             product.save()
-            return render(request, 'shopping/pay.html', {'amount': amount})
+            return HttpResponseRedirect('/shopping/dashboard')
         else:
             return render(request, 'shopping/buy_product.html',
                           {'product': product, 'use_credit_form': UseCreditForm})
