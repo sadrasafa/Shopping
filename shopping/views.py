@@ -301,7 +301,7 @@ def edit_profile(request):
 
     else:
         return render(request, 'shopping/edit_profile.html',
-                      {'edit_profile_form': EditProfileForm(label_suffix='')}, )
+                      {'edit_profile_form': EditProfileForm(instance=request.user.shopping_user)}, )
 
 
 def view_user(request, id):
