@@ -282,7 +282,7 @@ def edit_profile(request):
                                                        'type_not_authenticated': True})
     # locations = MyLocation.objects.filter(user=request.user.shopping_user)
     if request.method == 'POST':
-        form = EditProfileForm(request.POST, request.FILES)
+        form = EditProfileForm(request.POST, instance=request.user.shopping_user)
         if form.is_valid():
             django_user = request.user
             shopping_user = django_user.shopping_user
@@ -291,7 +291,6 @@ def edit_profile(request):
                                                                           last_name=form.cleaned_data['last_name'],
                                                                           phone_number=form.cleaned_data[
                                                                               'phone_number'],
-                                                                          picture=form.cleaned_data['picture'],
                                                                           city=form.cleaned_data['city'])
             django_user.save()
             shopping_user.save()

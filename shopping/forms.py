@@ -320,33 +320,31 @@ class IncreaseCreditForm(forms.Form):
 
 
 class EditProfileForm(forms.ModelForm):
+
     class Meta:
         model = ShoppingUser
         fields = ['first_name', 'last_name', 'phone_number', 'city']
+
         widgets = {
             'first_name': forms.TextInput(attrs={'class': 'form-control',
                                                  'placeholder': 'نام',
                                                  'style': 'text-align:right',
-                                                 'direction': 'rtl',
-                                                 'value': model.first_name}),
+                                                 'direction': 'rtl'}),
             'last_name': forms.TextInput(attrs={'class': 'form-control',
                                                   'placeholder': 'نام خانوادگی',
                                                   'style': 'text-align:right',
-                                                  'direction': 'rtl',
-                                                  'value': '{{ shopping_user.family_name}}'}),
+                                                  'direction': 'rtl'}),
             'phone_number': forms.TextInput(attrs={'class': 'form-control',
                                                    'placeholder': 'شماره تماس',
                                                    'style': 'text-align:right',
-                                                   'direction': 'rtl',
-                                                   'value': '{{ shopping_user.phone_number}}'}),
+                                                   'direction': 'rtl'}),
             # 'picture': forms.ClearableFileInput(attrs={'class': 'form-control', 'placeholder': 'تصویر',
             #                                            'style': 'text-align:right',
             #                                            'value': '{{ shopping_user.picture}}'}),
             'city': forms.TextInput(attrs={'class': 'form-control',
                                            'placeholder': 'شهر',
                                            'style': 'text-align:right',
-                                           'direction': 'rtl',
-                                           'value': '{{ shopping_user.city}}'})
+                                           'direction': 'rtl'})
 
         }
         labels = {
