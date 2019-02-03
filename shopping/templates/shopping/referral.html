@@ -10,8 +10,20 @@
 {# The apropriate error message is in 'error_message' variable #}
 {# This page should show the appropriate page to the user, using the error type and error message#}
 {% block content %}
-    با لینک زیر دوستان خود را دعوت کنید:
-    <a href="/shopping/signup_with_referral/{{ code }}"> {{ code }}</a>
+
+    <div align="center" id="product_panel"
+         style="margin-top: 20px; height: 175px; width: 50%; margin-right: 25%; margin-left: 25%;"
+         class="panel panel-success col-md-9 col-sm-12">
+        <div class="panel-heading"
+             style="width: 100%; position: absolute; left: 0px; top: 0px;" align="center">با لینک زیر دوستان خود را دعوت
+            کنید
+        </div>
+        <div style="margin-top: 60px">
+            <a style="font-size: 50px;" href="/shopping/signup_with_referral/{{ code }}"> {{ code }}</a>
+        </div>
+    </div>
+
+
     <div id="fourerror" class="container" align="center">
         <div>
             <h2>{{ error_message }}</h2>
