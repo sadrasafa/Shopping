@@ -113,7 +113,7 @@ class UserSignupForm(forms.ModelForm):
 
 class AddLocationForm(forms.ModelForm):
     CITIES = (('', 'انتخاب شهر...'),
-        ('تبریز', 'تبریز'),
+              ('تبریز', 'تبریز'),
               ('ارومیه', 'ارومیه'),
               ('تهران', 'تهران'),
               ('شیراز', 'شیراز'),
@@ -375,6 +375,57 @@ class EditProfileForm(forms.ModelForm):
         }
 
 
+class ChangePasswordForm(forms.Form):
+
+    old_password = forms.CharField(widget=forms.PasswordInput(attrs={'class': 'form-control',
+                                                                      'required': 'True',
+                                                                      'max_length': 30,
+                                                                      'render_value': 'False',
+                                                                      'placeholder': 'رمز عبور فعلی',
+                                                                      'style': 'text-align:right',
+                                                                      'direction': 'rtl'}
+                                                               ),
+                                    label=_("رمز عبور فعلی"),
+                                    error_messages={
+                                        'required': _('لطفا رمزعبور را وارد کنید')
+                                    })
+
+    new_password1 = forms.CharField(widget=forms.PasswordInput(attrs={'class': 'form-control',
+                                                                  'required': 'True',
+                                                                  'max_length': 30,
+                                                                  'render_value': 'False',
+                                                                  'placeholder': 'رمز عبور جدید',
+                                                                  'style': 'text-align:right',
+                                                                  'direction': 'rtl'}
+                                                           ),
+                                label=_("رمز عبور جدید"),
+                                error_messages={
+                                    'required': _('لطفا رمزعبور را وارد کنید')
+                                })
+    new_password2 = forms.CharField(widget=forms.PasswordInput(attrs={'class': 'form-control',
+                                                                  'required': 'True',
+                                                                  'max_length': 30,
+                                                                  'render_value': 'False',
+                                                                  'placeholder': 'تکرار رمز عبور جدید',
+                                                                  'style': 'text-align:right',
+                                                                  'direction': 'rtl'}
+                                                           ),
+                                label=_("تکرار رمز عبور جدید"),
+                                error_messages={
+                                    'required': _('لطفا رمزعبور را تکرار کنید')
+                                })
+
+    def clean(self):
+        cleaned_data = super(ChangePasswordForm, self).clean()
+        # old_password = cleaned_data.get('old_password')
+        password1 = cleaned_data.get('new_password1')
+        password2 = cleaned_data.get('new_password2')
+        if password1 != password2:
+            raise forms.ValidationError('رمزعبور یکسان نیست')
+        return cleaned_data
+
+
+
 class UseCreditForm(forms.Form):
     use_credit = forms.BooleanField(required=False)
     # dummy = forms.CharField(initial='dummy', widget=forms.widgets.HiddenInput())
@@ -387,9 +438,9 @@ class AddCommentForm(forms.ModelForm):
         widgets = {
             'stars': Stars(),
             'text': forms.Textarea(attrs={'class': 'form-control',
-                                           'placeholder': 'نظر خود را وارد کنید...',
-                                           'style': 'text-align:right; height: 90px',
-                                           'direction': 'rtl'})
+                                          'placeholder': 'نظر خود را وارد کنید...',
+                                          'style': 'text-align:right; height: 90px',
+                                          'direction': 'rtl'})
         }
         labels = {
             'stars': _('امتیاز'),
@@ -408,17 +459,17 @@ class AddCommentForm(forms.ModelForm):
 
 class ForgotPasswordForm(forms.Form):
     email = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control',
-                                                             'required': 'True',
-                                                             'max_length': 30,
-                                                             'render_value': 'False',
-                                                             'placeholder': 'ایمیل',
-                                                             'style': 'text-align:right',
-                                                             'direction': 'rtl'}
-                                                      ),
-                               label=_("آدرس ایمیل"),
-                               error_messages={
-                                   'required': _('لطفا آدرس ایمیل خود را وارد کنید')
-                               })
+                                                          'required': 'True',
+                                                          'max_length': 30,
+                                                          'render_value': 'False',
+                                                          'placeholder': 'ایمیل',
+                                                          'style': 'text-align:right',
+                                                          'direction': 'rtl'}
+                                                   ),
+                            label=_("آدرس ایمیل"),
+                            error_messages={
+                                'required': _('لطفا آدرس ایمیل خود را وارد کنید')
+                            })
 
 
 class ResetPasswordForm(forms.Form):

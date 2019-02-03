@@ -1,15 +1,17 @@
+import hashlib
+import random
+import string
+
 from django.contrib.auth import authenticate, login, logout
 from django.core.exceptions import ObjectDoesNotExist
+from django.core.mail import EmailMessage
 from django.http.response import HttpResponseRedirect
 from django.shortcuts import render
 from elasticsearch import Elasticsearch
 
 from .forms import *
 from .models import *
-from django.core.mail import EmailMessage
-import string
-import random
-import hashlib
+
 # Create your views here.
 
 error_not_authenticated = "ابتدا وارد شوید."
@@ -55,9 +57,10 @@ def signup(request):
                                          email=form.cleaned_data['email'], credit=0)
 
             shopping_user.user = django_user
-            shopping_user.random_code = ''.join(random.choice(string.ascii_uppercase + string.digits) for _ in range(10))
+            shopping_user.random_code = ''.join(
+                random.choice(string.ascii_uppercase + string.digits) for _ in range(10))
             shopping_user.save()
-            eid = hashlib.sha1((hash_salt+shopping_user.email).encode()).hexdigest()
+            eid = hashlib.sha1((hash_salt + shopping_user.email).encode()).hexdigest()
             link = 'http://127.0.0.1:8000/shopping/confirm/' + eid + '/' + shopping_user.random_code
             email = EmailMessage('Confirmation Email', 'Please confirm your email via this link: ' + link,
                                  to=[form.cleaned_data['email'], ])
@@ -301,11 +304,11 @@ def edit_profile(request):
             django_user = request.user
             shopping_user = django_user.shopping_user
 
-            ShoppingUser.objects.filter(email=shopping_user.email).update(first_name=form.cleaned_data['first_name'],
-                                                                          last_name=form.cleaned_data['last_name'],
-                                                                          phone_number=form.cleaned_data[
-                                                                              'phone_number'],
-                                                                          city=form.cleaned_data['city'])
+            shopping_user.update(first_name=form.cleaned_data['first_name'],
+                                 last_name=form.cleaned_data['last_name'],
+                                 phone_number=form.cleaned_data[
+                                     'phone_number'],
+                                 city=form.cleaned_data['city'])
             django_user.save()
             shopping_user.save()
 
@@ -316,6 +319,40 @@ def edit_profile(request):
     else:
         return render(request, 'shopping/edit_profile.html',
                       {'edit_profile_form': EditProfileForm(instance=request.user.shopping_user)}, )
+
+
+def change_password(request):
+    if not request.user.is_authenticated:
+        return render(request, 'shopping/error.html', {'error_message': error_not_authenticated,
+                                                       'type_not_authenticated': True})
+    # locations = MyLocation.objects.filter(user=request.user.shopping_user)
+    if request.method == 'POST':
+        form = ChangePasswordForm(request.POST)
+        if form.is_valid():
+            django_user = request.user
+            shopping_user = django_user.shopping_user
+
+            username = shopping_user.user
+            password = request.POST['old_password']
+            new_password = request.POST['new_password1']
+            user = authenticate(username=username, password=password)
+
+            if user is None:
+                message = 'رمز عبور وارد شده اشتباه است.'
+                return render(request, 'shopping/change_password.html', {'message': message}, status=403)
+            else:
+                django_user.set_password(new_password)
+                django_user.save()
+                user = authenticate(username=username, password=new_password)
+                login(request, user)
+                return HttpResponseRedirect('/shopping/dashboard')
+
+        else:
+            return render(request, 'shopping/change_password.html', {'change_password_form': form})
+
+    else:
+        return render(request, 'shopping/change_password.html',
+                      {'change_password_form': ChangePasswordForm(label_suffix='')})
 
 
 def view_user(request, id):
@@ -345,7 +382,7 @@ def add_comment(request, id):
             comment = Comment(product=product, user=request.user.shopping_user,
                               text=form.cleaned_data['text'], stars=form.cleaned_data['stars'])
             comment.save()
-            return HttpResponseRedirect('/shopping/view_product/'+str(id))
+            return HttpResponseRedirect('/shopping/view_product/' + str(id))
         else:
             return render(request, 'shopping/add_comment.html', {'add_comment_form': form})
     else:
@@ -360,7 +397,7 @@ def confirm(request, eid, code):
         return render(request, 'shopping/error.html', {'error_message': error_wrong_confirmation_code,
                                                        'type_wrong_confirmation': True})
 
-    hashed = hashlib.sha1((hash_salt+shopping_user.email).encode()).hexdigest()
+    hashed = hashlib.sha1((hash_salt + shopping_user.email).encode()).hexdigest()
     if hashed == eid:
         shopping_user.user.is_active = True
         shopping_user.user.save()
@@ -381,7 +418,8 @@ def forgot_password(request):
                 return render(request, 'shopping/forgot_password.html', {'forgot_password_form': form,
                                                                          'Done': True})
 
-            shopping_user.random_code = ''.join(random.choice(string.ascii_uppercase + string.digits) for _ in range(10))
+            shopping_user.random_code = ''.join(
+                random.choice(string.ascii_uppercase + string.digits) for _ in range(10))
             shopping_user.save()
             eid = hashlib.sha1((hash_salt + hash_salt + email_address).encode()).hexdigest()
             link = 'http://127.0.0.1:8000/shopping/reset_password/' + eid + '/' + shopping_user.random_code

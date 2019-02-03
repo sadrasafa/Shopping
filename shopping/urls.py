@@ -15,6 +15,7 @@ urlpatterns = [
     path('search_product', views.search_product, name='search_product'),
     path('increase_credit', views.increase_credit, name='increase_credit'),
     path('edit_profile', views.edit_profile, name='edit_profile'),
+    path('change_password', views.change_password, name='change_password'),
     path('view_user/<int:id>', views.view_user, name='view_user'),
     path('add_comment/<int:id>', views.add_comment, name='add_comment'),
     re_path('confirm/(?P<eid>[a-fA-F0-9]*)/(?P<code>[a-zA-Z0-9]*)', views.confirm, name='confirm'),
