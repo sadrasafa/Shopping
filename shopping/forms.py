@@ -427,7 +427,7 @@ class ChangePasswordForm(forms.Form):
 
 
 class UseCreditForm(forms.Form):
-    use_credit = forms.BooleanField(required=False)
+    use_credit = forms.BooleanField(required=False, label='استفاده از اعتبار')
     # dummy = forms.CharField(initial='dummy', widget=forms.widgets.HiddenInput())
 
 
@@ -458,17 +458,17 @@ class AddCommentForm(forms.ModelForm):
 
 
 class ForgotPasswordForm(forms.Form):
-    email = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control',
+    username = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control',
                                                           'required': 'True',
                                                           'max_length': 30,
                                                           'render_value': 'False',
-                                                          'placeholder': 'ایمیل',
+                                                          'placeholder': 'نام کاربری',
                                                           'style': 'text-align:right',
                                                           'direction': 'rtl'}
                                                    ),
-                            label=_("آدرس ایمیل"),
+                            label=_("نام کاربری"),
                             error_messages={
-                                'required': _('لطفا آدرس ایمیل خود را وارد کنید')
+                                'required': _('لطفا نام کاربری خود را وارد کنید')
                             })
 
 

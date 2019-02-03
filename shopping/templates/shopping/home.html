@@ -35,9 +35,9 @@
                             <img src="/{{ product.picture.url|slice:"5:" }}" width="200" height="200">
                         </div>
                         <div align="center">
-                            <p style="color: #126b15; margin-top: 10px;">مکان: {{ product.city }}</p>
-                            <p style="color: #126b15;">قیمت: {{ product.price }} ریال</p>
-                            <p style="color: #126b15;">توضیحات: {{ product.description }}</p>
+                            <p style="color: #126b15; margin-top: 10px;"><span style="color: #1c258b">دسته‌بندی: </span>{{ product.category }}</p>
+                            <p style="color: #126b15;"><span style="color: #1c258b">قیمت: </span> {{ product.price }} ریال</p>
+                            <p style="color: #126b15;"><span style="color: #1c258b">توضیحات: </span> {{ product.description }}</p>
                             {#                            <a href="/shopping/view_product/{{ product.id }}">{{ product.name }}</a>#}
                         </div>
 

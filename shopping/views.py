@@ -180,8 +180,17 @@ def view_product(request, id):
     except ObjectDoesNotExist:
         return render(request, 'shopping/error.html', {'error_message': error_product_not_found,
                                                        'type_product_not_found': True})
+
+    template = ''
+    if not request.user.is_authenticated:
+        template = 'base/not_user_base.html'
+    else:
+        template = 'base/user_base.html'
+
+
     return render(request, 'shopping/view_product.html',
-                  {'product': product})
+                  {'product': product,
+                   'template': template})
 
 
 def buy_product(request, id):
@@ -210,8 +219,10 @@ def buy_product(request, id):
                 else:
                     amount = 0
                     request.user.shopping_user.credit = credit - price
+                    request.user.shopping_user.save()
             else:
                 amount = price
+
             product.buyer = request.user.shopping_user
             product.status = 'sold'
             product.save()
@@ -415,9 +426,9 @@ def forgot_password(request):
     if request.method == 'POST':
         form = ForgotPasswordForm(request.POST)
         if form.is_valid():
-            email_address = form.cleaned_data['email']
+            username = form.cleaned_data['username']
             try:
-                shopping_user = ShoppingUser.objects.filter(email=email_address)[0]
+                shopping_user = User.objects.filter(username=username)[0].shopping_user
             except IndexError:
                 return render(request, 'shopping/forgot_password.html', {'forgot_password_form': form,
                                                                          'Done': True})
@@ -425,10 +436,10 @@ def forgot_password(request):
             shopping_user.random_code = ''.join(
                 random.choice(string.ascii_uppercase + string.digits) for _ in range(10))
             shopping_user.save()
-            eid = hashlib.sha1((hash_salt + hash_salt + email_address).encode()).hexdigest()
+            eid = hashlib.sha1((hash_salt + hash_salt + shopping_user.email).encode()).hexdigest()
             link = 'http://127.0.0.1:8000/shopping/reset_password/' + eid + '/' + shopping_user.random_code
             email = EmailMessage('Password Reset', 'To Change Your Password Go To The Following Link: ' + link,
-                                 to=[email_address, ])
+                                 to=[shopping_user.email, ])
             email.send()
             return render(request, 'shopping/forgot_password.html', {'forgot_password_form': form,
                                                                      'Done': True})

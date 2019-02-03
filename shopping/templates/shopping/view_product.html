@@ -1,4 +1,4 @@
-{% extends 'base/user_base.html' %}
+{% extends template %}
 <head><title>مشاهده محصول</title></head>
 {% load staticfiles %}
 
@@ -158,7 +158,7 @@
              class="panel panel-success col-md-9 col-sm-12">
             <div class="panel-heading"
                  style="width: 100%; position: absolute; left: 0px; top: 0px;" align="right"><a
-                    href="/shopping/view_user/{{ comment.user.id }}"> {{ comment.user }}</a></div>
+                    href="/shopping/view_user/{{ comment.user.id }}"> {{ comment.user.first_name }}</a></div>
             <div style="margin-top: 40px">
 
                 <p>امتیاز:</p>
