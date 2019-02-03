@@ -17,10 +17,14 @@
     {#    {{ add_product_form.media }}#}
 
     <div class="container">
-
+        <p>آدرس‌‌های ذخیره‌شده:</p>
+        <ul>
         {% for field in locations %}
-            *******{{ field.name }}***********
+            <li>
+            {{ field.name }}
+            </li>
         {% endfor %}
+        </ul>
 
         {#        <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4"></div>#}
         {#        <div id="search_panel" class="panel panel-info">#}
