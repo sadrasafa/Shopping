@@ -1,0 +1,28 @@
+{% extends 'base/very_base.html' %}
+<head><title>کد دعوت</title></head>
+
+{% load staticfiles %}
+{% load static %}
+
+
+{# All kind of errors are handled using this template, depending on their type#}
+{# Error types are specified by 'type_xxx' variables #}
+{# The apropriate error message is in 'error_message' variable #}
+{# This page should show the appropriate page to the user, using the error type and error message#}
+{% block content %}
+    با لینک زیر دوستان خود را دعوت کنید:
+    <a href="/shopping/signup_with_referral/{{ code }}"> {{ code }}</a>
+    <div id="fourerror" class="container" align="center">
+        <div>
+            <h2>{{ error_message }}</h2>
+        </div>
+        <div>
+            <button type="submit" onclick="goBack()" value="بازگشت" class="btn btn-primary">بازگشت</button>
+            <script>
+                function goBack() {
+                    window.history.back();
+                }
+            </script>
+        </div>
+    </div>
+{% endblock %}

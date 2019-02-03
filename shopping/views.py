@@ -363,6 +363,10 @@ def confirm(request, eid, code):
     hashed = hashlib.sha1((hash_salt+shopping_user.email).encode()).hexdigest()
     if hashed == eid:
         shopping_user.user.is_active = True
+        if len(shopping_user.referrer_code) == 10:
+            referrer = ShoppingUser.objects.filter(referral_code=shopping_user.referrer_code)[0 ]
+            referrer.credit += 12345
+            referrer.save()
         shopping_user.user.save()
         return HttpResponseRedirect('/shopping/signin')
     else:
@@ -421,3 +425,44 @@ def reset_password(request, eid, code):
     else:
         return render(request, 'shopping/error.html', {'error_message': error_wrong_reset_password,
                                                        'type_wrong_reset_password': True})
+
+
+def referral(request):
+    if not request.user.is_authenticated:
+        return render(request, 'shopping/error.html', {'error_message': error_not_authenticated,
+                                                       'type_not_authenticated': True})
+    shopping_user = request.user.shopping_user
+    if len(shopping_user.referral_code) != 10:
+        shopping_user.referral_code = ''.join(random.choice(string.ascii_uppercase + string.digits) for _ in range(10))
+        shopping_user.save()
+    return render(request, 'shopping/referral.html',{'code': shopping_user.referral_code})
+
+
+def signup_with_referral(request, code):
+    if request.method == 'POST':
+        form = UserSignupForm(request.POST, request.FILES)
+        if form.is_valid():
+            django_user = User.objects.create_user(username=form.cleaned_data['username'],
+                                                   password=form.cleaned_data['password1'], )
+            django_user.is_active = False
+            django_user.save()
+            shopping_user = ShoppingUser(first_name=form.cleaned_data['first_name'],
+                                         last_name=form.cleaned_data['last_name'],
+                                         email=form.cleaned_data['email'], credit=0)
+
+            shopping_user.user = django_user
+            shopping_user.random_code = ''.join(random.choice(string.ascii_uppercase + string.digits) for _ in range(10))
+            shopping_user.referrer_code = code
+            shopping_user.save()
+            eid = hashlib.sha1((hash_salt+shopping_user.email).encode()).hexdigest()
+            link = 'http://127.0.0.1:8000/shopping/confirm/' + eid + '/' + shopping_user.random_code
+            email = EmailMessage('Confirmation Email', 'Please confirm your email via this link: ' + link,
+                                 to=[form.cleaned_data['email'], ])
+            email.send()
+
+            return HttpResponseRedirect('/shopping/signin')
+        else:
+
+            return render(request, 'shopping/signup.html', {'signup_form': form})
+    else:
+        return render(request, 'shopping/signup.html', {'signup_form': UserSignupForm(label_suffix='')})

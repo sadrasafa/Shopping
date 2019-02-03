@@ -4,6 +4,7 @@ from . import views
 
 urlpatterns = [
     path('home', views.home, name='home'),
+    re_path('signup_with_referral/(?P<code>[a-zA-Z0-9]*)', views.signup_with_referral, name='signup_with_referral'),
     path('signup', views.signup, name='signup'),
     path('signin', views.signin, name='signin'),
     path('signout', views.signout, name='signout'),
@@ -20,4 +21,5 @@ urlpatterns = [
     re_path('confirm/(?P<eid>[a-fA-F0-9]*)/(?P<code>[a-zA-Z0-9]*)', views.confirm, name='confirm'),
     path('forgot_password', views.forgot_password, name='forgot_password'),
     re_path('reset_password/(?P<eid>[a-fA-F0-9]*)/(?P<code>[a-zA-Z0-9]*)', views.reset_password, name='reset_password'),
+    path('referral', views.referral, name='referral'),
 ]

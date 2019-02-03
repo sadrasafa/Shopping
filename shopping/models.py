@@ -24,6 +24,8 @@ class ShoppingUser(models.Model):
     city = models.CharField(max_length=40, null=True, blank=True)
     credit = models.IntegerField(null=True, default=0)
     random_code = models.CharField(max_length=10, null=True, blank=True)
+    referral_code = models.CharField(max_length=10, null=True, blank=True, default='0')
+    referrer_code = models.CharField(max_length=10, null=True, blank=True, default='0')
 
     def __str__(self):
         return self.user.username + ' ' + self.first_name + ' ' + self.last_name
@@ -68,6 +70,7 @@ class Comment(models.Model):
     user = models.ForeignKey(ShoppingUser, on_delete=models.CASCADE, null=True)
     text = models.TextField(null=True)
     stars = models.IntegerField(null=True)
+
 
 
 
