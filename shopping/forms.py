@@ -383,25 +383,25 @@ class UseCreditForm(forms.Form):
 class AddCommentForm(forms.ModelForm):
     class Meta:
         model = Comment
-        fields = ['text', 'stars']
+        fields = ['stars', 'text']
         widgets = {
-            'text': forms.TextInput(attrs={'class': 'form-control',
-                                           'placeholder': 'نظر',
-                                           'style': 'text-align:right',
-                                           'direction': 'rtl'}),
-            'stars': Stars()
+            'stars': Stars(),
+            'text': forms.Textarea(attrs={'class': 'form-control',
+                                           'placeholder': 'نظر خود را وارد کنید...',
+                                           'style': 'text-align:right; height: 90px',
+                                           'direction': 'rtl'})
         }
         labels = {
-            'text': _('نظر'),
-            'stars': _('امتیاز')
+            'stars': _('امتیاز'),
+            'text': _('نظر')
 
         }
         error_messages = {
             'text': {
-                'required': _('لطفا نظر  را وارد کنید')
+                'required': _('لطفا نظر را وارد کنید')
             },
             'stars': {
-                'required': _('لطفا امتیاز  را وارد کنید')
+                'required': _('لطفا امتیاز را وارد کنید')
             }
         }
 
