@@ -15,7 +15,6 @@ import os
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.1/howto/deployment/checklist/
 
@@ -27,7 +26,6 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
-
 # Application definition
 
 INSTALLED_APPS = [
@@ -38,16 +36,16 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'django.contrib.sites',             # SADRA
-    'allauth',                          # SADRA
-    'allauth.account',                  # SADRA
-    'allauth.socialaccount',            # SADRA
+    'django.contrib.sites',  # SADRA
+    'allauth',  # SADRA
+    'allauth.account',  # SADRA
+    'allauth.socialaccount',  # SADRA
     'allauth.socialaccount.providers.google',  # SADRA
     'base',
     'bootstrapform',
     'shopping.apps.ShoppingConfig',  # SADRA
-    'location_field.apps.DefaultConfig',    # SADRA
-    'django_starfield',                     # SADRA
+    'location_field.apps.DefaultConfig',  # SADRA
+    'django_starfield',  # SADRA
 
 ]
 
@@ -75,13 +73,13 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'shopping.context_processors.product_processor',
             ],
         },
     },
 ]
 
 WSGI_APPLICATION = 'mysite.wsgi.application'
-
 
 # Database
 # https://docs.djangoproject.com/en/2.1/ref/settings/#databases
@@ -93,7 +91,7 @@ DATABASES = {
     }
 }
 
-AUTH_USER_MODEL = "shopping.User"     # SADRA
+AUTH_USER_MODEL = "shopping.User"  # SADRA
 # LOGIN_REDIRECT_URL = "shopping/dashboard"  # SADRA
 # Password validation
 # https://docs.djangoproject.com/en/2.1/ref/settings/#auth-password-validators
@@ -113,7 +111,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/2.1/topics/i18n/
 
@@ -127,28 +124,26 @@ USE_L10N = True
 
 USE_TZ = True
 
-
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.1/howto/static-files/
 
 STATIC_URL = '/static/'
 
-
-AUTHENTICATION_BACKENDS = (                         # SADRA
-    "django.contrib.auth.backends.ModelBackend",        # SADRA
+AUTHENTICATION_BACKENDS = (  # SADRA
+    "django.contrib.auth.backends.ModelBackend",  # SADRA
     "allauth.account.auth_backends.AuthenticationBackend",  # SADRA
-)                                                           # SADRA
+)  # SADRA
 
-SITE_ID = 1                                     # SADRA
-ACCOUNT_EMAIL_REQUIRED = True                   # SADRA
-ACCOUNT_USERNAME_REQUIRED = False               # SADRA
+SITE_ID = 1  # SADRA
+ACCOUNT_EMAIL_REQUIRED = True  # SADRA
+ACCOUNT_USERNAME_REQUIRED = False  # SADRA
 
-LOGIN_REDIRECT_URL = 'dashboard'                # SADRA
-LOGOUT_REDIRECT_URL = 'home'                    # SADRA
-
+LOGIN_REDIRECT_URL = 'dashboard'  # SADRA
+LOGOUT_REDIRECT_URL = 'home'  # SADRA
 
 # SADRA:
 from django.conf import settings
+
 LOCATION_FIELD_PATH = settings.STATIC_URL + 'location_field'
 
 LOCATION_FIELD = {
