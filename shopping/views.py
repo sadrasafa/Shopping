@@ -1,6 +1,7 @@
 import hashlib
 import random
 import string
+import requests
 
 from django.contrib.auth import authenticate, login, logout
 from django.core.exceptions import ObjectDoesNotExist
@@ -21,6 +22,7 @@ error_product_not_found = "چنین محصولی وجود ندارد"
 error_user_not_found = "چنین کاربری وجود ندارد"
 error_wrong_confirmation_code = "کد فعالسازی اشتباه است"
 error_wrong_reset_password = "این لینک معتبر نیست"
+error_payment_unsuccessful = 'پرداخت ناموفق'
 shopping_index = 'shopping_index'
 
 hash_salt = 'NeginAarashSadra'
@@ -214,14 +216,25 @@ def buy_product(request, id):
             if form.cleaned_data['use_credit']:
                 if credit < price:
                     amount = price - credit
-                    request.user.shopping_user.credit = 0
-                    request.user.shopping_user.save()
+                    code = ''.join(random.choice(string.ascii_uppercase + string.digits) for _ in range(10))
+                    r = requests.post('https://tanakora.pythonanywhere.com/pay', data=code)
+                    if r.content.decode('utf-8') == code:
+                        request.user.shopping_user.credit = 0
+                        request.user.shopping_user.save()
+                    else:
+                        return render(request, 'shopping/error.html', {'error_message': error_payment_unsuccessful,
+                                                                       'type_payment_unsuccessful': True})
                 else:
                     amount = 0
                     request.user.shopping_user.credit = credit - price
                     request.user.shopping_user.save()
             else:
                 amount = price
+                code = ''.join(random.choice(string.ascii_uppercase + string.digits) for _ in range(10))
+                r = requests.post('https://tanakora.pythonanywhere.com/pay', data=code)
+                if r.content.decode('utf-8') != code:
+                    return render(request, 'shopping/error.html', {'error_message': error_payment_unsuccessful,
+                                                                   'type_payment_unsuccessful': True})
 
             product.buyer = request.user.shopping_user
             product.status = 'sold'
@@ -293,9 +306,15 @@ def increase_credit(request):
         if form.is_valid():
             django_user = request.user
             shopping_user = django_user.shopping_user
-            shopping_user.credit += form.cleaned_data['amount']
-            shopping_user.save()
-            return HttpResponseRedirect('dashboard')
+            code = ''.join(random.choice(string.ascii_uppercase + string.digits) for _ in range(10))
+            r = requests.post('https://tanakora.pythonanywhere.com/pay', data=code)
+            if r.content.decode('utf-8') == code:
+                shopping_user.credit += form.cleaned_data['amount']
+                shopping_user.save()
+                return HttpResponseRedirect('dashboard')
+            else:
+                return render(request, 'shopping/error.html', {'error_message': error_payment_unsuccessful,
+                                                               'type_payment_unsuccessful': True})
         else:
 
             return render(request, 'shopping/increase_credit.html', {'increase_credit_form': form})
@@ -412,7 +431,7 @@ def confirm(request, eid, code):
     if hashed == eid:
         shopping_user.user.is_active = True
         if len(shopping_user.referrer_code) == 10:
-            referrer = ShoppingUser.objects.filter(referral_code=shopping_user.referrer_code)[0 ]
+            referrer = ShoppingUser.objects.filter(referral_code=shopping_user.referrer_code)[0]
             referrer.credit += 12345
             referrer.save()
         shopping_user.user.save()

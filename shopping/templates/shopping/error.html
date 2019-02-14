@@ -32,6 +32,9 @@
     {% if type_wrong_reset_password %}
         {# error  reason: wrong link used to reset password #}
     {% endif %}
+    {% if type_payment_unsuccessful %}
+        {# error reason: payment server was down #}
+    {% endif %}
     <div id="fourerror" class="container" align="center">
         <div>
             <h2>{{ error_message }}</h2>
