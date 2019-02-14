@@ -87,7 +87,12 @@ def signin(request):
             login(request, user)
             return HttpResponseRedirect('/shopping/dashboard')
         else:
-            message = 'نام کاربری یا رمز عبور اشتباه است و یا ایمیل تایید نشده است.'
+            message = 'نام کاربری یا رمز عبور اشتباه است'
+            users = User.objects.filter(username=username)
+            if len(users) > 0:
+                if not users[0].is_active:
+                    message = 'لطفا ایمیل خود را تایید کنید'
+
             return render(request, 'shopping/signin.html', {'message': message}, status=403)
 
 
