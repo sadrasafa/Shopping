@@ -186,7 +186,8 @@ class AddProductForm(forms.ModelForm):
 
     class Meta:
         model = Product
-        fields = ['name', 'price', 'description', 'picture', 'category']
+        fields = ['name', 'price', 'description', 'picture', 'category', 'digital_subcategory', 'health_subcategory']
+
         widgets = {
             'name': forms.TextInput(attrs={'class': 'form-control',
                                            'placeholder': 'عنوان محصول',
@@ -203,9 +204,17 @@ class AddProductForm(forms.ModelForm):
             'picture': forms.ClearableFileInput(attrs={'class': 'form-control', 'placeholder': 'تصویر',
                                                        'style': 'text-align:right'}),
             'category': forms.Select(choices=Product.categories, attrs={'class': 'form-control',
-                                                                        'placeholder': 'دسته بندی'}),
-            # 'sub_category_1': forms.Select(choices=Product.sub_categories_1, attrs={'class': 'form-control',
-            #                                                                         'placeholder': 'دسته بندی ریزتر'})
+                                                                        'placeholder': 'دسته‌بندی',
+                                                                        # 'name': 'category',
+                                                                        'id': 'category_id',
+                                                                        }),
+            'digital_subcategory': forms.Select(choices=Product.digital_subcategories, attrs={'class': 'form-control',
+                                                                                            'placeholder': 'دسته‌بندی دیجیتال',
+                                                                                            'id': 'digital_prods'}),
+
+            'health_subcategory': forms.Select(choices=Product.health_subcategories, attrs={'class': 'form-control',
+                                                                                            'placeholder': 'دسته‌بندی بهداشتی',
+                                                                                            'name': 'health_prods'})
 
             # 'city': forms.Select(attrs={'class': 'form-control',
             #                             'placeholder': 'dfadlflkdfjalk',
@@ -221,7 +230,8 @@ class AddProductForm(forms.ModelForm):
             'description': _('توضیحات'),
             'picture': _('تصویر محصول'),
             'category': _('دسته بندی'),
-            # 'sub_category_1': _('دسته بندی ریزتر'),
+            'digital_subcategory': _('دسته‌بندی دیجیتال'),
+            'health_subcategory': _('دسته‌بندی بهداشتی'),
             # 'city': _('شهر'),
             # 'location': _('مکان')
         }
