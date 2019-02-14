@@ -11,7 +11,7 @@ https://docs.djangoproject.com/en/2.1/ref/settings/
 """
 
 import os
-
+import dj_database_url # SADRA
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -22,9 +22,9 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = '#sqy8#v1d^&*g@@t#@cl=^!2adzdoi%+pgp=wk%q-%e(n!)$o6'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False   # Sadra
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['0.0.0.0', '127.0.0.1', 'localhost', 'herokuapp.com', 'heroku.com', 'tanakora.herokuapp.com']
 
 # Application definition
 
@@ -165,3 +165,8 @@ EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_HOST_USER = 'tanakorat402@gmail.com'
 EMAIL_HOST_PASSWORD = 'tanakoratanakora'
+
+
+# db_from_env = dj_database_url.config(conn_max_age=500)  # SADRA
+# DATABASES['default'].update(db_from_env)    # SADRA
+
