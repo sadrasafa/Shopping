@@ -1,8 +1,9 @@
-from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.core.validators import RegexValidator
+from django.db import models
 from location_field.models.plain import PlainLocationField
-from django.utils.translation import ugettext_lazy as _
+
+
 # from osm_field.fields import LatitudeField, LongitudeField, OSMField
 
 # Create your models here.
@@ -19,7 +20,8 @@ class ShoppingUser(models.Model):
     email = models.EmailField()
     phone_number = models.CharField(max_length=20, validators=[
         RegexValidator(regex=r'^((\+|00)\d{11,12})|(09\d{9})$',
-                       message="شماره تلفن نامعتبر است")], null=True, blank=True)  # null=True and Blank=True if not required
+                       message="شماره تلفن نامعتبر است")], null=True,
+                                    blank=True)  # null=True and Blank=True if not required
     province = models.CharField(max_length=40, null=True, blank=True)  # province should be a choice
     city = models.CharField(max_length=40, null=True, blank=True)
     credit = models.IntegerField(null=True, default=0)
@@ -55,28 +57,53 @@ class Product(models.Model):
     location = PlainLocationField(based_fields=['city'], zoom=7, null=True)
     latitude = models.FloatField(null=True)
     longitude = models.FloatField(null=True)
-    categories = (('لپ تاپ', 'لپ تاپ'),
-                  ('گوشی', 'گوشی'),
-                  ('دوربین', 'دوربین'),
-                  ('میز', 'میز'),
-                  ('کیف', 'کیف'),
-                  ('لوازم الکترونیکی', 'لوازم الکترونیکی'),
-                  ('عینک', 'عینک'),
-                  ('لباس', 'لباس'),
+    categories = (('لوازم دیجیتال', 'لوازم دیجیتال'),
                   ('لوازم تزیینی', 'لوازم تزیینی'),
-                  ('تابلو', 'تابلو'),
                   ('لوازم بهداشتی', 'لوازم بهداشتی'),
                   ('خودرو', 'خودرو'),
-                  ('تلویزیون', 'تلویزیون'),
                   ('لوازم ورزشی', 'لوازم ورزشی'),
-                  ('صندلی', 'صندلی'),
                   ('لوازم آشپزی', 'لوازم آشپزی'),
                   ('مسکن', 'مسکن'),
-                  ('خوراکی', 'خوراکی'),
-                  ('مبل', 'مبل'),
-                  ('سایر', 'سایر'),
-)
+                  ('لوازم برقی', 'لوازم برقی'),
+                  )
+
+    digital_subcategories = (('لپ تاپ', 'لپ تاپ'),
+                             ('تلفن همراه', 'تلفن همراه'),
+                             ('دوربین', 'دوربین'),
+                             ('تلویزیون', 'تلویزیون'),
+                             ('بلندگو', 'بلندگو'),
+                             ('تلویزیون', 'تلویزیون'),
+                             ('تبلت', 'تبلت'),
+                             ('هارد، فلش و SSD', 'تلویزیون'),
+                             ('مچ‌بند و ساعت هوشمند', 'تلویزیون'),
+                             ('هدفون، هدست', 'تلویزیون'),
+                             )
+
+    health_subcategories = (('لوازم آرایشی', 'لوازم آرایشی'),
+                            ('لوازم بهداشتی', 'لوازم بهداشتی'),
+                            ('دوربین', 'دوربین'),
+                            ('میز', 'میز'),
+                            ('کیف', 'کیف'),
+                            ('لوازم الکترونیکی', 'لوازم الکترونیکی'),
+                            ('عینک', 'عینک'),
+                            ('لباس', 'لباس'),
+                            ('لوازم تزیینی', 'لوازم تزیینی'),
+                            ('تابلو', 'تابلو'),
+                            ('لوازم بهداشتی', 'لوازم بهداشتی'),
+                            ('خودرو', 'خودرو'),
+                            ('تلویزیون', 'تلویزیون'),
+                            ('لوازم ورزشی', 'لوازم ورزشی'),
+                            ('صندلی', 'صندلی'),
+                            ('لوازم آشپزی', 'لوازم آشپزی'),
+                            ('مسکن', 'مسکن'),
+                            ('خوراکی', 'خوراکی'),
+                            ('مبل', 'مبل'),
+                            ('سایر', 'سایر'),
+                            )
+
     category = models.CharField(max_length=140, null=True, choices=categories)
+
+    # sub_category_1 = models.CharField(max_length=140, null=True, choices=sub_categories_1)
 
     def __str__(self):
         return self.name + ': ' + self.seller.__str__()
@@ -87,7 +114,3 @@ class Comment(models.Model):
     user = models.ForeignKey(ShoppingUser, on_delete=models.CASCADE, null=True)
     text = models.TextField(null=True)
     stars = models.IntegerField(null=True)
-
-
-
-
