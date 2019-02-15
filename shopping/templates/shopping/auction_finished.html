@@ -1,5 +1,5 @@
-{% extends 'base/very_base.html' %}
-<head><title>صفحه خطا</title></head>
+{% extends 'base/user_base.html' %}
+<head><title>پایان مزایده</title></head>
 
 {% load staticfiles %}
 {% load static %}
@@ -52,7 +52,7 @@
     {% endif %}
     <div id="fourerror" class="container" align="center">
         <div>
-            <h2>{{ error_message }}</h2>
+            <h2>مزایده با موفقیت به پایان رسید</h2>
         </div>
         <div>
             <button type="submit" onclick="goBack()" value="بازگشت" class="btn btn-primary">بازگشت</button>

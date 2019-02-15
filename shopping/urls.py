@@ -23,4 +23,11 @@ urlpatterns = [
     path('forgot_password', views.forgot_password, name='forgot_password'),
     re_path('reset_password/(?P<eid>[a-fA-F0-9]*)/(?P<code>[a-zA-Z0-9]*)', views.reset_password, name='reset_password'),
     path('referral', views.referral, name='referral'),
+    path('create_auction', views.create_auction, name='create_auction'),
+    path('view_auction/<int:id>', views.view_auction, name='view_auction'),
+    path('bid_auction/<int:id>', views.bid_auction, name='bid_auction'),
+    path('finish_auction/<int:id>', views.finish_auction, name='finish_auction'),
+
+
+
 ]

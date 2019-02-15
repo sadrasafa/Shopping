@@ -23,6 +23,11 @@ error_user_not_found = "چنین کاربری وجود ندارد"
 error_wrong_confirmation_code = "کد فعالسازی اشتباه است"
 error_wrong_reset_password = "این لینک معتبر نیست"
 error_payment_unsuccessful = 'پرداخت ناموفق'
+error_auction_not_found = 'چنین مزایده ای وجود ندارد'
+error_insufficient_credit = 'اعتبار شما برای شرکت در مزایده کافی نیست'
+error_self_bid = 'نمی توانید در مزایده خود شرکت کنید'
+error_self_buy = 'نمی توانید کالای خود را بخرید'
+error_finish_other_auction = 'نمی توانید مزایده افراد دیگر را متوقف کنید'
 shopping_index = 'shopping_index'
 
 hash_salt = 'NeginAarashSadra'
@@ -112,12 +117,11 @@ def dashboard(request):  # , action):
     shopping_user = request.user.shopping_user
     for_sale = Product.objects.filter(seller=shopping_user).filter(status='for sale')
     bought = Product.objects.filter(buyer=shopping_user).filter(status='sold')
-    all_products = Product.objects.all()
+    # all_products = Product.objects.all()
     return render(request, 'shopping/dashboard.html',
                   {'shopping_user': request.user.shopping_user,
                    'for_sale': for_sale,
-                   'bought': bought,
-                   'all_products': all_products})
+                   'bought': bought,})
 
 
 def add_location(request):
@@ -209,6 +213,9 @@ def buy_product(request, id):
     except ObjectDoesNotExist:
         return render(request, 'shopping/error.html', {'error_message': error_product_not_found,
                                                        'type_product_not_found': True})
+    if product.seller == request.user.shopping_user:
+        return render(request, 'shopping/error.html', {'error_message': error_self_buy,
+                                                       'type_self_buy': True})
     if product.status == 'sold':
         return render(request, 'shopping/error.html', {'error_message': error_already_sold,
                                                        'type_already_sold': True})
@@ -247,7 +254,7 @@ def buy_product(request, id):
             return HttpResponseRedirect('/shopping/dashboard')
         else:
             return render(request, 'shopping/buy_product.html',
-                          {'product': product, 'use_credit_form': UseCreditForm})
+                          {'product': product, 'use_credit_form': form})
     else:
         return render(request, 'shopping/buy_product.html',
                       {'product': product, 'use_credit_form': UseCreditForm(label_suffix='')})
@@ -539,3 +546,152 @@ def signup_with_referral(request, code):
             return render(request, 'shopping/signup.html', {'signup_form': form})
     else:
         return render(request, 'shopping/signup.html', {'signup_form': UserSignupForm(label_suffix='')})
+
+
+def create_auction(request):
+    if not request.user.is_authenticated:
+        return render(request, 'shopping/error.html', {'error_message': error_not_authenticated,
+                                                       'type_not_authenticated': True})
+    locations = MyLocation.objects.filter(user=request.user.shopping_user)
+    if request.method == 'POST':
+        form = CreateAuctionForm(request.POST, request.FILES)
+        if form.is_valid():
+            django_user = request.user
+            shopping_user = django_user.shopping_user
+            loc = request.POST.get('addresses')
+            # loc = form.cleaned_data['location']
+            lat = float(loc.split(',')[0])
+            lon = float(loc.split(',')[1])
+            product = Product(name=form.cleaned_data['name'], price=form.cleaned_data['price'],
+                              description=form.cleaned_data['description'], seller=shopping_user,
+                              status='at auction', picture=form.cleaned_data['picture'],
+                              location=loc, latitude=lat, longitude=lon, category=form.cleaned_data['category'])
+            product.save()
+            auction = Auction(product=product, auctioneer=shopping_user, base_price=product.price,
+                              end_date=form.cleaned_data['end_date'], finished=False)
+            auction.save()
+            # es = Elasticsearch()
+            # es.create(index=shopping_index, doc_type='product', id=product.id,
+            #           body={'product': {'name': product.name, 'price': product.price, 'category': product.category,
+            #                             'description': product.description, 'location': {'lat': lat,
+            #                                                                              'lon': lon}}})
+
+            return HttpResponseRedirect('dashboard')
+        else:
+
+            return render(request, 'shopping/create_auction.html', {'locations': locations, 'create_auction_form': form})
+    else:
+        return render(request, 'shopping/create_auction.html',
+                      {'locations': locations, 'create_auction_form': CreateAuctionForm(label_suffix='')}, )
+
+
+def view_auction(request, id):
+    try:
+        auction = Auction.objects.get(id=id)
+        product = auction.product
+    except ObjectDoesNotExist:
+        return render(request, 'shopping/error.html', {'error_message': error_auction_not_found,
+                                                       'type_auction_not_found': True})
+
+    template = ''
+    if not request.user.is_authenticated:
+        template = 'base/not_user_base.html'
+    else:
+        template = 'base/user_base.html'
+    return render(request, 'shopping/view_auction.html',
+                  {'auction': auction,
+                   'product': product,
+                   'template': template})
+
+
+def bid_auction(request, id):
+    if not request.user.is_authenticated:
+        return render(request, 'shopping/error.html', {'error_message': error_not_authenticated,
+                                                       'type_not_authenticated': True})
+    try:
+        auction = Auction.objects.get(id=id)
+    except ObjectDoesNotExist:
+        return render(request, 'shopping/error.html', {'error_message': error_auction_not_found,
+                                                       'type_auction_not_found': True})
+
+    if auction.auctioneer == request.user.shopping_user:
+        return render(request, 'shopping/error.html', {'error_message': error_self_bid,
+                                                       'type_self_bid': True})
+
+    if auction.finished:
+        return render(request, 'shopping/error.html', {'error_message': error_already_sold,
+                                                       'type_already_sold': True})
+
+    if request.method == 'POST':
+        form = BidAuctionForm(request.POST)
+        if form.is_valid():
+            shopping_user = request.user.shopping_user
+            # 10% amanat:
+            participated = False
+            for bid in auction.bid_set.all():
+                if bid.bidder == shopping_user:
+                    participated = True
+                    break
+            if not participated:
+                if shopping_user.credit < auction.base_price/10:
+                    return render(request, 'shopping/error.html', {'error_message': error_insufficient_credit,
+                                                                   'type_insufficient_credit': True})
+                shopping_user.credit -= auction.base_price/10
+                shopping_user.save()
+
+            bid = Bid(auction=auction, bidder=shopping_user, price=form.cleaned_data['price'])
+            bid.save()
+            return HttpResponseRedirect('/shopping/dashboard')
+        else:
+            return render(request, 'shopping/bid_auction.html',
+                          {'bid_auction_form': form})
+    else:
+        return render(request, 'shopping/bid_auction.html',
+                      {'bid_auction_form': BidAuctionForm(label_suffix='')})
+
+
+def finish_auction(request, id):
+    if not request.user.is_authenticated:
+        return render(request, 'shopping/error.html', {'error_message': error_not_authenticated,
+                                                       'type_not_authenticated': True})
+    try:
+        auction = Auction.objects.get(id=id)
+    except ObjectDoesNotExist:
+        return render(request, 'shopping/error.html', {'error_message': error_auction_not_found,
+                                                       'type_auction_not_found': True})
+
+    if auction.auctioneer != request.user.shopping_user:
+        return render(request, 'shopping/error.html', {'error_message': error_finish_other_auction,
+                                                       'type_finish_other_auction': True})
+
+    if auction.product.status == 'auction finished':
+        return render(request, 'shopping/error.html', {'error_message': error_already_sold,
+                                                       'type_already_sold': True})
+    auction.finished = True
+    auction.save()
+
+    highest_bid = None
+    bidders = set()
+    for bid in auction.bid_set.all():
+        bidders.add(bid.bidder)
+        if highest_bid is None or bid.price > highest_bid.price:
+            highest_bid = bid
+
+    for bidder in bidders:
+            bidder.credit += auction.base_price/10
+            bidder.save()
+    if highest_bid is not None:
+        highest_bid.bidder.credit -= highest_bid.price
+        highest_bid.bidder.save()
+
+        auction.product.buyer = highest_bid.bidder
+        auction.product.save()
+        auction.save()
+        email = EmailMessage('Auction Winner!', 'Congratulations ' +
+                             highest_bid.bidder.first_name + '!!! You Have The Won The Auction of '+auction.product +
+                             ' for ' + str(highest_bid.price),
+                             to=[highest_bid.bidder.email, ])
+        email.send()
+
+    return render(request, 'shopping/auction_finished.html',
+                  {'auction': auction})

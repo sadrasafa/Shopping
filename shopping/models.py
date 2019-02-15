@@ -49,7 +49,7 @@ class Product(models.Model):
     description = models.CharField(max_length=500, null=True)
     seller = models.ForeignKey(ShoppingUser, on_delete=models.SET_NULL, related_name='seller', null=True)
     buyer = models.ForeignKey(ShoppingUser, on_delete=models.SET_NULL, related_name='buyer', null=True)
-    status = models.CharField(max_length=30)  # 'for sale' or 'sold'
+    status = models.CharField(max_length=30)  # 'for sale' or 'sold' or 'at auction'
     picture = models.FileField(upload_to='base/static', null=True)
     city = models.CharField(max_length=255, null=True)
     location = PlainLocationField(based_fields=['city'], zoom=7, null=True)
@@ -75,8 +75,9 @@ class Product(models.Model):
                   ('خوراکی', 'خوراکی'),
                   ('مبل', 'مبل'),
                   ('سایر', 'سایر'),
-)
+                  )
     category = models.CharField(max_length=140, null=True, choices=categories)
+    # FOR AUCTION:
 
     def __str__(self):
         return self.name + ': ' + self.seller.__str__()
@@ -89,5 +90,21 @@ class Comment(models.Model):
     stars = models.IntegerField(null=True)
 
 
+class Auction(models.Model):
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, null=True)
+    auctioneer = models.ForeignKey(ShoppingUser, on_delete=models.CASCADE, null=True)
+    base_price = models.IntegerField(null=True)
+    end_date = models.DateTimeField(null=True)
+    finished = models.BooleanField(default=False, null=True)
+
+    def __str__(self):
+        return self.product.__str__()
 
 
+class Bid(models.Model):
+    auction = models.ForeignKey(Auction, on_delete=models.CASCADE, null=True)
+    bidder = models.ForeignKey(ShoppingUser, on_delete=models.CASCADE, null=True)
+    price = models.IntegerField(null=True)
+
+    def __str__(self):
+        return self.auction.__str__() + ' : ' + self.bidder.__str__()+', '+str(self.price)

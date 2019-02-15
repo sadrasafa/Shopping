@@ -1,0 +1,201 @@
+{% extends template %}
+<head><title>مشاهده مزایده</title></head>
+{% load staticfiles %}
+
+{% block content %}
+
+    {% block user_header %}
+        <div id="panel-header" align="center"><h2>مشاهده‌ی مزایده</h2></div>
+    {% endblock %}
+
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8/jquery.min.js"></script>
+    <script src="/static/location_field/js/jquery.livequery.js"></script>
+    <script src="/static/location_field/js/form.js"></script>
+    <script src="//maps.google.com/maps/api/js?key=......"></script>
+
+    <div class="panel panel-info col-md-3 col-sm-12">
+        <div class="panel-heading">
+            <div class="text-center">
+                <img src="/{{ product.picture.url|slice:"5:" }}" width="250" height="250">
+            </div>
+        </div>
+        {#            <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4" align="center"><img#}
+        {#                    src={{ user.socialaccount_set.all.0.get_avatar_url }}>#}
+        {#            </div>#}
+        <div align="center">تصویر کالا</div>
+        <div align="center" class="panel-body">{{ shopping_user.user }}</div>
+        <div></div>
+    </div>
+    <div id="dashboard_panel" class="panel panel-info col-md-9 col-sm-12">
+        <div class="row panel-body">
+            <div>
+                <div class="col-xs-6"><input type="text" id="staticField" readonly
+                                             class="form-control-plaintext form-control"
+                                             placeholder="قیمت پایه"
+                                             value=" {{ auction.base_price }}"></div>
+                <div class="col-xs-6">قیمت پایه</div>
+            </div>
+        </div>
+        <div class="row panel-body">
+            <div>
+                <div class="col-xs-6"><input type="text" id="staticField" readonly
+                                             class="form-control-plaintext form-control"
+                                             placeholder="زمان اتمام مزایده"
+                                             value=" {{ auction.end_date }}"></div>
+                <div class="col-xs-6">زمان اتمام مزایده</div>
+            </div>
+        </div>
+        <div class="row panel-body">
+            <div>
+                <div class="col-xs-6"><input type="text" id="staticField" readonly
+                                             class="form-control-plaintext form-control"
+                                             placeholder="‍مکان"
+                                             value=" {{ product.location }}"></div>
+                <div class="col-xs-6">مکان</div>
+            </div>
+        </div>
+        <div class="row panel-body">
+            <div>
+                <div class="col-xs-6"><input type="text" id="staticField" readonly
+                                             class="form-control-plaintext form-control"
+                                             placeholder="نام کالا"
+                                             value="{{ product.name }}"></div>
+                <div class="col-xs-6"> نام کالا‌</div>
+            </div>
+        </div>
+        <div class="row panel-body">
+            {% ifequal  product.status  "at auction" %}
+                <div>
+                    <div class="col-xs-6"><input type="text" id="staticField" readonly
+                                                 class="form-control-plaintext form-control"
+                                                 placeholder="وضعیت"
+                                                 value="در مزایده"></div>
+                    <div class="col-xs-6">وضعیت</div>
+                </div>
+            {% else %}
+                <div>
+                    <div class="col-xs-6"><input type="text" id="staticField" readonly
+                                                 class="form-control-plaintext form-control"
+                                                 placeholder="وضعیت"
+                                                 value="مزایده به پایان رسیده"></div>
+                    <div class="col-xs-6">وضعیت</div>
+                </div>
+            {% endifequal %}
+        </div>
+        <div class="row panel-body">
+            <div>
+                <div class="col-xs-6"><input type="text" id="staticField" readonly
+                                             class="form-control-plaintext form-control"
+                                             placeholder="دسته‌بندی"
+                                             value=" {{ product.category }}"></div>
+                <div class="col-xs-6">دسته‌بندی</div>
+            </div>
+        </div>
+{#        <div class="row panel-body">#}
+{#            <div>#}
+{#                <div class="col-xs-6"><input type="text" id="staticField" readonly#}
+{#                                             class="form-control-plaintext form-control"#}
+{#                                             placeholder="قیمت‌"#}
+{#                                             value="{{ product.price }}"></div>#}
+{#                <div class="col-xs-6">قیمت‌</div>#}
+{#            </div>#}
+{#        </div>#}
+        <div class="row panel-body">
+            <div>
+                <div class="col-xs-6">
+                    <a href="/shopping/view_user/{{ product.seller.id }}">
+                        <input type="text"
+                               id="staticField"
+                               readonly
+                               class="form-control-plaintext form-control"
+                               placeholder="یوزرنیم فروشنده"
+                               value="{{ product.seller.user.username }}">
+                    </a>
+                </div>
+                <div class="col-xs-6">یوزرنیم فروشنده</div>
+            </div>
+        </div>
+{#        <div class="row panel-body">#}
+{#            <div>#}
+{#                <div class="col-xs-6"><input type="text" id="staticField" readonly#}
+{#                                             class="form-control-plaintext form-control"#}
+{#                                             placeholder="یوزرنیم خریدار"#}
+{#                                             value=" {{ product.buyer.user.username }}"></div>#}
+{#                <div class="col-xs-6">یوزرنیم خریدار</div>#}
+{#            </div>#}
+{#        </div>#}
+        <div class="row panel-body">
+            <div>
+                <div class="col-xs-6"><input type="text" id="staticField" readonly
+                                             class="form-control-plaintext form-control"
+                                             placeholder="توضیح"
+                                             value=" {{ product.description }}"></div>
+                <div class="col-xs-6">توضیح</div>
+            </div>
+        </div>
+        <div class="row panel-body">
+            <div>
+                <div class="col-xs-6"><input type="text" id="staticField" readonly
+                                             class="form-control-plaintext form-control"
+                                             placeholder="عرض جغرافیایی"
+                                             value=" {{ product.latitude }}"></div>
+                <div class="col-xs-6">عرض جغرافیایی</div>
+            </div>
+        </div>
+        <div class="row panel-body">
+            <div>
+                <div class="col-xs-6"><input type="text" id="staticField" readonly
+                                             class="form-control-plaintext form-control"
+                                             placeholder="طول جغرافیایی"
+                                             value="  {{ product.longitude }}"></div>
+                <div class="col-xs-6">طول جغرافیایی</div>
+            </div>
+        </div>
+        <div class="row panel-body">
+            <div>
+                <div class="col-xs-6"><input type="text" id="staticField" readonly
+                                             class="form-control-plaintext form-control"
+                                             placeholder="‍مکان"
+                                             value=" {{ product.location }}"></div>
+                <div class="col-xs-6">مکان</div>
+            </div>
+        </div>
+
+
+    </div>
+
+
+
+    <button type="submit" onclick="goBack()" value="بازگشت" class="btn btn-primary">بازگشت</button>
+    <script>
+        function goBack() {
+            window.history.back();
+        }
+    </script>
+        {% ifnotequal auction.auctioneer request.user.shopping_user %}
+            <a style="margin-right: 20px" href="/shopping/bid_auction/{{ auction.id }}">پیشنهاد قیمت</a>
+        {% endifnotequal %}
+        {% ifequal auction.auctioneer request.user.shopping_user %}
+            {% if not auction.finished %}
+            <a style="margin-right: 20px" href="/shopping/finish_auction/{{ auction.id }}">پایان مزایده</a>
+            {% endif %}
+        {% endifequal %}
+
+    {% for bid in auction.bid_set.all %}
+        <div id="product_panel" style="margin-top: 20px; height: 120px; width: 98%; margin-right: 1%; margin-left: 1%;"
+             class="panel panel-success col-md-9 col-sm-12">
+            <div class="panel-heading"
+                 style="width: 100%; position: absolute; left: 0px; top: 0px;" align="right"><a
+                    href="/shopping/view_user/{{ bid.bidder.id }}"> {{ bid.bidder.first_name }}</a></div>
+
+
+            <div style="margin-top: 40px"></div>
+                قیمت پیشنهادی: {{ bid.price}}
+        </div>
+
+
+    {% endfor %}
+
+
+
+{% endblock %}

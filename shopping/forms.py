@@ -155,7 +155,7 @@ class AddLocationForm(forms.ModelForm):
             },
             'price': {
                 'required': _('لطفا قیمت محصول را وارد کنید'),
-                'invalid': _('لطف عدد وارد کنید')
+                'invalid': _('لطفا عدد وارد کنید')
             },
             'description': {
                 'required': _('لطفا توضیحات محصول را وارد کنید'),
@@ -228,7 +228,7 @@ class AddProductForm(forms.ModelForm):
             },
             'price': {
                 'required': _('لطفا قیمت محصول را وارد کنید'),
-                'invalid': _('لطف عدد وارد کنید')
+                'invalid': _('لطفا عدد وارد کنید')
             },
             'description': {
                 'required': _('لطفا توضیحات محصول را وارد کنید'),
@@ -292,7 +292,7 @@ class SearchProductForm(forms.ModelForm):
             },
             'price': {
                 'required': _('لطفا سقف قیمت محصول را وارد کنید'),
-                'invalid': _('لطف عدد وارد کنید')
+                'invalid': _('لطفا عدد وارد کنید')
             },
             'description': {
                 'required': _('لطفا توضیحات محصول را وارد کنید'),
@@ -364,7 +364,7 @@ class EditProfileForm(forms.ModelForm):
             },
             'last_name': {
                 'required': _('لطفا قیمت محصول را وارد کنید'),
-                'invalid': _('لطف عدد وارد کنید')
+                'invalid': _('لطفا عدد وارد کنید')
             },
             'phone_number': {
                 'required': _('لطفا توضیحات محصول را وارد کنید'),
@@ -423,7 +423,6 @@ class ChangePasswordForm(forms.Form):
         if password1 != password2:
             raise forms.ValidationError('رمزعبور یکسان نیست')
         return cleaned_data
-
 
 
 class UseCreditForm(forms.Form):
@@ -505,3 +504,90 @@ class ResetPasswordForm(forms.Form):
         if password1 != password2:
             raise forms.ValidationError('رمزعبور یکسان نیست')
         return cleaned_data
+
+
+class CreateAuctionForm(forms.ModelForm):
+    end_date = forms.DateTimeField(widget=forms.TextInput(attrs={'class': 'form-control',
+                                                              'required': 'True',
+                                                              'max_length': 200,
+                                                              'placeholder': 'زمان پایان مزایده',
+                                                              'style': 'text-align:right',
+                                                              'direction': 'rtl'}
+                                                       ),
+                                label=_("زمان پایان مزایده"),
+                                error_messages={
+                                    'invalid': _("لطفا زمان را به شکل صحیح وارد کنید"),
+                                    'required': _('لطفا زمان پایان مزایده را وارد کنید')})
+
+    class Meta:
+        model = Product
+        fields = ['name', 'price', 'description', 'picture', 'category']
+        widgets = {
+            'name': forms.TextInput(attrs={'class': 'form-control',
+                                           'placeholder': 'عنوان محصول',
+                                           'style': 'text-align:right',
+                                           'direction': 'rtl'}),
+            'price': forms.TextInput(attrs={'class': 'form-control',
+                                            'placeholder': 'قیمت پایه به ریال',
+                                            'style': 'text-align:right',
+                                            'direction': 'rtl'}),
+            'description': forms.Textarea(attrs={'class': 'form-control',
+                                                 'placeholder': 'توضیحات',
+                                                 'style': 'text-align:right; height:90px',
+                                                 'direction': 'rtl'}),
+            'picture': forms.ClearableFileInput(attrs={'class': 'form-control', 'placeholder': 'تصویر',
+                                                       'style': 'text-align:right'}),
+            'category': forms.Select(choices=Product.categories, attrs={'class': 'form-control',
+                                                                        'placeholder': 'دسته بنده'})
+
+
+        }
+        labels = {
+            'name': _('عنوان محصول'),
+            'price': _('قیمت پایه'),
+            'description': _('توضیحات'),
+            'picture': _('تصویر محصول'),
+            'category': _('دسته بندی'),
+            # 'city': _('شهر'),
+            # 'location': _('مکان')
+        }
+        error_messages = {
+            'name': {
+                'required': _('لطفا عنوان محصول را وارد کنید')
+            },
+            'price': {
+                'required': _('لطفا قیمت پایه محصول را وارد کنید'),
+                'invalid': _('لطفا عدد وارد کنید')
+            },
+            'description': {
+                'required': _('لطفا توضیحات محصول را وارد کنید'),
+            },
+            'picture': {
+                'required': _('لطفا تصویر محصول را بارگذاری کنید')
+            },
+            'category': {
+                'required': _('لطفا دسته بندی محصول را انتخاب کنید')
+            }
+        }
+
+
+class BidAuctionForm(forms.ModelForm):
+    class Meta:
+        model = Bid
+        fields = ['price', ]
+        widgets = {
+            'price': forms.TextInput(attrs={'class': 'form-control',
+                                            'placeholder': 'قیمت به ریال',
+                                            'style': 'text-align:right',
+                                            'direction': 'rtl'}),
+        }
+        labels = {
+            'price': _('قیمت')
+
+        }
+        error_messages = {
+            'price': {
+                'required': _('لطفا قیمت محصول را وارد کنید'),
+                'invalid': _('لطفا عدد وارد کنید')
+            },
+        }

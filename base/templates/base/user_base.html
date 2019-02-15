@@ -10,6 +10,7 @@
     <ul class="nav navbar-nav">
         <li><a href="/shopping/dashboard">داشبورد</a></li>
         <li id="all_products_btn"><a href="#">تمامی اجناس</a></li>
+        <li id="all_auctions_btn"><a href="#">مزایده ها</a></li>
         <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">گزینه‌ها<span
                 class="caret"></span></a>
             <ul class="dropdown-menu" style="text-align: right">
@@ -17,6 +18,7 @@
                 <li><a href="/shopping/search_product">جست و جوی محصولات</a></li>
                 <li><a href="/shopping/add_location">افزودن آدرس</a></li>
                 <li><a href="/shopping/increase_credit">افزایش اعتبار</a></li>
+                <li><a href="/shopping/create_auction">شروع مزایده</a></li>
                 <li><a href="/shopping/edit_profile">ویرایش اطلاعات</a></li>
                 <li><a href="/shopping/change_password">تغییر رمز عبور</a></li>
                 <li><a href="/shopping/referral">کد دعوت</a></li>
@@ -56,6 +58,37 @@
         </div>
 
     </div>
+
+    <div id="all_auctions_modal" class="modal">
+
+        <div class="modal-content">
+            <div class="modal-header">
+                <span class="close">&times;</span>
+                <h2 align="center">مزایده ها</h2>
+            </div>
+            <div class="modal-body">
+
+                {% for auction in all_auctions %}
+                    <div class="row">
+                        <div class="col-md-4">
+                            <a href="/shopping/view_product/{{ auction.product.id }}">مشاهده</a>
+                        </div>
+                        <div class="col-md-4">
+                            {{ auction.product.name }}
+                        </div>
+                        <div class="col-md-4">
+                            <img src="/{{ auction.product.picture.url|slice:"5:" }}" width="50" height="50">
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+            {#            <div class="modal-footer">#}
+            {#                <h3>Modal Footer</h3>#}
+            {#            </div>#}
+        </div>
+
+    </div>
+
     <script>
         // Get the modal
         let all_products_modal = document.getElementById('all_products_modal');

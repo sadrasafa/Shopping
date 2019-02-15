@@ -22,7 +22,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = '#sqy8#v1d^&*g@@t#@cl=^!2adzdoi%+pgp=wk%q-%e(n!)$o6'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False   # Sadra
+DEBUG = True   # Sadra
 
 ALLOWED_HOSTS = ['0.0.0.0', '127.0.0.1', 'localhost', 'herokuapp.com', 'heroku.com', 'tanakora.herokuapp.com']
 
@@ -74,6 +74,7 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
                 'shopping.context_processors.product_processor',
+                'shopping.context_processors.auction_processor',
             ],
         },
     },
