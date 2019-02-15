@@ -76,7 +76,7 @@
                                     {% endif %}
                                 </select>
                             </div>
-                            <div >
+                            <div>
                                 <a href="/shopping/add_location">آدرس جدید</a>
                             </div>
                         </div>
@@ -106,4 +106,26 @@
         </div>
 
     </div>
+    <script>
+
+        window.onload = function () {
+            document.getElementById('category_id').onchange = function () {
+                {#category = document.getElementById("category").value;#}
+                {#console.log(category)#}
+                {#document.getElementById("subcategory_1").choices = credit;#}
+                {#if (category == "لوازم دیجیتال") {#}
+                {#    document.getElementById("subcategory_1");#}
+                {# }#}
+                console.log('salam')
+                console.log($('select[id="category_id"]').val())
+                $('select[id!="category_id"]').hide();
+                $('select[id="' + $('select[id="category_id"]').val() + '"]').show();
+                $('select[id="category_id"]').change(function () {
+                    $('select[id!="category_id"]').hide();
+                    $('select[id="' + $(this).val() + '"]').show();
+                });
+            }
+        }
+
+    </script>
 {% endblock %}

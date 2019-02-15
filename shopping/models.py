@@ -55,29 +55,46 @@ class Product(models.Model):
     location = PlainLocationField(based_fields=['city'], zoom=7, null=True)
     latitude = models.FloatField(null=True)
     longitude = models.FloatField(null=True)
-    categories = (('لپ تاپ', 'لپ تاپ'),
-                  ('گوشی', 'گوشی'),
-                  ('دوربین', 'دوربین'),
-                  ('میز', 'میز'),
-                  ('کیف', 'کیف'),
-                  ('لوازم الکترونیکی', 'لوازم الکترونیکی'),
-                  ('عینک', 'عینک'),
-                  ('لباس', 'لباس'),
-                  ('لوازم تزیینی', 'لوازم تزیینی'),
-                  ('تابلو', 'تابلو'),
-                  ('لوازم بهداشتی', 'لوازم بهداشتی'),
-                  ('خودرو', 'خودرو'),
-                  ('تلویزیون', 'تلویزیون'),
-                  ('لوازم ورزشی', 'لوازم ورزشی'),
-                  ('صندلی', 'صندلی'),
-                  ('لوازم آشپزی', 'لوازم آشپزی'),
-                  ('مسکن', 'مسکن'),
-                  ('خوراکی', 'خوراکی'),
-                  ('مبل', 'مبل'),
-                  ('سایر', 'سایر'),
+    categories = (('digital_prods', 'لوازم دیجیتال'),
+                  ('pretty_prods', 'لوازم تزیینی'),
+                  ('health_prods', 'لوازم بهداشتی'),
+                  ('cars', 'خودرو'),
+                  ('sport_prods', 'لوازم ورزشی'),
+                  ('cooking_prods', 'لوازم آشپزی'),
+                  ('house', 'مسکن'),
+                  ('electrical_prods', 'لوازم برقی'),
                   )
+
+    digital_subcategories = (('لپ تاپ', 'لپ تاپ'),
+                             ('تلفن همراه', 'تلفن همراه'),
+                             ('دوربین', 'دوربین'),
+                             ('تلویزیون', 'تلویزیون'),
+                             ('بلندگو', 'بلندگو'),
+                             ('تلویزیون', 'تلویزیون'),
+                             ('تبلت', 'تبلت'),
+                             ('هارد، فلش و SSD', 'تلویزیون'),
+                             ('مچ‌بند و ساعت هوشمند', 'تلویزیون'),
+                             ('هدفون، هدست', 'تلویزیون'),
+                             )
+
+    health_subcategories = (('لوازم آرایشی', 'لوازم آرایشی'),
+                            ('کرم', 'کرم'),
+                            ('شامپو', 'شامپو'),
+                            ('ضد تعریق', 'ضد تعریق'),
+                            ('دهان‌شوی', 'دهان‌شوی'),
+                            )
+
     category = models.CharField(max_length=140, null=True, choices=categories)
-    # FOR AUCTION:
+
+    digital_subcategory = models.CharField(max_length=140, null=True, choices=digital_subcategories)
+
+    health_subcategory = models.CharField(max_length=140, null=True, choices=health_subcategories)
+
+    # digital_subcategory = models.CharField(max_length=140, null=True, choices=digital_subcategories)
+
+
+
+    # subcategory_2 = models.CharField(max_length=140, null=True)
 
     def __str__(self):
         return self.name + ': ' + self.seller.__str__()

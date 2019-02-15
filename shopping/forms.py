@@ -186,7 +186,8 @@ class AddProductForm(forms.ModelForm):
 
     class Meta:
         model = Product
-        fields = ['name', 'price', 'description', 'picture', 'category']
+        fields = ['name', 'price', 'description', 'picture', 'category', 'digital_subcategory', 'health_subcategory']
+
         widgets = {
             'name': forms.TextInput(attrs={'class': 'form-control',
                                            'placeholder': 'عنوان محصول',
@@ -203,7 +204,17 @@ class AddProductForm(forms.ModelForm):
             'picture': forms.ClearableFileInput(attrs={'class': 'form-control', 'placeholder': 'تصویر',
                                                        'style': 'text-align:right'}),
             'category': forms.Select(choices=Product.categories, attrs={'class': 'form-control',
-                                                                        'placeholder': 'دسته بنده'})
+                                                                        'placeholder': 'دسته‌بندی',
+                                                                        # 'name': 'category',
+                                                                        'id': 'category_id',
+                                                                        }),
+            'digital_subcategory': forms.Select(choices=Product.digital_subcategories, attrs={'class': 'form-control',
+                                                                                            'placeholder': 'دسته‌بندی دیجیتال',
+                                                                                            'id': 'digital_prods'}),
+
+            'health_subcategory': forms.Select(choices=Product.health_subcategories, attrs={'class': 'form-control',
+                                                                                            'placeholder': 'دسته‌بندی بهداشتی',
+                                                                                            'name': 'health_prods'})
 
             # 'city': forms.Select(attrs={'class': 'form-control',
             #                             'placeholder': 'dfadlflkdfjalk',
@@ -219,6 +230,8 @@ class AddProductForm(forms.ModelForm):
             'description': _('توضیحات'),
             'picture': _('تصویر محصول'),
             'category': _('دسته بندی'),
+            'digital_subcategory': _('دسته‌بندی دیجیتال'),
+            'health_subcategory': _('دسته‌بندی بهداشتی'),
             # 'city': _('شهر'),
             # 'location': _('مکان')
         }
@@ -376,44 +389,43 @@ class EditProfileForm(forms.ModelForm):
 
 
 class ChangePasswordForm(forms.Form):
-
     old_password = forms.CharField(widget=forms.PasswordInput(attrs={'class': 'form-control',
+                                                                     'required': 'True',
+                                                                     'max_length': 30,
+                                                                     'render_value': 'False',
+                                                                     'placeholder': 'رمز عبور فعلی',
+                                                                     'style': 'text-align:right',
+                                                                     'direction': 'rtl'}
+                                                              ),
+                                   label=_("رمز عبور فعلی"),
+                                   error_messages={
+                                       'required': _('لطفا رمزعبور را وارد کنید')
+                                   })
+
+    new_password1 = forms.CharField(widget=forms.PasswordInput(attrs={'class': 'form-control',
                                                                       'required': 'True',
                                                                       'max_length': 30,
                                                                       'render_value': 'False',
-                                                                      'placeholder': 'رمز عبور فعلی',
+                                                                      'placeholder': 'رمز عبور جدید',
                                                                       'style': 'text-align:right',
                                                                       'direction': 'rtl'}
                                                                ),
-                                    label=_("رمز عبور فعلی"),
+                                    label=_("رمز عبور جدید"),
                                     error_messages={
                                         'required': _('لطفا رمزعبور را وارد کنید')
                                     })
-
-    new_password1 = forms.CharField(widget=forms.PasswordInput(attrs={'class': 'form-control',
-                                                                  'required': 'True',
-                                                                  'max_length': 30,
-                                                                  'render_value': 'False',
-                                                                  'placeholder': 'رمز عبور جدید',
-                                                                  'style': 'text-align:right',
-                                                                  'direction': 'rtl'}
-                                                           ),
-                                label=_("رمز عبور جدید"),
-                                error_messages={
-                                    'required': _('لطفا رمزعبور را وارد کنید')
-                                })
     new_password2 = forms.CharField(widget=forms.PasswordInput(attrs={'class': 'form-control',
-                                                                  'required': 'True',
-                                                                  'max_length': 30,
-                                                                  'render_value': 'False',
-                                                                  'placeholder': 'تکرار رمز عبور جدید',
-                                                                  'style': 'text-align:right',
-                                                                  'direction': 'rtl'}
-                                                           ),
-                                label=_("تکرار رمز عبور جدید"),
-                                error_messages={
-                                    'required': _('لطفا رمزعبور را تکرار کنید')
-                                })
+                                                                      'required': 'True',
+                                                                      'max_length': 30,
+                                                                      'render_value': 'False',
+                                                                      'placeholder': 'تکرار رمز عبور جدید',
+                                                                      'style': 'text-align:right',
+                                                                      'direction': 'rtl'}
+                                                               ),
+                                    label=_("تکرار رمز عبور جدید"),
+                                    error_messages={
+                                        'required': _('لطفا رمزعبور را تکرار کنید')
+                                    })
 
     def clean(self):
         cleaned_data = super(ChangePasswordForm, self).clean()
@@ -458,17 +470,17 @@ class AddCommentForm(forms.ModelForm):
 
 class ForgotPasswordForm(forms.Form):
     username = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control',
-                                                          'required': 'True',
-                                                          'max_length': 30,
-                                                          'render_value': 'False',
-                                                          'placeholder': 'نام کاربری',
-                                                          'style': 'text-align:right',
-                                                          'direction': 'rtl'}
-                                                   ),
-                            label=_("نام کاربری"),
-                            error_messages={
-                                'required': _('لطفا نام کاربری خود را وارد کنید')
-                            })
+                                                             'required': 'True',
+                                                             'max_length': 30,
+                                                             'render_value': 'False',
+                                                             'placeholder': 'نام کاربری',
+                                                             'style': 'text-align:right',
+                                                             'direction': 'rtl'}
+                                                      ),
+                               label=_("نام کاربری"),
+                               error_messages={
+                                   'required': _('لطفا نام کاربری خود را وارد کنید')
+                               })
 
 
 class ResetPasswordForm(forms.Form):
