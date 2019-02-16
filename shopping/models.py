@@ -55,9 +55,9 @@ class Product(models.Model):
     location = PlainLocationField(based_fields=['city'], zoom=7, null=True)
     latitude = models.FloatField(null=True)
     longitude = models.FloatField(null=True)
-    categories = (('digital_prods', 'لوازم دیجیتال'),
-                  ('pretty_prods', 'لوازم تزیینی'),
-                  ('health_prods', 'لوازم بهداشتی'),
+    categories = (('category_id_1', 'لوازم دیجیتال'),
+                  ('category_id_2', 'لوازم تزیینی'),
+                  ('category_id_3', 'لوازم بهداشتی'),
                   ('cars', 'خودرو'),
                   ('sport_prods', 'لوازم ورزشی'),
                   ('cooking_prods', 'لوازم آشپزی'),
@@ -83,6 +83,15 @@ class Product(models.Model):
                             ('ضد تعریق', 'ضد تعریق'),
                             ('دهان‌شوی', 'دهان‌شوی'),
                             )
+
+
+    pretty_subcategories = (('تابلو', 'تابلو'),
+                            ('مجسمه', 'مجسمه'),
+                            ('شامپو', 'شامپو'),
+                            ('ضد تعریق', 'ضد تعریق'),
+                            ('دهان‌شوی', 'دهان‌شوی'),
+                            )
+
 
     category = models.CharField(max_length=140, null=True, choices=categories)
 

@@ -210,11 +210,11 @@ class AddProductForm(forms.ModelForm):
                                                                         }),
             'digital_subcategory': forms.Select(choices=Product.digital_subcategories, attrs={'class': 'form-control',
                                                                                             'placeholder': 'دسته‌بندی دیجیتال',
-                                                                                            'id': 'digital_prods'}),
+                                                                                            'id': 'category_id_1'}),
 
             'health_subcategory': forms.Select(choices=Product.health_subcategories, attrs={'class': 'form-control',
                                                                                             'placeholder': 'دسته‌بندی بهداشتی',
-                                                                                            'name': 'health_prods'})
+                                                                                            'id': 'category_id_3'})
 
             # 'city': forms.Select(attrs={'class': 'form-control',
             #                             'placeholder': 'dfadlflkdfjalk',

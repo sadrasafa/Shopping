@@ -19,7 +19,7 @@
 
         {#        <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4"></div>#}
         {#        <div id="search_panel" class="panel panel-info">#}
-
+        <label for="{{ form.my_field.id_for_label }}">{{ form.my_field.label }}</label>
         <div id="fill_out_form">
             <section class="login-form">
                 <form class="form-horizontal" novalidate method="post"
@@ -56,7 +56,8 @@
                                         {% endif %}
                                     </div>
                                     <div align="center">
-                                        <label class="col-md-2 control-label">{{ field.label }}</label>
+                                        <label class="col-md-2 control-label"
+                                               id="{{ field.id_for_label }}">{{ field.label }}</label>
                                     </div>
 
                                 </div>
@@ -110,19 +111,21 @@
 
         window.onload = function () {
             document.getElementById('category_id').onchange = function () {
-                {#category = document.getElementById("category").value;#}
-                {#console.log(category)#}
-                {#document.getElementById("subcategory_1").choices = credit;#}
-                {#if (category == "لوازم دیجیتال") {#}
-                {#    document.getElementById("subcategory_1");#}
-                {# }#}
+
+
                 console.log('salam')
                 console.log($('select[id="category_id"]').val())
-                $('select[id!="category_id"]').hide();
+                {#var element = $('label[id="category_id"]')#}
+                {#console.log($("label[for='" + $element.attr('category_id') + "']").text())#}
+                $('select[id^="category_id_"]').hide();
+                $('label[id^="category_id_"]').hide();
                 $('select[id="' + $('select[id="category_id"]').val() + '"]').show();
+                $('label[id="' + $('select[id="category_id"]').val() + '"]').show();
                 $('select[id="category_id"]').change(function () {
-                    $('select[id!="category_id"]').hide();
+                    $('select[id^="category_id_"]').hide();
+                    $('label[id^="category_id_"]').hide();
                     $('select[id="' + $(this).val() + '"]').show();
+                    $('label[id="' + $(this).val() + '"]').show();
                 });
             }
         }
