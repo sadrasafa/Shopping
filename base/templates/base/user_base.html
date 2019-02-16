@@ -153,13 +153,15 @@
     </div>
 
 {% endblock %}
-{% block sik %}
-    <div style="position: fixed; bottom: 0" >
-    {% if has_new_message %}
-        <div>شما پیام جدید دارید.
-        <a href="/shopping/messages">مشاهده</a>
-        </div>
-    {% endif %}
+{% block notification %}
+    <div align="center" style="position: sticky; margin-top: 900px; width: 80%; right: 10%; left: 10%;">
+        {% if has_new_message %}
+            <div class="alert alert-warning alert-dismissible">شما پیام جدید دارید
+
+                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                <a href="/shopping/messages">مشاهده</a>
+            </div>
+        {% endif %}
     </div>
 {% endblock %}
 
