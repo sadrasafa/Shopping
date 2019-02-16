@@ -83,7 +83,11 @@
                         <div class="col-md-2 col-xs-2" style="float: right;">
                             <div style="margin-top: 30px" class="row">
                             <div>
-                                <img src="/{{ product.picture.url|slice:"5:" }}" width="60" height="60">
+                                {% if 'base/' in product.picture.url %}
+                <img src="/{{ product.picture.url|slice:"5:" }}" width="60" height="60">
+                {% else %}
+                <img src="{{ product.picture.url }}" width="60" height="60">
+                {% endif %}
                             </div>
                             <div>
 
@@ -105,7 +109,11 @@
                     {% for product in for_sale %}
                         <div style="margin-top: 30px" class="row">
                             <div>
-                                <img src="/{{ product.picture.url|slice:"5:" }}" width="60" height="60">
+                                {% if 'base/' in product.picture.url %}
+                <img src="/{{ product.picture.url|slice:"5:" }}" width="60" height="60">
+                {% else %}
+                <img src="{{ product.picture.url }}" width="60" height="60">
+                {% endif %}
                             </div>
                             <div>
                                 <a href="/shopping/view_product/{{ product.id }}">{{ product.name }}</a>

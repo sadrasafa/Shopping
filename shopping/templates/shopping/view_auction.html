@@ -16,7 +16,11 @@
     <div class="panel panel-info col-md-3 col-sm-12">
         <div class="panel-heading">
             <div class="text-center">
+               {% if 'base/' in product.picture.url %}
                 <img src="/{{ product.picture.url|slice:"5:" }}" width="250" height="250">
+                {% else %}
+                <img src="{{ product.picture.url }}" width="250" height="250">
+                {% endif %}
             </div>
         </div>
         {#            <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4" align="center"><img#}
