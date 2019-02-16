@@ -82,13 +82,17 @@
                     {% for product in bought %}
                         <div class="col-md-2 col-xs-2" style="float: right;">
                             <div style="margin-top: 30px" class="row">
-                                <div>
-                                    <img src="/{{ product.picture.url|slice:"5:" }}" width="60" height="60">
-                                </div>
-                                <div>
+                            <div>
+                                {% if 'base/' in product.picture.url %}
+                <img src="/{{ product.picture.url|slice:"5:" }}" width="60" height="60">
+                {% else %}
+                <img src="{{ product.picture.url }}" width="60" height="60">
+                {% endif %}
+                            </div>
+                            <div>
 
-                                    <a href="/shopping/view_product/{{ product.id }}">{{ product.name }}</a>
-                                </div>
+                                <a href="/shopping/view_product/{{ product.id }}">{{ product.name }}</a>
+                            </div>
                             </div>
                         </div>
                     {% endfor %}
@@ -96,7 +100,7 @@
             </div>
         </div>
 
-        <div style="margin-top: 80px;" class="row">
+        <div style="margin-top: 80px;"  class="row">
 
             <div class="panel-group col-md-12 col-sm-12 col-lg-12">
                 <div id="product_panel" class="panel panel-info col-md-9 col-sm-12">
@@ -105,7 +109,11 @@
                     {% for product in for_sale %}
                         <div style="margin-top: 30px" class="row">
                             <div>
-                                <img src="/{{ product.picture.url|slice:"5:" }}" width="60" height="60">
+                                {% if 'base/' in product.picture.url %}
+                <img src="/{{ product.picture.url|slice:"5:" }}" width="60" height="60">
+                {% else %}
+                <img src="{{ product.picture.url }}" width="60" height="60">
+                {% endif %}
                             </div>
                             <div>
                                 <a href="/shopping/view_product/{{ product.id }}">{{ product.name }}</a>
