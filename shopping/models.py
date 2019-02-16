@@ -58,13 +58,14 @@ class Product(models.Model):
     location = PlainLocationField(based_fields=['city'], zoom=7, null=True)
     latitude = models.FloatField(null=True)
     longitude = models.FloatField(null=True)
+    final_category = models.CharField(null=True, max_length=200)
     categories = (('category_id_1', 'لوازم دیجیتال'),
                   ('category_id_2', 'لوازم تزیینی'),
                   ('category_id_3', 'لوازم بهداشتی'),
                   ('category_id_4', 'خودرو'),
                   ('category_id_5', 'لوازم ورزشی'),
                   ('category_id_6', 'لوازم آشپزی'),
-                  ('category_id_7', 'لوزام مسکن'),
+                  ('category_id_7', 'لوزام خانه'),
                   )
 
     digital_subcategories = (('لپ تاپ', 'لپ تاپ'),
@@ -120,13 +121,13 @@ class Product(models.Model):
                            ('صندلی', 'صندلی'),
                            )
     category = models.CharField(max_length=140, null=True, choices=categories)
-    digital_subcategory = models.CharField(max_length=140, null=True, choices=digital_subcategories)
-    pretty_subcategory = models.CharField(max_length=140, null=True, choices=pretty_subcategories)
-    health_subcategory = models.CharField(max_length=140, null=True, choices=health_subcategories)
-    cars_subcategory = models.CharField(max_length=140, null=True, choices=cars_subcategories)
-    sports_subcategory = models.CharField(max_length=140, null=True, choices=sports_subcategories)
-    cooking_subcategory = models.CharField(max_length=140, null=True, choices=cooking_subcategories)
-    house_subcategory = models.CharField(max_length=140, null=True, choices=house_subcategories)
+    digital_subcategory = models.CharField(max_length=140, null=True, blank=True, choices=digital_subcategories)
+    pretty_subcategory = models.CharField(max_length=140, null=True, blank=True, choices=pretty_subcategories)
+    health_subcategory = models.CharField(max_length=140, null=True, blank=True, choices=health_subcategories)
+    cars_subcategory = models.CharField(max_length=140, null=True, blank=True, choices=cars_subcategories)
+    sports_subcategory = models.CharField(max_length=140, null=True, blank=True, choices=sports_subcategories)
+    cooking_subcategory = models.CharField(max_length=140, null=True, blank=True, choices=cooking_subcategories)
+    house_subcategory = models.CharField(max_length=140, null=True, blank=True, choices=house_subcategories)
 
     # digital_subcategory = models.CharField(max_length=140, null=True, choices=digital_subcategories)
 

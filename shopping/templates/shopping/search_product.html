@@ -16,20 +16,20 @@
         {#        <div class="col-md-4"></div>#}
 
         {#        <div id="fill_out_form" class="col-md-4">#}
-{#        <div id="search_panel" class="panel panel-info ">#}
+        {#        <div id="search_panel" class="panel panel-info ">#}
 
-            <section class="login-form">
-                <form class="form-horizontal" novalidate method="post" enctype="multipart/form-data">{% csrf_token %}
-                    <fieldset>
-                        <legend>{{ title }}</legend>
-                        {% for field in search_product_form %}
-                            {% if field.errors %}
-                                <div class="control-group error">
-                                    <div align="center" class="form-actions">
-                                        <label class="control-label">{{ field.label }}</label>
-                                    </div>
-                                    <div class="controls">{{ field }}
-                                        <span class="help-inline">
+        <section class="login-form">
+            <form class="form-horizontal" novalidate method="post" enctype="multipart/form-data">{% csrf_token %}
+                <fieldset>
+                    <legend>{{ title }}</legend>
+                    {% for field in search_product_form %}
+                        {% if field.errors %}
+                            <div class="control-group error">
+                                <div align="center" class="form-actions">
+                                    <label class="control-label">{{ field.label }}</label>
+                                </div>
+                                <div class="controls">{{ field }}
+                                    <span class="help-inline">
                             {% for error in  field.errors %}
                                 <div align="center">
                                 <div id="error">
@@ -37,44 +37,130 @@
                                 </div>
                                 </div> {% endfor %}
                         </span>
-                                    </div>
                                 </div>
-                            {% else %}
-                                <div style="margin-bottom: 20px;" class="row control-group">
-                                    <div class="controls col-md-10">{{ field }}
-                                        {% if field.help_text %}
-                                            <p class="help-inline">
-                                                <small>
-                                                    {{ field.help_text }}
-                                                </small>
-                                            </p>
-                                        {% endif %}
-                                    </div>
-                                    <div align="center">
-                                        <label class="col-md-2 control-label">{{ field.label }}</label>
-                                    </div>
-
-                                </div>
-                            {% endif %}
-                        {% endfor %}
-                    </fieldset>
-                    <div align="center">
-                        <div id="button_submit" class="form-actions">
-                            <div id="error">
-                                <button type="submit" value="جست و جوی محصول" class="btn btn-primary">جست و جوی محصول
-                                </button>
                             </div>
-                            <ul style="list-style-type:none">
-                                <div align="center" id="error">{% for error in search_product_form.non_field_errors %}
-                                    </div>
-                                    {# passwords dont match #}
-                                    <li>{{ error }}</li>
-                                {% endfor %}
-                            </ul>
+                        {% else %}
+                            <div  id="{{ field.id_for_label }}" style="margin-bottom: 20px;" class="row control-group">
+                                <div class="controls col-md-10">{{ field }}
+                                    {% if field.help_text %}
+                                        <p class="help-inline">
+                                            <small>
+                                                {{ field.help_text }}
+                                            </small>
+                                        </p>
+                                    {% endif %}
+                                </div>
+                                <div align="center">
+                                    <label class="col-md-2 control-label">{{ field.label }}</label>
+                                </div>
+
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                </fieldset>
+                <div align="center">
+                    <div id="button_submit" class="form-actions">
+                        <div id="error">
+                            <button type="submit" value="جست و جوی محصول" class="btn btn-primary">جست و جوی محصول
+                            </button>
                         </div>
+                        <ul style="list-style-type:none">
+                            <div align="center" id="error">{% for error in search_product_form.non_field_errors %}
+                                </div>
+                                {# passwords dont match #}
+                                <li>{{ error }}</li>
+                            {% endfor %}
+                        </ul>
                     </div>
-                </form>
-            </section>
-{#        </div>#}
+                </div>
+            </form>
+        </section>
+        {#        </div>#}
     </div>
+    <script>
+
+        window.onload = function () {
+            document.getElementById('category_id_1').hidden = true;
+            document.getElementById('category_id_2').hidden = true;
+            document.getElementById('category_id_3').hidden = true;
+            document.getElementById('category_id_4').hidden = true;
+            document.getElementById('category_id_5').hidden = true;
+            document.getElementById('category_id_6').hidden = true;
+            document.getElementById('category_id_7').hidden = true;
+            document.getElementById('category_id').onchange = function () {
+
+                console.log($('label[id="category_id_1"]'))
+                {#var element = $('label[id="category_id"]')#}
+                {#console.log($("label[for='" + $element.attr('category_id') + "']").text())#}
+                {#$('select[id^="category_id_"]').hide();#}
+                $('select[id^="category_id_"]').css({
+                    "display": 'none'
+                });
+                $('label[id^="category_id_"]').css({
+                    "display": 'none'
+                });
+                $('div[id^="category_id_"]').css({
+                    "display": 'none'
+                });
+                $('select[id="' + $('select[id="category_id"]').val() + '"]').show();
+                $('label[id="' + $('select[id="category_id"]').val() + '"]').show();
+                $('div[id="' + $('select[id="category_id"]').val() + '"]').show();
+                var label_pos = $('label[id="category_id_1"]').offset();
+                var select_pos = $('select[id="category_id_1"]').offset();
+                {#$('label[id="' + $('select[id="category_id"]').val() + '"]').css({#}
+                {#    top: label_pos.top,#}
+                {#    left: label_pos.left,#}
+                {#    position: 'absolute'#}
+                {# {);#}
+                {#$('select[id="' + $('select[id="category_id"]').val() + '"]').css({#}
+                {#    top: select_pos.top,#}
+                {#    left: select_pos.left,#}
+                {#    position: 'relative'#}
+                {# {);#}
+
+                console.log(label_pos)
+                console.log(select_pos)
+                console.log('label top')
+                console.log(label_pos.top)
+                console.log('select top')
+                console.log(select_pos.top)
+                console.log('label left')
+                console.log(label_pos.left)
+                console.log('select left')
+                console.log(select_pos.left)
+                {#console.log(pos.height)#}
+                console.log('going in')
+                $('select[id="category_id"]').change(function () {
+                    $('select[id^="category_id_"]').css({
+                        "display": 'none'
+                    });
+                    $('label[id^="category_id_"]').css({
+                        "display": 'none'
+                    });
+                    $('div[id^="category_id_"]').css({
+                        "display": 'none'
+                    });
+                    $('select[id="' + $(this).val() + '"]').show();
+                    $('label[id="' + $(this).val() + '"]').show();
+                    $('div[id="' + $(this).val() + '"]').show();
+                    console.log(pos.top)
+                    console.log(pos.left)
+                    console.log(pos.height)
+                    {#$('label[id="' + $(this).val() + '"]').css({#}
+                    {#    top: label_pos.top,#}
+                    {#    left: label_pos.left,#}
+                    {#    position: 'absolute'#}
+                    {# {);#}
+                    {#$('select[id="' + $(this).val() + '"]').css({#}
+                    {#    top: select_pos.top,#}
+                    {#    left: select_pos.left,#}
+                    {#    position: 'absolute'#}
+                    {# {);#}
+                    {#$('label[id="' + $(this).val() + '"]').css('top', 400);#}
+                    {#$('label[id="' + $(this).val() + '"]').css({top: '200px', left: '200px', position:'absolute'});#}
+                });
+            }
+        }
+
+    </script>
 {% endblock %}

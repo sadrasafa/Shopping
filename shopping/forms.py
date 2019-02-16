@@ -211,25 +211,32 @@ class AddProductForm(forms.ModelForm):
                                                                         'id': 'category_id',
                                                                         }),
             'digital_subcategory': forms.Select(choices=Product.digital_subcategories, attrs={'class': 'form-control',
+                                                                                              'style': 'display: none',
                                                                                               'id': 'category_id_1'}),
 
             'pretty_subcategory': forms.Select(choices=Product.pretty_subcategories, attrs={'class': 'form-control',
-                                                                                             'id': 'category_id_2'}),
+                                                                                            'style': 'display: none',
+                                                                                            'id': 'category_id_2'}),
 
             'health_subcategory': forms.Select(choices=Product.health_subcategories, attrs={'class': 'form-control',
+                                                                                            'style': 'display: none',
                                                                                             'id': 'category_id_3'}),
 
             'cars_subcategory': forms.Select(choices=Product.cars_subcategories, attrs={'class': 'form-control',
-                                                                                          'id': 'category_id_4'}),
+                                                                                        'style': 'display: none',
+                                                                                        'id': 'category_id_4'}),
 
             'sports_subcategory': forms.Select(choices=Product.sports_subcategories, attrs={'class': 'form-control',
+                                                                                            'style': 'display: none',
                                                                                             'id': 'category_id_5'}),
 
             'cooking_subcategory': forms.Select(choices=Product.cooking_subcategories, attrs={'class': 'form-control',
-                                                                                             'id': 'category_id_6'}),
+                                                                                              'style': 'display: none',
+                                                                                              'id': 'category_id_6'}),
 
             'house_subcategory': forms.Select(choices=Product.house_subcategories, attrs={'class': 'form-control',
-                                                                                           'id': 'category_id_7'})
+                                                                                          'style': 'display: none',
+                                                                                          'id': 'category_id_7'})
 
             # 'city': forms.Select(attrs={'class': 'form-control',
             #                             'placeholder': 'dfadlflkdfjalk',
@@ -276,6 +283,19 @@ class AddProductForm(forms.ModelForm):
 
 
 class SearchProductForm(forms.ModelForm):
+    CITIES = (('', 'انتخاب شهر...'),
+              ('تبریز', 'تبریز'),
+              ('ارومیه', 'ارومیه'),
+              ('تهران', 'تهران'),
+              ('شیراز', 'شیراز'),
+              ('اصفهان', 'اصفهان'),
+              ('مشهد', 'مشهد'),
+              ('یزد', 'یزد'),
+              ('البرز', 'البرز'),
+              ('کرمان', 'کرمان'),
+              ('لاهیجان', 'لاهیجان'))
+    city = forms.ChoiceField(widget=forms.Select, choices=CITIES, label='شهر')
+
     distance = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control',
                                                              'required': 'True',
                                                              'max_length': 30,
@@ -291,7 +311,9 @@ class SearchProductForm(forms.ModelForm):
 
     class Meta:
         model = Product
-        fields = ['name', 'price', 'description', 'city', 'location', 'category']
+        fields = ['name', 'price', 'description', 'city', 'location', 'category', 'digital_subcategory',
+                  'pretty_subcategory', 'health_subcategory', 'cars_subcategory', 'sports_subcategory',
+                  'cooking_subcategory', 'house_subcategory']
         widgets = {
             'name': forms.TextInput(attrs={'class': 'form-control',
                                            'placeholder': 'عنوان محصول',
@@ -305,11 +327,42 @@ class SearchProductForm(forms.ModelForm):
                                                  'placeholder': 'توضیحات',
                                                  'style': 'text-align:right; height: 90px',
                                                  'direction': 'rtl'}),
-            'city': forms.TextInput(attrs={'class': 'form-control',
-                                           'placeholder': 'شهر',
-                                           'style': 'text-align:right',
-                                           'direction': 'rtl'}),
-            'category': forms.Select(choices=Product.categories, attrs={'class': 'form-control'})
+            # 'city': forms.TextInput(attrs={'class': 'form-control',
+            #                                'placeholder': 'شهر',
+            #                                'style': 'text-align:right',
+            #                                'direction': 'rtl'}),
+            'category': forms.Select(choices=Product.categories, attrs={'class': 'form-control',
+                                                                        'placeholder': 'دسته‌بندی',
+                                                                        # 'name': 'category',
+                                                                        'id': 'category_id',
+                                                                        }),
+            'digital_subcategory': forms.Select(choices=Product.digital_subcategories, attrs={'class': 'form-control',
+                                                                                              'style': 'display: none',
+                                                                                              'id': 'category_id_1'}),
+
+            'pretty_subcategory': forms.Select(choices=Product.pretty_subcategories, attrs={'class': 'form-control',
+                                                                                            'style': 'display: none',
+                                                                                            'id': 'category_id_2'}),
+
+            'health_subcategory': forms.Select(choices=Product.health_subcategories, attrs={'class': 'form-control',
+                                                                                            'style': 'display: none',
+                                                                                            'id': 'category_id_3'}),
+
+            'cars_subcategory': forms.Select(choices=Product.cars_subcategories, attrs={'class': 'form-control',
+                                                                                        'style': 'display: none',
+                                                                                        'id': 'category_id_4'}),
+
+            'sports_subcategory': forms.Select(choices=Product.sports_subcategories, attrs={'class': 'form-control',
+                                                                                            'style': 'display: none',
+                                                                                            'id': 'category_id_5'}),
+
+            'cooking_subcategory': forms.Select(choices=Product.cooking_subcategories, attrs={'class': 'form-control',
+                                                                                              'style': 'display: none',
+                                                                                              'id': 'category_id_6'}),
+
+            'house_subcategory': forms.Select(choices=Product.house_subcategories, attrs={'class': 'form-control',
+                                                                                          'style': 'display: none',
+                                                                                          'id': 'category_id_7'})
         }
         labels = {
             'name': _('عنوان محصول'),
@@ -317,7 +370,14 @@ class SearchProductForm(forms.ModelForm):
             'description': _('توضیحات'),
             'city': _('شهر'),
             'location': _('مکان'),
-            'category': _('دسته بندی')
+            'category': _('دسته بندی'),
+            'digital_subcategory': _('دسته‌بندی دیجیتال'),
+            'pretty_subcategory': _('دسته‌بندی لوازم تزیینی'),
+            'health_subcategory': _('دسته‌بندی بهداشتی'),
+            'cars_subcategory': _('دسته‌بندی لوازم خودرو'),
+            'sports_subcategory': _('دسته‌بندی لوازم ورزشی'),
+            'cooking_subcategory': _('دسته‌بندی لوازم آشپزی'),
+            'house_subcategory': _('دسته‌بندی لوازم خانه'),
         }
         error_messages = {
             'name': {
