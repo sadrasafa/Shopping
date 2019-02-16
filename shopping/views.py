@@ -61,7 +61,8 @@ def signup(request):
             django_user.save()
             shopping_user = ShoppingUser(first_name=form.cleaned_data['first_name'],
                                          last_name=form.cleaned_data['last_name'],
-                                         email=form.cleaned_data['email'], credit=0)
+                                         email=form.cleaned_data['email'], credit=0,
+                                         has_new_messages=False)
 
             shopping_user.user = django_user
             shopping_user.random_code = ''.join(
@@ -563,7 +564,7 @@ def signup_with_referral(request, code):
             django_user.save()
             shopping_user = ShoppingUser(first_name=form.cleaned_data['first_name'],
                                          last_name=form.cleaned_data['last_name'],
-                                         email=form.cleaned_data['email'], credit=0)
+                                         email=form.cleaned_data['email'], credit=0, has_new_messages=False)
 
             shopping_user.user = django_user
             shopping_user.random_code = ''.join(
@@ -749,6 +750,8 @@ def send_message(request, id):
         if form.is_valid():
             message = Message(sender=request.user.shopping_user, receiver=receiver, text=form.cleaned_data['text'])
             message.save()
+            receiver.has_new_messages = True
+            receiver.save()
             return HttpResponseRedirect('/shopping/dashboard')
         else:
             return render(request, 'shopping/send_message.html', {'send_message_form': form})
@@ -764,5 +767,7 @@ def messages(request):
 
     received = Message.objects.filter(receiver=request.user.shopping_user)
     sent = Message.objects.filter(sender=request.user.shopping_user)
+    request.user.shopping_user.has_new_messages = False
+    request.user.shopping_user.save()
     return render(request, 'shopping/messages.html', {'received': received,
                                                       'sent': sent})

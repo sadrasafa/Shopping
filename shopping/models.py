@@ -28,6 +28,7 @@ class ShoppingUser(models.Model):
     random_code = models.CharField(max_length=10, null=True, blank=True)
     referral_code = models.CharField(max_length=10, null=True, blank=True, default='0')
     referrer_code = models.CharField(max_length=10, null=True, blank=True, default='0')
+    has_new_messages = models.BooleanField(null=True, default=False)
 
     def __str__(self):
         return self.user.username + ' ' + self.first_name + ' ' + self.last_name
@@ -167,3 +168,6 @@ class Message(models.Model):
     text = models.TextField(null=True)
     sender = models.ForeignKey(ShoppingUser, on_delete=models.CASCADE, related_name='sent_messages', null=True)
     receiver = models.ForeignKey(ShoppingUser, on_delete=models.CASCADE, related_name='received_messages', null=True)
+
+    def __str(self):
+        return self.text

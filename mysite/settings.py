@@ -75,6 +75,7 @@ TEMPLATES = [
                 'django.contrib.messages.context_processors.messages',
                 'shopping.context_processors.product_processor',
                 'shopping.context_processors.auction_processor',
+                'shopping.context_processors.new_message_processor',
             ],
         },
     },

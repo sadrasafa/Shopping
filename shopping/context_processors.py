@@ -12,3 +12,12 @@ def product_processor(request):
 def auction_processor(request):
     all_auctions = Auction.objects.all()
     return {'all_auctions': all_auctions}
+
+
+def new_message_processor(request):
+    has_new_message = False
+    try:
+        has_new_message = request.user.shopping_user.has_new_messages
+    except AttributeError:
+        pass
+    return {'has_new_message': has_new_message}
