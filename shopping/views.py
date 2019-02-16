@@ -695,3 +695,37 @@ def finish_auction(request, id):
 
     return render(request, 'shopping/auction_finished.html',
                   {'auction': auction})
+
+
+def send_message(request, id):
+    if not request.user.is_authenticated:
+        return render(request, 'shopping/error.html', {'error_message': error_not_authenticated,
+                                                       'type_not_authenticated': True})
+    try:
+        receiver = ShoppingUser.objects.get(id=id)
+    except ObjectDoesNotExist:
+        return render(request, 'shopping/error.html', {'error_message': error_user_not_found,
+                                                       'type_user_not_found': True})
+
+    if request.method == 'POST':
+        form = SendMessageForm(request.POST)
+        if form.is_valid():
+            message = Message(sender=request.user.shopping_user, receiver=receiver, text=form.cleaned_data['text'])
+            message.save()
+            return HttpResponseRedirect('/shopping/dashboard')
+        else:
+            return render(request, 'shopping/send_message.html', {'send_message_form': form})
+    else:
+        return render(request, 'shopping/send_message.html',
+                      {'send_message_form': SendMessageForm(label_suffix='')}, )
+
+
+def messages(request):
+    if not request.user.is_authenticated:
+        return render(request, 'shopping/error.html', {'error_message': error_not_authenticated,
+                                                       'type_not_authenticated': True})
+
+    received = Message.objects.filter(receiver=request.user.shopping_user)
+    sent = Message.objects.filter(sender=request.user.shopping_user)
+    return render(request, 'shopping/messages.html', {'received': received,
+                                                      'sent': sent})

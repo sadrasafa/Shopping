@@ -622,3 +622,24 @@ class BidAuctionForm(forms.ModelForm):
                 'invalid': _('لطفا عدد وارد کنید')
             },
         }
+
+
+class SendMessageForm(forms.ModelForm):
+    class Meta:
+        model = Message
+        fields = ['text', ]
+        widgets = {
+            'text': forms.Textarea(attrs={'class': 'form-control',
+                                          'placeholder': 'متن پیام',
+                                          'style': 'text-align:right; height: 90px',
+                                          'direction': 'rtl'})
+        }
+        labels = {
+            'text': _('پیام')
+
+        }
+        error_messages = {
+            'text': {
+                'required': _('لطفا متن پیام را وارد کنید')
+            },
+        }

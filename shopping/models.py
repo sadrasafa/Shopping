@@ -160,3 +160,9 @@ class Bid(models.Model):
 
     def __str__(self):
         return self.auction.__str__() + ' : ' + self.bidder.__str__() + ', ' + str(self.price)
+
+
+class Message(models.Model):
+    text = models.TextField(null=True)
+    sender = models.ForeignKey(ShoppingUser, on_delete=models.CASCADE, related_name='sent_messages', null=True)
+    receiver = models.ForeignKey(ShoppingUser, on_delete=models.CASCADE, related_name='received_messages', null=True)
