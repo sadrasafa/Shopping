@@ -27,6 +27,8 @@ urlpatterns = [
     path('view_auction/<int:id>', views.view_auction, name='view_auction'),
     path('bid_auction/<int:id>', views.bid_auction, name='bid_auction'),
     path('finish_auction/<int:id>', views.finish_auction, name='finish_auction'),
+    path('send_message/<int:id>', views.send_message, name='send_message'),
+    path('messages', views.messages, name='messages')
 
 
 

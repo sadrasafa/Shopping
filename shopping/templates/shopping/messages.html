@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+RECEIVED:
+{% for msg in received %}
+    <br>
+    sender : {{ msg.sender.first_name }}
+    <br>
+    {{ msg.text }}
+    <br>
+      <a href="/shopping/send_message/{{ msg.sender.id }}">ارسال پیام</a>
+    <br>
+    __________________________
+    <br>
+{% endfor %}
+SENT:
+{% for msg in sent %}
+    <br>
+    receiver: {{ msg.receiver.first_name }}
+    <br>
+    {{ msg.text }}
+    <br>
+      <a href="/shopping/send_message/{{ msg.receiver.id }}">ارسال پیام</a>
+    <br>
+    __________________________
+    <br>
+{% endfor %}
+</body>
+</html>

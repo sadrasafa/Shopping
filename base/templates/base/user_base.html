@@ -19,6 +19,7 @@
                 <li><a href="/shopping/add_location">افزودن آدرس</a></li>
                 <li><a href="/shopping/increase_credit">افزایش اعتبار</a></li>
                 <li><a href="/shopping/create_auction">شروع مزایده</a></li>
+                <li><a href="/shopping/messages">پیام ها</a></li>
                 <li><a href="/shopping/edit_profile">ویرایش اطلاعات</a></li>
                 <li><a href="/shopping/change_password">تغییر رمز عبور</a></li>
                 <li><a href="/shopping/referral">کد دعوت</a></li>
@@ -106,20 +107,20 @@
         // When the user clicks the button, open the modal
         all_btn.onclick = function () {
             all_products_modal.style.display = "block";
-        }
+        };
 
         {#bought_btn.onclick = function () {#}
         {#my_bought_products_modal.style.display = "block";#}
-        {#}#}
+        {#{ #}
             {##}
             {#sold_btn.onclick = function () {#}
             {#    my_sold_products_modal.style.display = "block";#}
-            {#}#}
+
                 {##}
                 {#// When the user clicks on <span> (x), close the modal#}
                 span_all_products.onclick = function () {
                     all_products_modal.style.display = "none";
-                }
+                };
 
                 // When the user clicks anywhere outside of the modal, close it
                 window.onclick = function (event) {
