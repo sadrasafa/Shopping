@@ -1,8 +1,8 @@
 import hashlib
 import random
 import string
-import requests
 
+import requests
 from django.contrib.auth import authenticate, login, logout
 from django.core.exceptions import ObjectDoesNotExist
 from django.core.mail import EmailMessage
@@ -121,7 +121,7 @@ def dashboard(request):  # , action):
     return render(request, 'shopping/dashboard.html',
                   {'shopping_user': request.user.shopping_user,
                    'for_sale': for_sale,
-                   'bought': bought,})
+                   'bought': bought, })
 
 
 def add_location(request):
@@ -165,14 +165,32 @@ def add_product(request):
             # loc = form.cleaned_data['location']
             lat = float(loc.split(',')[0])
             lon = float(loc.split(',')[1])
+            final_category = ''
+
+            if form.cleaned_data['digital_subcategory'] is not None:
+                final_category = form.cleaned_data['digital_subcategory']
+            elif form.cleaned_data['pretty_subcategory'] is not None:
+                final_category = form.cleaned_data['pretty_subcategory']
+            elif form.cleaned_data['health_subcategory'] is not None:
+                final_category = form.cleaned_data['health_subcategory']
+            elif form.cleaned_data['cars_subcategory'] is not None:
+                final_category = form.cleaned_data['cars_subcategory']
+            elif form.cleaned_data['sports_subcategory'] is not None:
+                final_category = form.cleaned_data['sports_subcategory']
+            elif form.cleaned_data['cooking_subcategory'] is not None:
+                final_category = form.cleaned_data['cooking_subcategory']
+            elif form.cleaned_data['house_subcategory'] is not None:
+                final_category = form.cleaned_data['house_subcategory']
+
             product = Product(name=form.cleaned_data['name'], price=form.cleaned_data['price'],
                               description=form.cleaned_data['description'], seller=shopping_user,
                               status='for sale', picture=form.cleaned_data['picture'],
-                              location=loc, latitude=lat, longitude=lon, category=form.cleaned_data['category'])
+                              location=loc, latitude=lat, longitude=lon, category=form.cleaned_data['category'],
+                              final_category=final_category)
             product.save()
             es = Elasticsearch()
             es.create(index=shopping_index, doc_type='product', id=product.id,
-                      body={'product': {'name': product.name, 'price': product.price, 'category': product.category,
+                      body={'product': {'name': product.name, 'price': product.price, 'category': final_category,
                                         'description': product.description, 'location': {'lat': lat,
                                                                                          'lon': lon}}})
 
@@ -197,7 +215,6 @@ def view_product(request, id):
         template = 'base/not_user_base.html'
     else:
         template = 'base/user_base.html'
-
 
     return render(request, 'shopping/view_product.html',
                   {'product': product,
@@ -271,6 +288,24 @@ def search_product(request):
             w_desc = 1
             w_price = 1
             es = Elasticsearch()
+
+            final_category = ''
+
+            if form.cleaned_data['digital_subcategory'] is not None:
+                final_category = form.cleaned_data['digital_subcategory']
+            elif form.cleaned_data['pretty_subcategory'] is not None:
+                final_category = form.cleaned_data['pretty_subcategory']
+            elif form.cleaned_data['health_subcategory'] is not None:
+                final_category = form.cleaned_data['health_subcategory']
+            elif form.cleaned_data['cars_subcategory'] is not None:
+                final_category = form.cleaned_data['cars_subcategory']
+            elif form.cleaned_data['sports_subcategory'] is not None:
+                final_category = form.cleaned_data['sports_subcategory']
+            elif form.cleaned_data['cooking_subcategory'] is not None:
+                final_category = form.cleaned_data['cooking_subcategory']
+            elif form.cleaned_data['house_subcategory'] is not None:
+                final_category = form.cleaned_data['house_subcategory']
+
             results = es.search(index='shopping_index', doc_type='product',
                                 body={'query':
                                           {'bool':
@@ -292,7 +327,7 @@ def search_product(request):
                                                                                  'lon': lon
                                                                              }}},
                                                            {'match': {
-                                                               'product.category': form.cleaned_data['category']}}]}
+                                                               'product.category': final_category}}]}
                                            }})
             res = []
             for r in results['hits']['hits']:
@@ -515,7 +550,7 @@ def referral(request):
     if len(shopping_user.referral_code) != 10:
         shopping_user.referral_code = ''.join(random.choice(string.ascii_uppercase + string.digits) for _ in range(10))
         shopping_user.save()
-    return render(request, 'shopping/referral.html',{'code': shopping_user.referral_code})
+    return render(request, 'shopping/referral.html', {'code': shopping_user.referral_code})
 
 
 def signup_with_referral(request, code):
@@ -531,10 +566,11 @@ def signup_with_referral(request, code):
                                          email=form.cleaned_data['email'], credit=0)
 
             shopping_user.user = django_user
-            shopping_user.random_code = ''.join(random.choice(string.ascii_uppercase + string.digits) for _ in range(10))
+            shopping_user.random_code = ''.join(
+                random.choice(string.ascii_uppercase + string.digits) for _ in range(10))
             shopping_user.referrer_code = code
             shopping_user.save()
-            eid = hashlib.sha1((hash_salt+shopping_user.email).encode()).hexdigest()
+            eid = hashlib.sha1((hash_salt + shopping_user.email).encode()).hexdigest()
             link = 'http://127.0.0.1:8000/shopping/confirm/' + eid + '/' + shopping_user.random_code
             email = EmailMessage('Confirmation Email', 'Please confirm your email via this link: ' + link,
                                  to=[form.cleaned_data['email'], ])
@@ -579,7 +615,8 @@ def create_auction(request):
             return HttpResponseRedirect('dashboard')
         else:
 
-            return render(request, 'shopping/create_auction.html', {'locations': locations, 'create_auction_form': form})
+            return render(request, 'shopping/create_auction.html',
+                          {'locations': locations, 'create_auction_form': form})
     else:
         return render(request, 'shopping/create_auction.html',
                       {'locations': locations, 'create_auction_form': CreateAuctionForm(label_suffix='')}, )
@@ -633,10 +670,10 @@ def bid_auction(request, id):
                     participated = True
                     break
             if not participated:
-                if shopping_user.credit < auction.base_price/10:
+                if shopping_user.credit < auction.base_price / 10:
                     return render(request, 'shopping/error.html', {'error_message': error_insufficient_credit,
                                                                    'type_insufficient_credit': True})
-                shopping_user.credit -= auction.base_price/10
+                shopping_user.credit -= auction.base_price / 10
                 shopping_user.save()
 
             bid = Bid(auction=auction, bidder=shopping_user, price=form.cleaned_data['price'])
@@ -678,8 +715,8 @@ def finish_auction(request, id):
             highest_bid = bid
 
     for bidder in bidders:
-            bidder.credit += auction.base_price/10
-            bidder.save()
+        bidder.credit += auction.base_price / 10
+        bidder.save()
     if highest_bid is not None:
         highest_bid.bidder.credit -= highest_bid.price
         highest_bid.bidder.save()
@@ -688,7 +725,7 @@ def finish_auction(request, id):
         auction.product.save()
         auction.save()
         email = EmailMessage('Auction Winner!', 'Congratulations ' +
-                             highest_bid.bidder.first_name + '!!! You Have The Won The Auction of '+auction.product +
+                             highest_bid.bidder.first_name + '!!! You Have The Won The Auction of ' + auction.product +
                              ' for ' + str(highest_bid.price),
                              to=[highest_bid.bidder.email, ])
         email.send()
