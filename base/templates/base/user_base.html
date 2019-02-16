@@ -1,7 +1,6 @@
 <head><title>صفحه‌ی کاربر</title></head>
 {% extends 'base/very_base.html' %}
 
-
 {#{% block content %}#}
 {#    <nav class="navbar navbar-inverse">#}
 {#        <div class="container-fluid">#}
@@ -129,6 +128,7 @@
                     }
                 }
     </script>
+
 {% endblock %}
 
 
@@ -139,7 +139,18 @@
         {% endblock %}
         {#        <div id="panel-header" align="center"><h2>اطلاعات کاربر</h2></div>#}
     </div>
+
 {% endblock %}
+{% block sik %}
+    <div style="position: fixed; bottom: 0" >
+    {% if has_new_message %}
+        <div>شما پیام جدید دارید.
+        <a href="/shopping/messages">مشاهده</a>
+        </div>
+    {% endif %}
+    </div>
+{% endblock %}
+
 {##}
 {#            </div>#}
 {#            <div class="col-sm-4" align="center"><img alt="Brand"#}
