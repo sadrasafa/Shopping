@@ -186,7 +186,9 @@ class AddProductForm(forms.ModelForm):
 
     class Meta:
         model = Product
-        fields = ['name', 'price', 'description', 'picture', 'category', 'digital_subcategory', 'health_subcategory']
+        fields = ['name', 'price', 'description', 'picture', 'category', 'digital_subcategory',
+                  'pretty_subcategory', 'health_subcategory', 'cars_subcategory', 'sports_subcategory',
+                  'cooking_subcategory', 'house_subcategory']
 
         widgets = {
             'name': forms.TextInput(attrs={'class': 'form-control',
@@ -209,12 +211,25 @@ class AddProductForm(forms.ModelForm):
                                                                         'id': 'category_id',
                                                                         }),
             'digital_subcategory': forms.Select(choices=Product.digital_subcategories, attrs={'class': 'form-control',
-                                                                                            'placeholder': 'دسته‌بندی دیجیتال',
-                                                                                            'id': 'category_id_1'}),
+                                                                                              'id': 'category_id_1'}),
+
+            'pretty_subcategory': forms.Select(choices=Product.pretty_subcategories, attrs={'class': 'form-control',
+                                                                                             'id': 'category_id_2'}),
 
             'health_subcategory': forms.Select(choices=Product.health_subcategories, attrs={'class': 'form-control',
-                                                                                            'placeholder': 'دسته‌بندی بهداشتی',
-                                                                                            'id': 'category_id_3'})
+                                                                                            'id': 'category_id_3'}),
+
+            'cars_subcategory': forms.Select(choices=Product.cars_subcategories, attrs={'class': 'form-control',
+                                                                                          'id': 'category_id_4'}),
+
+            'sports_subcategory': forms.Select(choices=Product.sports_subcategories, attrs={'class': 'form-control',
+                                                                                            'id': 'category_id_5'}),
+
+            'cooking_subcategory': forms.Select(choices=Product.cooking_subcategories, attrs={'class': 'form-control',
+                                                                                             'id': 'category_id_6'}),
+
+            'house_subcategory': forms.Select(choices=Product.house_subcategories, attrs={'class': 'form-control',
+                                                                                           'id': 'category_id_7'})
 
             # 'city': forms.Select(attrs={'class': 'form-control',
             #                             'placeholder': 'dfadlflkdfjalk',
@@ -231,7 +246,12 @@ class AddProductForm(forms.ModelForm):
             'picture': _('تصویر محصول'),
             'category': _('دسته بندی'),
             'digital_subcategory': _('دسته‌بندی دیجیتال'),
+            'pretty_subcategory': _('دسته‌بندی لوازم تزیینی'),
             'health_subcategory': _('دسته‌بندی بهداشتی'),
+            'cars_subcategory': _('دسته‌بندی لوازم خودرو'),
+            'sports_subcategory': _('دسته‌بندی لوازم ورزشی'),
+            'cooking_subcategory': _('دسته‌بندی لوازم آشپزی'),
+            'house_subcategory': _('دسته‌بندی لوازم خانه'),
             # 'city': _('شهر'),
             # 'location': _('مکان')
         }
@@ -520,16 +540,16 @@ class ResetPasswordForm(forms.Form):
 
 class CreateAuctionForm(forms.ModelForm):
     end_date = forms.DateTimeField(widget=forms.TextInput(attrs={'class': 'form-control',
-                                                              'required': 'True',
-                                                              'max_length': 200,
-                                                              'placeholder': 'زمان پایان مزایده',
-                                                              'style': 'text-align:right',
-                                                              'direction': 'rtl'}
-                                                       ),
-                                label=_("زمان پایان مزایده"),
-                                error_messages={
-                                    'invalid': _("لطفا زمان را به شکل صحیح وارد کنید"),
-                                    'required': _('لطفا زمان پایان مزایده را وارد کنید')})
+                                                                 'required': 'True',
+                                                                 'max_length': 200,
+                                                                 'placeholder': 'زمان پایان مزایده',
+                                                                 'style': 'text-align:right',
+                                                                 'direction': 'rtl'}
+                                                          ),
+                                   label=_("زمان پایان مزایده"),
+                                   error_messages={
+                                       'invalid': _("لطفا زمان را به شکل صحیح وارد کنید"),
+                                       'required': _('لطفا زمان پایان مزایده را وارد کنید')})
 
     class Meta:
         model = Product
@@ -551,7 +571,6 @@ class CreateAuctionForm(forms.ModelForm):
                                                        'style': 'text-align:right'}),
             'category': forms.Select(choices=Product.categories, attrs={'class': 'form-control',
                                                                         'placeholder': 'دسته بنده'})
-
 
         }
         labels = {

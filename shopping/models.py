@@ -1,8 +1,9 @@
-from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.core.validators import RegexValidator
+from django.db import models
 from location_field.models.plain import PlainLocationField
-from django.utils.translation import ugettext_lazy as _
+
+
 # from osm_field.fields import LatitudeField, LongitudeField, OSMField
 
 # Create your models here.
@@ -19,7 +20,8 @@ class ShoppingUser(models.Model):
     email = models.EmailField()
     phone_number = models.CharField(max_length=20, validators=[
         RegexValidator(regex=r'^((\+|00)\d{11,12})|(09\d{9})$',
-                       message="شماره تلفن نامعتبر است")], null=True, blank=True)  # null=True and Blank=True if not required
+                       message="شماره تلفن نامعتبر است")], null=True,
+                                    blank=True)  # null=True and Blank=True if not required
     province = models.CharField(max_length=40, null=True, blank=True)  # province should be a choice
     city = models.CharField(max_length=40, null=True, blank=True)
     credit = models.IntegerField(null=True, default=0)
@@ -58,11 +60,10 @@ class Product(models.Model):
     categories = (('category_id_1', 'لوازم دیجیتال'),
                   ('category_id_2', 'لوازم تزیینی'),
                   ('category_id_3', 'لوازم بهداشتی'),
-                  ('cars', 'خودرو'),
-                  ('sport_prods', 'لوازم ورزشی'),
-                  ('cooking_prods', 'لوازم آشپزی'),
-                  ('house', 'مسکن'),
-                  ('electrical_prods', 'لوازم برقی'),
+                  ('category_id_4', 'خودرو'),
+                  ('category_id_5', 'لوازم ورزشی'),
+                  ('category_id_6', 'لوازم آشپزی'),
+                  ('category_id_7', 'لوزام مسکن'),
                   )
 
     digital_subcategories = (('لپ تاپ', 'لپ تاپ'),
@@ -70,12 +71,18 @@ class Product(models.Model):
                              ('دوربین', 'دوربین'),
                              ('تلویزیون', 'تلویزیون'),
                              ('بلندگو', 'بلندگو'),
-                             ('تلویزیون', 'تلویزیون'),
                              ('تبلت', 'تبلت'),
-                             ('هارد، فلش و SSD', 'تلویزیون'),
-                             ('مچ‌بند و ساعت هوشمند', 'تلویزیون'),
-                             ('هدفون، هدست', 'تلویزیون'),
+                             ('هارد، فلش و SSD', 'هارد، فلش و SSD'),
+                             ('مچ‌بند و ساعت هوشمند', 'مچ‌بند و ساعت هوشمند'),
+                             ('هدفون، هدست', 'هدفون، هدست'),
                              )
+
+    pretty_subcategories = (('تابلو', 'تابلو'),
+                            ('مجسمه', 'مجسمه'),
+                            ('شمع‌دونی', 'شمع‌دونی'),
+                            ('آینه', 'آینه'),
+                            ('پرده', 'پرده'),
+                            )
 
     health_subcategories = (('لوازم آرایشی', 'لوازم آرایشی'),
                             ('کرم', 'کرم'),
@@ -84,24 +91,43 @@ class Product(models.Model):
                             ('دهان‌شوی', 'دهان‌شوی'),
                             )
 
+    cars_subcategories = (('فرمان', 'فرمان'),
+                          ('دنده', 'دنده'),
+                          ('روکش صندلی', 'روکش صندلی'),
+                          ('برف‌‌پاک‌کن', 'برف‌‌پاک‌کن'),
+                          ('باتری ماشین', 'باتری ماشین'),
+                          )
 
-    pretty_subcategories = (('تابلو', 'تابلو'),
-                            ('مجسمه', 'مجسمه'),
-                            ('شامپو', 'شامپو'),
-                            ('ضد تعریق', 'ضد تعریق'),
-                            ('دهان‌شوی', 'دهان‌شوی'),
+    sports_subcategories = (('توپ', 'توپ'),
+                            ('گرم‌کن', 'گرم‌کن'),
+                            ('دست‌کش دروازه‌بانی', 'دست‌کش دروازه‌بانی'),
+                            ('لباس شنا', 'لباس شنا'),
+                            ('عینک شنا', 'عینک شنا'),
                             )
 
+    cooking_subcategories = (('قابلمه', 'قابلمه'),
+                             ('ماهی‌تابه', 'ماهی‌تابه'),
+                             ('کف‌گیر', 'کف‌گیر'),
+                             ('قاشق‌چنگال', 'قاشق‌چنگال'),
+                             ('بشفاب', 'بشفاب'),
+                             )
 
+    house_subcategories = (('یخچال', 'یخچال'),
+                           ('مبل', 'مبل'),
+                           ('پرده', 'پرده'),
+                           ('میز', 'میز'),
+                           ('صندلی', 'صندلی'),
+                           )
     category = models.CharField(max_length=140, null=True, choices=categories)
-
     digital_subcategory = models.CharField(max_length=140, null=True, choices=digital_subcategories)
-
+    pretty_subcategory = models.CharField(max_length=140, null=True, choices=pretty_subcategories)
     health_subcategory = models.CharField(max_length=140, null=True, choices=health_subcategories)
+    cars_subcategory = models.CharField(max_length=140, null=True, choices=cars_subcategories)
+    sports_subcategory = models.CharField(max_length=140, null=True, choices=sports_subcategories)
+    cooking_subcategory = models.CharField(max_length=140, null=True, choices=cooking_subcategories)
+    house_subcategory = models.CharField(max_length=140, null=True, choices=house_subcategories)
 
     # digital_subcategory = models.CharField(max_length=140, null=True, choices=digital_subcategories)
-
-
 
     # subcategory_2 = models.CharField(max_length=140, null=True)
 
@@ -133,4 +159,4 @@ class Bid(models.Model):
     price = models.IntegerField(null=True)
 
     def __str__(self):
-        return self.auction.__str__() + ' : ' + self.bidder.__str__()+', '+str(self.price)
+        return self.auction.__str__() + ' : ' + self.bidder.__str__() + ', ' + str(self.price)
