@@ -114,6 +114,21 @@ h1 {
     cursor: pointer;
 }
 
+
+.close_auction {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close_auction:hover,
+.close_auction:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
 .button {
     padding: 60px 60px;
 }
