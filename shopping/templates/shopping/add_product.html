@@ -45,7 +45,7 @@
 
                                 </div>
                             {% else %}
-                                <div class="control-group row" style="margin-bottom: 20px">
+                                <div id="{{ field.id_for_label }}" class="control-group row" style="margin-bottom: 20px">
                                     <div class="controls col-md-10">{{ field }}
                                         {% if field.help_text %}
                                             <p class="help-inline">
@@ -112,21 +112,77 @@
         window.onload = function () {
             document.getElementById('category_id').onchange = function () {
 
+                var allDivs = $("div").toArray();
 
-                console.log('salam')
-                console.log($('select[id="category_id"]').val())
+                console.log($('label[id="category_id_1"]'))
                 {#var element = $('label[id="category_id"]')#}
                 {#console.log($("label[for='" + $element.attr('category_id') + "']").text())#}
-                $('select[id^="category_id_"]').hide();
-                $('label[id^="category_id_"]').hide();
+                {#$('select[id^="category_id_"]').hide();#}
+                $('select[id^="category_id_"]').css({
+                    "display": 'none'
+                });
+                $('label[id^="category_id_"]').css({
+                    "display": 'none'
+                });
+                $('div[id^="category_id_"]').css({
+                    "display": 'none'
+                });
                 $('select[id="' + $('select[id="category_id"]').val() + '"]').show();
                 $('label[id="' + $('select[id="category_id"]').val() + '"]').show();
+                $('div[id="' + $('select[id="category_id"]').val() + '"]').show();
+                var label_pos = $('label[id="category_id_1"]').offset();
+                var select_pos = $('select[id="category_id_1"]').offset();
+                {#$('label[id="' + $('select[id="category_id"]').val() + '"]').css({#}
+                {#    top: label_pos.top,#}
+                {#    left: label_pos.left,#}
+                {#    position: 'absolute'#}
+                {# {);#}
+                {#$('select[id="' + $('select[id="category_id"]').val() + '"]').css({#}
+                {#    top: select_pos.top,#}
+                {#    left: select_pos.left,#}
+                {#    position: 'relative'#}
+                {# {);#}
+
+                console.log(label_pos)
+                console.log(select_pos)
+                console.log('label top')
+                console.log(label_pos.top)
+                console.log('select top')
+                console.log(select_pos.top)
+                console.log('label left')
+                console.log(label_pos.left)
+                console.log('select left')
+                console.log(select_pos.left)
+                {#console.log(pos.height)#}
+                console.log('going in')
                 $('select[id="category_id"]').change(function () {
-                    $('select[id^="category_id_"]').hide();
-                    $('label[id^="category_id_"]').hide();
+                    $('select[id^="category_id_"]').css({
+                        "display": 'none'
+                    });
+                    $('label[id^="category_id_"]').css({
+                        "display": 'none'
+                    });
+                    $('div[id^="category_id_"]').css({
+                        "display": 'none'
+                    });
                     $('select[id="' + $(this).val() + '"]').show();
                     $('label[id="' + $(this).val() + '"]').show();
-                    $('label[id="' + $(this).val() + '"]').css({top: '200px', left: '200px', position:'absolute'});
+                    $('div[id="' + $(this).val() + '"]').show();
+                    console.log(pos.top)
+                    console.log(pos.left)
+                    console.log(pos.height)
+                    {#$('label[id="' + $(this).val() + '"]').css({#}
+                    {#    top: label_pos.top,#}
+                    {#    left: label_pos.left,#}
+                    {#    position: 'absolute'#}
+                    {# {);#}
+                    {#$('select[id="' + $(this).val() + '"]').css({#}
+                    {#    top: select_pos.top,#}
+                    {#    left: select_pos.left,#}
+                    {#    position: 'absolute'#}
+                    {# {);#}
+                    {#$('label[id="' + $(this).val() + '"]').css('top', 400);#}
+                    {#$('label[id="' + $(this).val() + '"]').css({top: '200px', left: '200px', position:'absolute'});#}
                 });
             }
         }

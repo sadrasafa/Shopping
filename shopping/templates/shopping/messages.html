@@ -1,33 +1,48 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-RECEIVED:
-{% for msg in received %}
-    <br>
-    sender : {{ msg.sender.first_name }}
-    <br>
-    {{ msg.text }}
-    <br>
-      <a href="/shopping/send_message/{{ msg.sender.id }}">ارسال پیام</a>
-    <br>
-    __________________________
-    <br>
-{% endfor %}
-SENT:
-{% for msg in sent %}
-    <br>
-    receiver: {{ msg.receiver.first_name }}
-    <br>
-    {{ msg.text }}
-    <br>
-      <a href="/shopping/send_message/{{ msg.receiver.id }}">ارسال پیام</a>
-    <br>
-    __________________________
-    <br>
-{% endfor %}
-</body>
-</html>
+{% extends 'base/user_base.html' %}
+<head><title>افزودن نظر</title></head>
+
+
+<head><title>افزودن نظر</title></head>
+{% load staticfiles %}
+{% block content %}
+
+    <div style="margin-top:50px; width: 80%; margin-right: 10%; margin-left: 10%;">
+        <h1>پیام‌های دریافتی</h1>
+    </div>
+    {% for msg in received reversed %}
+        <div id="product_panel"
+             style="margin-top: 5px; height: 200px; width: 80%; margin-right: 10%; margin-left: 10%;"
+             class="panel panel-success col-md-9 col-sm-12">
+            <div class="panel-heading"
+                 style="width: 100%; position: absolute; left: 0px; top: 0px;" align="right"><a
+                    href="/shopping/view_user/{{ msg.sender.id }}"> {{ msg.sender.first_name }}</a></div>
+            <div style="margin-top: 40px">
+                <p>پیام:</p></div>
+            {{ msg.text }}
+                    <br>
+            <a href="/shopping/send_message/{{ msg.sender.id }}">ارسال پاسخ</a>
+            <br>
+        </div>
+    {% endfor %}
+
+
+    <div style="margin-top:50px; width: 80%; margin-right: 10%; margin-left: 10%;">
+        <h1>پیام‌های ارسالی</h1>
+    </div>
+    {% for msg in sent reversed %}
+        <div id="product_panel"
+             style="margin-top: 20px; height: 200px; width: 80%; margin-right: 10%; margin-left: 10%;"
+             class="panel panel-info col-md-9 col-sm-12">
+            <div class="panel-heading"
+                 style="width: 100%; position: absolute; left: 0px; top: 0px;" align="right"><a
+                    href="/shopping/view_user/{{ msg.receiver.id }}"> {{ msg.receiver.first_name }}</a></div>
+            <div style="margin-top: 40px">
+                <p>پیام:</p></div>
+            {{ msg.text }}
+            <br>
+            <a href="/shopping/send_message/{{ msg.sender.id }}">ارسال پیام</a>
+            <br>
+        </div>
+    {% endfor %}
+
+{% endblock %}
